@@ -1,7 +1,7 @@
 <template>
     <div class="home-page">
         <img alt="Vue logo" src="../assets/logo.png" class="logo" />
-        <h1>{{ msg }}</h1>
+        <h1 class="page-title">{{ msg }}</h1>
     </div>
 </template>
 
@@ -14,10 +14,16 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 .logo {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+}
+
+@media only screen and (min-width: 386px) {
+    .logo {
+        max-width: 200px;
+    }
 }
 </style>

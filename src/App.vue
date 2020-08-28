@@ -15,13 +15,28 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+$bg-color: black;
+$color: white;
+
+body {
+    background-color: $bg-color;
+    color: $color;
+    font-size: 0.8em;
+    font-family: cursive;
+}
+
 #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
+    // font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
     margin-top: 60px;
+}
+
+@media only screen and (min-width: 386px) {
+    body {
+        font-size: 1em;
+    }
 }
 </style>
