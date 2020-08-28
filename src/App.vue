@@ -22,8 +22,13 @@ $color: white;
 body {
     background-color: $bg-color;
     color: $color;
-    font-size: 0.8em;
+    font-size: 1.2em;
     font-family: cursive;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
 }
 
 #app {
@@ -36,7 +41,7 @@ body {
 
 @media only screen and (min-width: 386px) {
     body {
-        font-size: 1em;
+        font-size: 1.5em;
     }
 }
 </style>
