@@ -16,8 +16,8 @@ export default {
 </script>
 
 <style lang="scss">
-$bg-color: black;
-$color: white;
+$bg-color: #f1f2f5;
+$color: #050505;
 
 body {
     background-color: $bg-color;
