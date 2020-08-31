@@ -1,0 +1,6 @@
+type Animal {
+    name: String!
+    type: String!
+    dateOfBirth: String
+    imageUrl: String
+}
