@@ -1,20 +1,8 @@
 import express = require('express');
 import { ApolloServer, gql } from 'apollo-server-express';
+import schema from './schema';
 
 const app = express();
-
-const schema = gql`
-    type Animal {
-        name: String!
-        type: String!
-        dateOfBirth: String
-        imageUrl: String
-    }
-
-    type Query {
-        animals: [Animal]
-    }
-`;
 
 const resolvers = {
     Query: {
