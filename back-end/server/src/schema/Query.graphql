@@ -1,3 +1,4 @@
 type Query {
     animals: [Animal]
+    animal(id: String!): Animal
 }
