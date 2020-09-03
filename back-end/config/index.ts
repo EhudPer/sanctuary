@@ -2,7 +2,7 @@
  * Config file
  */
 
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 dotenv.config();
 export default {
     db: process.env.DB,
