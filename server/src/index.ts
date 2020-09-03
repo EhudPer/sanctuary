@@ -1,7 +1,7 @@
 import express = require('express');
 import { ApolloServer } from 'apollo-server-express';
-import schema from './schema';
-import resolvers from './resolvers';
+import schema from './graphql/schema/schema';
+import resolvers from './graphql/resolvers/resolvers';
 
 const app = express();
 
