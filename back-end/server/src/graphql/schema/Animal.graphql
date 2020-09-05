@@ -1,7 +1,7 @@
 type Animal {
-    id: String!
+    _id: String!
     name: String!
     type: String!
-    dateOfBirth: String
-    imageUrl: String
+    image_url: String
+#    dateOfBirth: String
 }
