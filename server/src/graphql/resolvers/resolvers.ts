@@ -1,15 +1,8 @@
-import * as mongodb from 'mongodb';
-const ObjectId = mongodb.ObjectID;
+import {AnimalModel} from '../../models/animal';
 
-const getAnimals = async (root, data, {mongo: {Animals}}) => {
-    return await Animals.find({}).toArray();
-}
+const getAnimals = async () => AnimalModel.find({});
 
-const getAnimal = async (root, data: any, {mongo: {Animals}}) => {
-    const { _id } = data;
-    const objId = new ObjectId(_id);
-    return await Animals.findOne({ _id: objId });
-}
+const getAnimal = async (root, data: any) => AnimalModel.findOne({ _id: data._id });
 
 const resolvers = {
     Query: {

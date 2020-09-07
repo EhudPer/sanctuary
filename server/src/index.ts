@@ -1,4 +1,5 @@
 import express = require('express');
+import * as mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server-express';
 import * as dotenv from 'dotenv'
 
@@ -9,15 +10,23 @@ if (process.env.NODE_ENV !== 'production') {
     dotenv.config({path:__dirname+'/.env'});
 }
 
-import { connectMongo } from './utils/mongo-connector';
+const MONGO_URL = process.env.MONGO_URL;
 
 const start = async () => {
 
-    const mongo = await connectMongo();
     const app = express();
 
+    mongoose.connect(MONGO_URL, { useUnifiedTopology: true, useNewUrlParser: true });
+
+    mongoose.connection.on("error", err => {
+        console.log("err", err)
+    })
+
+    mongoose.connection.on("connected", (err, res) => {
+        console.log("mongoose is connected")
+    })
+
     const server = new ApolloServer({
-        context: {mongo},
         typeDefs: schema,
         resolvers,
     });
