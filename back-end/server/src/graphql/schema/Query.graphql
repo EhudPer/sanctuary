@@ -1,4 +1,4 @@
 type Query {
     animals: [Animal]
-    animal(id: String!): Animal
+    animal(_id: String!): Animal
 }

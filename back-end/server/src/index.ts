@@ -1,17 +1,41 @@
 import express = require('express');
-import { ApolloServer, gql } from 'apollo-server-express';
-import schema from './schema';
-import resolvers from './resolvers';
+import * as mongoose from 'mongoose';
+import { ApolloServer } from 'apollo-server-express';
+import * as dotenv from 'dotenv'
 
-const app = express();
+import schema from './graphql/schema/schema';
+import resolvers from './graphql/resolvers/resolvers';
 
-const server = new ApolloServer({
-    typeDefs: schema,
-    resolvers,
-});
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config({path:__dirname+'/.env'});
+}
 
-server.applyMiddleware({ app, path: '/graphql' });
+const MONGO_URL = process.env.MONGO_URL;
 
-app.listen({ port: 8000 }, () => {
-    console.log('Apollo Server on http://localhost:8000/graphql');
-});
+const start = async () => {
+
+    const app = express();
+
+    mongoose.connect(MONGO_URL, { useUnifiedTopology: true, useNewUrlParser: true });
+
+    mongoose.connection.on("error", err => {
+        console.log("err", err)
+    })
+
+    mongoose.connection.on("connected", (err, res) => {
+        console.log("mongoose is connected")
+    })
+
+    const server = new ApolloServer({
+        typeDefs: schema,
+        resolvers,
+    });
+
+    server.applyMiddleware({app, path: '/graphql'});
+
+    app.listen({port: 8000}, () => {
+        console.log('Apollo Server on http://localhost:8000/graphql');
+    });
+};
+
+start();
