@@ -6,18 +6,20 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import AnimalsList from './AnimalsList.vue';
 
-export default {
-    name: 'HomePage',
-    props: {
-        msg: String,
-    },
-    components: {
-        AnimalsList,
-    },
-};
+export default defineComponent({
+  name: 'HomePage',
+  props: {
+    msg: String,
+  },
+  components: {
+    AnimalsList
+  }
+});
+
 </script>
 
 <style lang="scss" scoped>

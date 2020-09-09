@@ -6,13 +6,15 @@
                 <b>{{ props.animal.name }}</b>
             </h4>
             <p>{{ props.animal.type }}</p>
-            <p>{{ props.animal.dateOfBirth }}</p>
+<!--            <p>{{ props.animal.dateOfBirth }}</p>-->
         </div>
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import {defineComponent} from "vue";
+
+export default defineComponent({
     name: 'Animal',
     props: {
         animal: Object,
@@ -22,7 +24,7 @@ export default {
             props,
         };
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>
