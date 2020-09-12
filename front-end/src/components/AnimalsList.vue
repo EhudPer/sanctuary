@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import { useStore } from "vuex";
+import { defineComponent, computed } from "@vue/composition-api";
+// import { useStore } from "vuex";x";
 import Animal from "./Animal.vue";
 
 export default defineComponent({
@@ -19,12 +19,11 @@ export default defineComponent({
   components: {
     Animal,
   },
-  setup() {
-    const store = useStore();
-    store.dispatch("fetchAnimals");
+  setup(props, { root }) {
+    root.$store.dispatch("fetchAnimals");
     //add loader for wait time until dispatch is done.
     //add getter instead of directly accessing state.
-    const animals = computed(() => store.state.animals);
+    const animals = computed(() => root.$store.state.animals);
     return {
       animals,
     };
