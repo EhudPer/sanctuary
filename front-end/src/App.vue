@@ -5,14 +5,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HomePage from './components/HomePage.vue';
+import { defineComponent } from "@vue/composition-api";
+import HomePage from "./components/HomePage.vue";
 
 export default defineComponent({
-  name: 'App',
+  name: "App",
   components: {
-    HomePage
-  }
+    HomePage,
+  },
 });
 </script>
 
