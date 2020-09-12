@@ -20,6 +20,7 @@ export default defineComponent({
     Animal,
   },
   setup(props, { root }) {
+    //need to add check if dispatch is needed or not before dispatching.
     root.$store.dispatch("fetchAnimals");
     //add loader for wait time until dispatch is done.
     //add getter instead of directly accessing state.
