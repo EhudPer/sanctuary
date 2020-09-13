@@ -24,7 +24,8 @@ body {
   background-color: $bg-color;
   color: $color;
   font-size: 1.2em;
-  font-family: cursive;
+  //font-family: cursive;
+  font-family: Verdana, Avenir, Helvetica, Arial, sans-serif;
 }
 
 ul {
@@ -34,8 +35,6 @@ ul {
 
 #app {
   // font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   margin-top: 60px;
 }
