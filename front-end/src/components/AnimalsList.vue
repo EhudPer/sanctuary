@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "@vue/composition-api";
-// import { useStore } from "vuex";x";
 import Animal from "./Animal.vue";
 
 export default defineComponent({
@@ -20,9 +19,13 @@ export default defineComponent({
     Animal,
   },
   setup(props, { root }) {
-    root.$store.dispatch("fetchAnimals");
+    //need to add check if dispatch is needed or not before dispatching.
+    //consider moving dispatch to app vue with check if the store is empty or not.
+
     //add loader for wait time until dispatch is done.
     //add getter instead of directly accessing state.
+
+    root.$store.dispatch("fetchAnimals");
     const animals = computed(() => root.$store.state.animals);
     return {
       animals,
@@ -32,12 +35,20 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-ul {
-  display: flex;
-  flex-wrap: wrap;
+.animals-list {
+  margin-top: 30px;
 
-  li {
-    margin: 0 auto;
+  p {
+    margin-top: 20px;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+
+    li {
+      margin: 15px auto;
+    }
   }
 }
 </style>
