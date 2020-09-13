@@ -1,6 +1,6 @@
 <template>
   <div class="animals-list">
-    <p>Animals List!</p>
+    <h1 class="page-title">Animals</h1>
     <ul>
       <li v-for="animal in animals" :key="animal._id">
         <Animal :animal="animal" />
@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "@vue/composition-api";
-import Animal from "./Animal.vue";
+import Animal from "../components/Animal.vue";
 
 export default defineComponent({
   name: "AnimalsList",
@@ -37,10 +37,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .animals-list {
   margin-top: 30px;
-
-  p {
-    margin-top: 20px;
-  }
 
   ul {
     display: flex;
