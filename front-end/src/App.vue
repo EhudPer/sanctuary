@@ -5,7 +5,9 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/animals">Animals</router-link>
     </div>
-    <router-view />
+    <div class="view">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -28,9 +30,22 @@ body {
   //margin-top: 60px;
 }
 
+.view {
+  margin: 0 10px;
+}
+
+.router-link-exact-active {
+  color: brown;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
+}
+
+a {
+  color: black;
+  text-decoration: none;
 }
 
 .page-title {
