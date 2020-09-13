@@ -36,8 +36,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .animals-list {
-  margin-top: 30px;
-
   ul {
     display: flex;
     flex-wrap: wrap;
