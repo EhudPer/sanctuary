@@ -16,7 +16,9 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn text color="deep-purple accent-4"> Details </v-btn>
+      <v-btn @click="moveToAnimalDetails" text color="deep-purple accent-4">
+        Details
+      </v-btn>
       <v-btn text color="deep-purple accent-4"> Edit </v-btn>
       <v-btn text color="deep-purple accent-4"> Delete </v-btn>
       <v-spacer></v-spacer>
@@ -38,9 +40,17 @@ export default defineComponent({
   props: {
     animal: Object,
   },
-  setup(props) {
+  setup(props, { root }) {
+    function moveToAnimalDetails() {
+      console.log(props.animal._id);
+      root.$router.push({
+        name: "AnimalDetails",
+        params: { animalId: props.animal._id },
+      });
+    }
     return {
       props,
+      moveToAnimalDetails,
     };
   },
 });
@@ -49,6 +59,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 .v-card {
   width: 100%;
+  margin: 0 auto;
+  overflow: scroll;
   //problem to fix that need wrap to ocure before and not after only that there is no space and they are about to collid..
+}
+
+.v-card__actions {
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 340px) {
+  .v-card__actions {
+    flex-direction: row;
+  }
 }
 </style>
