@@ -11,6 +11,19 @@
   </div>
 </template>
 
+<script lang="ts">
+import { defineComponent } from "@vue/composition-api";
+
+export default defineComponent({
+  name: "App",
+  setup(props, { root }) {
+    if (root.$store.state.animals.length === 0) {
+      root.$store.dispatch("fetchAnimals");
+    }
+  },
+});
+</script>
+
 //use separate global app scss file and import instead of using it in this
 component. //order and make more organized all the scss code here.
 <style lang="scss">

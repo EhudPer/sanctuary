@@ -25,7 +25,6 @@ export default defineComponent({
     //add loader for wait time until dispatch is done.
     //add getter instead of directly accessing state.
 
-    root.$store.dispatch("fetchAnimals");
     const animals = computed(() => root.$store.state.animals);
     return {
       animals,
@@ -41,8 +40,15 @@ export default defineComponent({
     flex-wrap: wrap;
 
     li {
+      //width: 100%;
       margin: 15px auto;
     }
+  }
+}
+
+@media only screen and (min-width: 340px) {
+  li {
+    //width: 90%;
   }
 }
 </style>
