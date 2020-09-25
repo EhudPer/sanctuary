@@ -10,7 +10,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "@vue/composition-api";
+import {
+  defineComponent,
+  computed,
+  onBeforeMount,
+  onMounted,
+} from "@vue/composition-api";
 import Animal from "../components/Animal.vue";
 
 export default defineComponent({
@@ -19,11 +24,20 @@ export default defineComponent({
     Animal,
   },
   setup(props, { root }) {
-    //need to add check if dispatch is needed or not before dispatching.
-    //consider moving dispatch to app vue with check if the store is empty or not.
-
-    //add loader for wait time until dispatch is done.
     //add getter instead of directly accessing state.
+
+    //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
+    onBeforeMount(() => {
+      if (document.readyState !== "complete") {
+        root.$store.dispatch("togLoading", { loadingStatus: true });
+      }
+    });
+
+    onMounted(() => {
+      window.onload = function () {
+        root.$store.dispatch("togLoading", { loadingStatus: false });
+      };
+    });
 
     const animals = computed(() => root.$store.state.animals);
     return {
@@ -40,15 +54,14 @@ export default defineComponent({
     flex-wrap: wrap;
 
     li {
-      //width: 100%;
       margin: 15px auto;
     }
   }
 }
 
-@media only screen and (min-width: 340px) {
+@media only screen and (max-width: 385px) {
   li {
-    //width: 90%;
+    width: 100%;
   }
 }
 </style>

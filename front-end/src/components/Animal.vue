@@ -16,11 +16,13 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn @click="moveToAnimalDetails" text color="deep-purple accent-4">
+      <v-btn @click="moveToAnimalDetails" text color="success accent-4">
         Details
       </v-btn>
-      <v-btn text color="deep-purple accent-4"> Edit </v-btn>
-      <v-btn text color="deep-purple accent-4"> Delete </v-btn>
+      <v-btn @click="moveToAnimalEdit" text color="warning accent-4">
+        Edit
+      </v-btn>
+      <v-btn text color="error accent-4"> Delete </v-btn>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>
@@ -41,16 +43,24 @@ export default defineComponent({
     animal: Object,
   },
   setup(props, { root }) {
+    //check later to do this a global function to use here and in edit page and where it called also..
     function moveToAnimalDetails() {
-      console.log(props.animal._id);
       root.$router.push({
         name: "AnimalDetails",
+        params: { animalId: props.animal._id },
+      });
+    }
+    //check later to do this a global function to use here and in edit page and where it called also..
+    function moveToAnimalEdit() {
+      root.$router.push({
+        name: "AnimalEdit",
         params: { animalId: props.animal._id },
       });
     }
     return {
       props,
       moveToAnimalDetails,
+      moveToAnimalEdit,
     };
   },
 });
@@ -59,16 +69,20 @@ export default defineComponent({
 <style lang="scss" scoped>
 .v-card {
   width: 100%;
-  margin: 0 auto;
+  margin: 15px auto;
   overflow: scroll;
   //problem to fix that need wrap to ocure before and not after only that there is no space and they are about to collid..
+}
+
+.v-img {
+  width: 100%;
 }
 
 .v-card__actions {
   flex-direction: column;
 }
 
-@media only screen and (min-width: 340px) {
+@media only screen and (min-width: 345px) {
   .v-card__actions {
     flex-direction: row;
   }
