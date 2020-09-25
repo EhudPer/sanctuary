@@ -10,10 +10,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import {
+  defineComponent,
+  onBeforeMount,
+  onMounted,
+} from "@vue/composition-api";
 
 export default defineComponent({
   name: "HomePage",
+  setup(props, { root }) {
+    //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
+    onBeforeMount(() => {
+      if (document.readyState !== "complete") {
+        root.$store.dispatch("togLoading", { loadingStatus: true });
+      }
+    });
+
+    onMounted(() => {
+      window.onload = function () {
+        root.$store.dispatch("togLoading", { loadingStatus: false });
+      };
+    });
+
+    return {};
+  },
 });
 </script>
 

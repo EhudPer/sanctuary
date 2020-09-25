@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="page-title">Animal Details</h1>
-    <v-card max-width="1032" class="mx-auto">
+    <v-card v-if="animal" max-width="1032" class="mx-auto">
       <v-list-item>
         <v-list-item-avatar color="grey"></v-list-item-avatar>
         <v-list-item-content>
@@ -10,9 +10,7 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-
-      <v-img :src="animal.image_url" alt="Avatar" height="194"></v-img>
-
+      <v-img :src="animal.image_url" alt="Avatar" max-height="500"></v-img>
       <v-card-text>
         {{ animal.type }}
       </v-card-text>
@@ -50,9 +48,11 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn text color="deep-purple accent-4"> Add Animal </v-btn>
-        <v-btn text color="deep-purple accent-4"> Edit </v-btn>
-        <v-btn text color="deep-purple accent-4"> Delete </v-btn>
+        <v-btn text color="success accent-4"> Add Animal </v-btn>
+        <v-btn @click="moveToAnimalEdit" text color="warning accent-4">
+          Edit
+        </v-btn>
+        <v-btn text color="error accent-4"> Delete </v-btn>
         <v-spacer></v-spacer>
         <v-btn icon>
           <v-icon>mdi-heart</v-icon>
@@ -66,17 +66,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import {
+  defineComponent,
+  onBeforeMount,
+  onMounted,
+  computed,
+} from "@vue/composition-api";
 
 export default defineComponent({
   name: "AnimalDetails",
   setup(props, { root }) {
+    //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
+    onBeforeMount(() => {
+      if (document.readyState !== "complete") {
+        root.$store.dispatch("togLoading", { loadingStatus: true });
+      }
+    });
+
+    onMounted(() => {
+      window.onload = function () {
+        root.$store.dispatch("togLoading", { loadingStatus: false });
+      };
+    });
+
     const animalId = root.$route.params.animalId;
-    //change to getter function later:
-    const animal = root.$store.getters.getAnimalById(animalId);
-    //animal is not defined on refresh - fix later.
+    const animal = computed(() => root.$store.getters.getAnimalById(animalId));
+
+    //check later to do this a global function to use here and in edit page and where it called also..
+    function moveToAnimalEdit() {
+      root.$router.push({
+        name: "AnimalEdit",
+        params: { animalId },
+      });
+    }
     return {
       animal,
+      moveToAnimalEdit,
     };
   },
 });
@@ -93,15 +118,10 @@ export default defineComponent({
   flex-direction: column;
 }
 
-@media only screen and (min-width: 340px) {
+@media only screen and (min-width: 375px) {
   .v-card__actions {
     flex-direction: row;
-  }
-}
-
-@media only screen and (min-width: 340px) {
-  .v-img {
-    height: calc(100vh - 640px);
+    //flex-wrap: wrap;
   }
 }
 </style>
