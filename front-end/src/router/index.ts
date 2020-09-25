@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/HomePage.vue";
 import HomePage from "@/views/HomePage.vue";
 
 Vue.use(VueRouter);
@@ -19,6 +18,20 @@ const routes: Array<RouteConfig> = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "animalsList" */ "../views/AnimalsList.vue"),
+  },
+  {
+    path: "/animals/:animalId",
+    name: "AnimalDetails",
+    component: () =>
+      import(
+        /* webpackChunkName: "animalDetails" */ "../views/AnimalDetails.vue"
+      ),
+  },
+  {
+    path: "/animals/edit/:animalId",
+    name: "AnimalEdit",
+    component: () =>
+      import(/* webpackChunkName: "AnimalEdit" */ "../views/AnimalEdit.vue"),
   },
 ];
 
