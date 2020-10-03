@@ -23,7 +23,17 @@ const mutations = {
         state.animal = animal;
     },
     setAnimals(state: any, animals: Array<object>) {
-        state.animals = animals;
+        //temporary set animals array in reverse to show first the current added once for now untill
+        //i'll add filters and sorting features.
+        // state.animals = animals;
+        state.animals = animals.reverse();
+    },
+    createAnimalInStore(state: any, animalToCreate: object) {
+        const animalsStateCopy = state.animals.slice();
+        animalsStateCopy.push(animalToCreate);
+        const updatedAnimalsState = animalsStateCopy;
+        // state.animals = updatedAnimalsState;
+        state.animals = updatedAnimalsState.reverse();
     },
     updateAnimalInStore(state: any, animalToUpdate: object) {
         const animalToUpdateIdx = state.animals.findIndex(
@@ -94,53 +104,43 @@ const actions = {
         }
     },
 
+    async createAnimal(
+        { commit }: { commit: any },
+        { animalToCreateFields }: { animalToCreateFields: object }
+    ) {
+        try {
+            const response = await graphqlClient.mutate({
+                mutation: gql`
+                    mutation createAnimal($animalInput: AnimalInput!) {
+                        createAnimal(input: $animalInput) {
+                            _id
+                            name
+                            type
+                            image_url
+                        }
+                    }
+                `,
+                variables: {
+                    animalInput: {
+                        name: animalToCreateFields.name,
+                        type: animalToCreateFields.type,
+                        image_url: animalToCreateFields.image_url
+                    }
+                }
+            });
+
+            commit('createAnimalInStore', response.data.createAnimal);
+            return response.data.createAnimal;
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
+
     async updateAnimal(
         { commit }: { commit: any },
         { updatedAnimalFields }: { updatedAnimalFields: object }
     ) {
         //change back to ID! instead of string all the way to graph schema and db... treat as id kind and not string all the way.
-        // return new Promise((resolve, reject) => {
-        //     graphqlClient
-        //         .mutate({
-        //             mutation: gql`
-        //                 mutation updateAnimal(
-        //                     $animalId: String!
-        //                     $animalInput: AnimalInput!
-        //                 ) {
-        //                     updateAnimal(_id: $animalId, input: $animalInput) {
-        //                         _id
-        //                         name
-        //                         type
-        //                         image_url
-        //                     }
-        //                 }
-        //             `,
-        //             variables: {
-        //                 animalId: updatedAnimalFields._id,
-        //                 animalInput: {
-        //                     name: updatedAnimalFields.name,
-        //                     type: updatedAnimalFields.type,
-        //                     image_url: updatedAnimalFields.image_url
-        //                 }
-        //             }
-        //         })
-        //         .then(
-        //             response => {
-        //                 // Trigger the `setAnimal` mutation
-        //                 // which is defined above.
-        //                 commit(
-        //                     'updateAnimalInStore',
-        //                     response.data.updateAnimal
-        //                 );
-        //                 // return response.data.updatedAnimal;
-        //                 resolve(response.data.updateAnimal);
-        //             },
-        //             error => {
-        //                 reject(error);
-        //             }
-        //         );
-        // });
-
         try {
             const response = await graphqlClient.mutate({
                 mutation: gql`
