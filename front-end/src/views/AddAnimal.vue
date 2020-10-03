@@ -1,17 +1,12 @@
 <template>
     <div>
-        <h1 class="page-title">Animal Edit</h1>
-        <v-card v-if="animal" max-width="1032" class="mx-auto">
+        <h1 class="page-title">Add Animal</h1>
+        <v-card max-width="1032" class="mx-auto">
             <v-list-item>
                 <v-list-item-avatar color="grey"></v-list-item-avatar>
-                <v-list-item-content>
-                    <v-list-item-title class="headline">
-                        {{ animal.name }}
-                    </v-list-item-title>
-                </v-list-item-content>
             </v-list-item>
             <v-img
-                :src="animal.image_url"
+                src="../assets/add-animal.jpg"
                 alt="Avatar"
                 max-height="500"
             ></v-img>
@@ -51,9 +46,9 @@
             <!--        {{ animal.type }}-->
             <!--      </v-card-text>-->
 
-            <v-form ref="myForm" v-model="valid" lazy-validation>
+            <v-form ref="myForm" v-model="valid" class="mb-4" lazy-validation>
                 <v-text-field
-                    v-model="newAnimalName"
+                    v-model="animalName"
                     :counter="10"
                     :rules="nameRules"
                     label="Name"
@@ -61,7 +56,7 @@
                 ></v-text-field>
 
                 <v-select
-                    v-model="newAnimalType"
+                    v-model="animalType"
                     :items="items"
                     :rules="[v => !!v || 'Type is required']"
                     label="Type"
@@ -99,34 +94,12 @@
                     Reset Validation
                 </v-btn>
             </v-form>
-
-            <v-card-actions>
-                <v-btn @click="pushToAddAnimalPage" text color="info accent-4">
-                    Add Animal
-                </v-btn>
-                <v-btn
-                    @click="moveToAnimalDetails"
-                    text
-                    color="success accent-4"
-                >
-                    Details
-                </v-btn>
-                <v-btn text color="error accent-4"> Delete </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn icon>
-                    <v-icon>mdi-heart</v-icon>
-                </v-btn>
-                <v-btn icon>
-                    <v-icon>mdi-share-variant</v-icon>
-                </v-btn>
-            </v-card-actions>
         </v-card>
     </div>
 </template>
 
 <script lang="ts">
 import {
-    computed,
     defineComponent,
     onMounted,
     reactive,
@@ -134,7 +107,7 @@ import {
 } from '@vue/composition-api';
 
 export default defineComponent({
-    name: 'AnimalEdit',
+    name: 'AddAnimal',
     setup(props, { root }) {
         //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
         if (document.readyState !== 'complete') {
@@ -147,15 +120,10 @@ export default defineComponent({
             };
         });
 
-        const animalId = root.$route.params.animalId;
-        const animal = computed(() =>
-            root.$store.getters.getAnimalById(animalId)
-        );
-
         //Later try to set that when the edit page is loaded that the values of the controls will not be empty -
         // but with the current animal's details from the db - all the time, even on refresh or loading from url directly.
-        const newAnimalName = animal.value ? ref(animal.value.name) : ref('');
-        const newAnimalType = animal.value ? ref(animal.value.type) : ref('');
+        const animalName = ref('');
+        const animalType = ref('');
         // const newAnimalImageUrl = ref("");
 
         const myForm = ref(null);
@@ -166,6 +134,8 @@ export default defineComponent({
             v => (v && v.length <= 10) || 'Name must be less than 10 characters'
         ]);
         const select = ref(null);
+        //later move those types of animals to one file and read them from it for all
+        //the places needed with the types list like the select box etc.
         const items = reactive([
             'Cat',
             'Dog',
@@ -179,7 +149,7 @@ export default defineComponent({
         const validate = () => {
             const valid = myForm.value.validate();
             if (valid) {
-                updateAnimal();
+                addAnimal();
             }
         };
 
@@ -191,37 +161,36 @@ export default defineComponent({
             myForm.value.resetValidation();
         };
 
-        const updateAnimal = async () => {
+        const addAnimal = async () => {
             root.$store.dispatch('togLoading', { loadingStatus: true });
-            const updatedAnimalFields = {
-                _id: animalId,
-                name: newAnimalName.value ? newAnimalName.value : newAnimalName,
-                type: newAnimalType.value ? newAnimalType.value : newAnimalType,
+            const animalToCreateFields = {
+                name: animalName.value,
+                type: animalType.value,
                 // image_url: newAnimalImageUrl.value,
-                image_url: animal.value.image_url
+                image_url:
+                    'https://cdnuploads.aa.com.tr/uploads/Contents/2019/10/24/thumbs_b_c_fb8263ce4f9f43ebdc7634b0d1eb0a08.jpg?v=115427'
             };
 
             try {
                 const result = await root.$store.dispatch({
-                    type: 'updateAnimal',
-                    updatedAnimalFields
+                    type: 'createAnimal',
+                    animalToCreateFields
                 });
                 console.log(result);
 
                 root.$swal.fire({
-                    title: 'Animal updated successfully!',
+                    title: 'Animal created successfully!',
                     confirmButtonColor: '#0457E7',
                     icon: 'success',
                     width: 600,
                     padding: '3em',
                     background: '#fff'
                 });
-
-                moveToAnimalDetails();
+                moveToAnimalDetails(result._id.toString());
             } catch (error) {
                 console.log(error);
                 root.$swal.fire({
-                    title: 'Error: animal not updated!',
+                    title: 'Error: animal not created!',
                     text: 'Please try again at a later time.',
                     confirmButtonColor: '#D62E1F',
                     icon: 'error',
@@ -230,17 +199,11 @@ export default defineComponent({
                     background: '#fff'
                 });
             }
-
             root.$store.dispatch('togLoading', { loadingStatus: false });
         };
 
-        function pushToAddAnimalPage() {
-            root.$router.push({
-                path: '/animals/add'
-            });
-        }
         //use it from a global function later cause it's in more than one component.
-        const moveToAnimalDetails = () => {
+        const moveToAnimalDetails = animalId => {
             root.$router.push({
                 name: 'AnimalDetails',
                 params: { animalId }
@@ -248,10 +211,8 @@ export default defineComponent({
         };
 
         return {
-            animal,
-            newAnimalName,
-            newAnimalType,
-            // newAnimalImageUrl,
+            animalName,
+            animalType,
             myForm,
             valid,
             name,
@@ -261,7 +222,6 @@ export default defineComponent({
             validate,
             reset,
             resetValidation,
-            pushToAddAnimalPage,
             moveToAnimalDetails
         };
     }
