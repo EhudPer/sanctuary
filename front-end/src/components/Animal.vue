@@ -9,7 +9,15 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-img :src="props.animal.image_url" alt="Avatar" height="194"></v-img>
+    <v-img
+      :src="
+        props.animal.image_url
+          ? props.animal.image_url
+          : require(`@/assets/${props.animal.type.toLowerCase()}.jpg`)
+      "
+      alt="Avatar"
+      height="194"
+    ></v-img>
 
     <v-card-text>
       {{ props.animal.type }}
