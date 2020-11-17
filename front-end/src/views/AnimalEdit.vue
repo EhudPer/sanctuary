@@ -76,7 +76,9 @@
         <v-btn @click="moveToAnimalDetails" text color="success accent-4">
           Details
         </v-btn>
-        <v-btn text color="error accent-4"> Delete </v-btn>
+        <v-btn @click="deleteAnimalClicked" text color="error accent-4">
+          Delete
+        </v-btn>
         <v-spacer></v-spacer>
         <v-btn icon>
           <v-icon>mdi-heart</v-icon>
@@ -97,6 +99,7 @@ import {
   reactive,
   ref,
 } from "@vue/composition-api";
+import { deleteAnimal } from "@/helper-functions/animal-crud";
 
 export default defineComponent({
   name: "AnimalEdit",
@@ -171,14 +174,16 @@ export default defineComponent({
           updatedAnimalFields,
         });
 
-        root.$swal.fire({
-          title: "Animal updated successfully!",
-          confirmButtonColor: "#0457E7",
-          icon: "success",
-          width: 600,
-          padding: "3em",
-          background: "#fff",
-        });
+        //SWAL is not needed - just annoying for users.
+        //Can be restored if needed later!.
+        // root.$swal.fire({
+        //   title: "Animal updated successfully!",
+        //   confirmButtonColor: "#0457E7",
+        //   icon: "success",
+        //   width: 600,
+        //   padding: "3em",
+        //   background: "#fff",
+        // });
 
         moveToAnimalDetails();
       } catch (error) {
@@ -210,6 +215,10 @@ export default defineComponent({
       });
     };
 
+    const deleteAnimalClicked = () => {
+      deleteAnimal(root, animalId);
+    };
+
     return {
       animal,
       newAnimalName,
@@ -226,6 +235,7 @@ export default defineComponent({
       resetValidation,
       pushToAddAnimalPage,
       moveToAnimalDetails,
+      deleteAnimalClicked,
     };
   },
 });

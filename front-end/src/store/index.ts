@@ -44,6 +44,19 @@ const mutations = {
     const updatedAnimalsState = animalsStateCopy;
     state.animals = updatedAnimalsState;
   },
+  deleteAnimalFromStore(state: any, { _id }: object) {
+    console.log(_id);
+    const animalsStateCopy = state.animals.slice();
+    const animalIdx = animalsStateCopy.findIndex(
+      (animal) => animal._id === _id
+    );
+    console.log(animalIdx);
+    animalsStateCopy.splice(animalIdx, 1);
+    console.log(animalsStateCopy);
+    const updatedAnimalsState = animalsStateCopy;
+
+    state.animals = updatedAnimalsState;
+  },
 };
 
 const actions = {
@@ -171,6 +184,32 @@ const actions = {
       commit("updateAnimalInStore", response.data.updateAnimal);
       // return response.data.updatedAnimal;
       return response.data.updateAnimal;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  async deleteAnimal(
+    { commit }: { commit: any },
+    { animalId }: { animalId: string }
+  ) {
+    console.log(animalId);
+    try {
+      const response = await graphqlClient.mutate({
+        mutation: gql`
+          mutation deleteAnimal($animalId: String!) {
+            deleteAnimal(_id: $animalId) {
+              _id
+            }
+          }
+        `,
+        variables: {
+          animalId: animalId,
+        },
+      });
+
+      commit("deleteAnimalFromStore", response.data.deleteAnimal);
+      return response.data.deleteAnimal;
     } catch (error) {
       throw new Error(error);
     }
