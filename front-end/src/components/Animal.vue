@@ -30,7 +30,9 @@
       <v-btn @click="moveToAnimalEdit" text color="warning accent-4">
         Edit
       </v-btn>
-      <v-btn text color="error accent-4"> Delete </v-btn>
+      <v-btn @click="deleteAnimalClicked" text color="error accent-4">
+        Delete
+      </v-btn>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>
@@ -44,6 +46,7 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
+import { deleteAnimal } from "../helper-functions/animal-crud";
 
 export default defineComponent({
   name: "Animal",
@@ -65,10 +68,14 @@ export default defineComponent({
         params: { animalId: props.animal._id },
       });
     }
+    const deleteAnimalClicked = () => {
+      deleteAnimal(root, props.animal._id, true);
+    };
     return {
       props,
       moveToAnimalDetails,
       moveToAnimalEdit,
+      deleteAnimalClicked,
     };
   },
 });

@@ -146,14 +146,17 @@ export default defineComponent({
         });
         console.log(result);
 
-        root.$swal.fire({
-          title: "Animal created successfully!",
-          confirmButtonColor: "#0457E7",
-          icon: "success",
-          width: 600,
-          padding: "3em",
-          background: "#fff",
-        });
+        //SWAL is not needed - just annoying for users.
+        //Can be restored if needed later!.
+        // root.$swal.fire({
+        //   title: "Animal created successfully!",
+        //   confirmButtonColor: "#0457E7",
+        //   icon: "success",
+        //   width: 600,
+        //   padding: "3em",
+        //   background: "#fff",
+        // });
+
         moveToAnimalDetails(result._id.toString());
       } catch (error) {
         console.log(error);
