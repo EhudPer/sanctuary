@@ -1,4 +1,5 @@
 type Mutation {
     createAnimal(input: AnimalInput): Animal
     updateAnimal(_id: String!, input: AnimalInput): Animal
+    deleteAnimal(_id: String!): Animal
 }
