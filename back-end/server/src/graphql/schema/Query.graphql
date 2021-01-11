@@ -1,4 +1,7 @@
 type Query {
     animals: [Animal]
     animal(_id: String!): Animal
+
+    users: [User]
+    user(_id: String!): User
 }

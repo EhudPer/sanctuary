@@ -1,0 +1,5 @@
+input UserInput {
+    email: String!
+    password: String!
+#    createdAnimals: [Animal]
+}
