@@ -1,9 +1,13 @@
 import * as mongoose from "mongoose";
+import * as jwt from "jsonwebtoken";
 
 // import { AnimalModel } from "../../models/animal";
 import { UserModel } from "../../models/user";
 
-import { encryptPassword } from "../../helper-functions/index";
+import {
+  encryptPassword,
+  testIfUserPasswordIsValid,
+} from "../../helper-functions/index";
 // import { getUserById, getAnimalsByIds } from "./merge";
 
 export const getUsers = async () => {
@@ -76,6 +80,41 @@ export const updateUser = async (root, { _id, input }) => {
       password: null,
     };
     return updatedUserWithoutPassword;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const login = async (root, { email, password }) => {
+  try {
+    const user = await UserModel.findOne({ email });
+    const wrongCredentialsErrorMessage = "Wrong credentials!.";
+    if (user) {
+      const isUserPasswordValid = await testIfUserPasswordIsValid(
+        user.toObject().password,
+        password
+      );
+
+      if (isUserPasswordValid) {
+        const token = jwt.sign(
+          {
+            userId: user.toObject()._id.toString(),
+            email: user.toObject().email,
+          },
+          process.env.JWT_PRIVATE_KEY,
+          { expiresIn: "1h" }
+        );
+        return {
+          userId: user.toObject()._id,
+          token,
+          tokenExpiration: 1,
+        };
+      } else {
+        throw new Error(wrongCredentialsErrorMessage);
+      }
+    } else {
+      throw new Error(wrongCredentialsErrorMessage);
+    }
   } catch (error) {
     throw error;
   }

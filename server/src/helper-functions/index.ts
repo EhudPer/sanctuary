@@ -8,3 +8,14 @@ export const encryptPassword = async (unencryptedPassword) => {
     throw error;
   }
 };
+
+export const testIfUserPasswordIsValid = async (
+  userDbPassword,
+  recievedLoginUserPassword
+) => {
+  try {
+    return await bcrypt.compare(recievedLoginUserPassword, userDbPassword);
+  } catch (error) {
+    throw error;
+  }
+};

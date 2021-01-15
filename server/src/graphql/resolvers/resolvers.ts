@@ -5,7 +5,14 @@ import {
   updateAnimal,
   deleteAnimal,
 } from "./animals";
-import { getUsers, getUser, createUser, updateUser, deleteUser } from "./users";
+import {
+  getUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  login,
+} from "./users";
 
 const resolvers = {
   Query: {
@@ -13,6 +20,7 @@ const resolvers = {
     animal: getAnimal,
     users: getUsers,
     user: getUser,
+    login,
   },
   Mutation: {
     createAnimal,
