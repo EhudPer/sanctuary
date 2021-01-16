@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 import { ApolloServer } from "apollo-server-express";
 import * as dotenv from "dotenv";
 
+import { isAuth } from "./middleware/is-auth";
 import schema from "./graphql/schema/schema";
 import resolvers from "./graphql/resolvers/resolvers";
 
@@ -15,6 +16,7 @@ const MONGO_URL = process.env.MONGO_URL;
 const start = async () => {
   const app = express();
 
+  app.use(isAuth);
   mongoose.connect(MONGO_URL, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
@@ -34,6 +36,7 @@ const start = async () => {
   const server = new ApolloServer({
     typeDefs: schema,
     resolvers,
+    context: ({ req, res }) => ({ req, res }),
   });
 
   server.applyMiddleware({ app, path: "/graphql" });

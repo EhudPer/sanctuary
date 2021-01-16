@@ -3,8 +3,12 @@ import { AnimalModel } from "../../models/animal";
 import { UserModel } from "../../models/user";
 import { getUserById } from "./merge";
 
-export const getAnimals = async () => {
+// remember to set all functions of animal by specific user only and not global of all the users.
+export const getAnimals = async (root, data: any, { req }) => {
   try {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     const fetchedAnimals = await AnimalModel.find({});
     const fetchedAnimalsWithCreatorDetails = await fetchedAnimals.map(
       async (animal) => {
@@ -24,7 +28,10 @@ export const getAnimals = async () => {
   }
 };
 
-export const getAnimal = async (root, data: any) => {
+export const getAnimal = async (root, data: any, { req }) => {
+  if (!req.isAuth) {
+    throw new Error("Unauthenticated!");
+  }
   const animal = await AnimalModel.findOne({ _id: data._id });
   return {
     ...animal.toObject(),
@@ -32,19 +39,25 @@ export const getAnimal = async (root, data: any) => {
   };
 };
 
-export const createAnimal = async (root, { input }) => {
+export const createAnimal = async (root, { input }, { req }) => {
+  console.log("reqnew:", req.isAuth);
+  if (!req.isAuth) {
+    throw new Error("Unauthenticated!");
+  }
   try {
     const createdAnimal = await AnimalModel.create({
       _id: mongoose.Types.ObjectId(),
       name: input.name,
       type: input.type,
       image_url: input.image_url,
-      creator: "5fff1e1b44262d4cf353a026",
+      // creator: "5fff1e1b44262d4cf353a026",
+      creator: req.userId,
     });
 
     const createdAnimalObject = createdAnimal.toObject();
     const creatorUser = await UserModel.findOne({
-      _id: "5fff1e1b44262d4cf353a026",
+      // _id: "5fff1e1b44262d4cf353a026",
+      _id: req.userId,
     });
     const creatorUserObject = creatorUser.toObject();
 
@@ -56,7 +69,8 @@ export const createAnimal = async (root, { input }) => {
     };
 
     await UserModel.findOneAndUpdate(
-      { _id: "5fff1e1b44262d4cf353a026" },
+      // { _id: "5fff1e1b44262d4cf353a026" },
+      { _id: req.userId },
       creatorUserToUpdate
     );
 
@@ -69,7 +83,10 @@ export const createAnimal = async (root, { input }) => {
   }
 };
 
-export const updateAnimal = async (root, { _id, input }) => {
+export const updateAnimal = async (root, { _id, input }, { req }) => {
+  if (!req.isAuth) {
+    throw new Error("Unauthenticated!");
+  }
   try {
     const animalToUpdate = await AnimalModel.findOne({ _id });
     const animalToUpdateObject = animalToUpdate.toObject();
@@ -90,7 +107,10 @@ export const updateAnimal = async (root, { _id, input }) => {
   }
 };
 
-export const deleteAnimal = async (root, { _id }) => {
+export const deleteAnimal = async (root, { _id }, { req }) => {
+  if (!req.isAuth) {
+    throw new Error("Unauthenticated!");
+  }
   try {
     const deletedAnimal = await AnimalModel.findOneAndDelete({ _id });
     const deletedAnimalObject = deletedAnimal.toObject();
