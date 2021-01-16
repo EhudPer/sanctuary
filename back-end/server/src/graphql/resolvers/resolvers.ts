@@ -1,39 +1,34 @@
-import { AnimalModel } from "../../models/animal";
-import * as mongoose from "mongoose";
+import {
+  getAnimals,
+  getAnimal,
+  createAnimal,
+  updateAnimal,
+  deleteAnimal,
+} from "./animals";
+import {
+  getUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  login,
+} from "./users";
 
-// Remember to implement error handaling in back and front end
-const getAnimals = async () => AnimalModel.find({});
-
-const getAnimal = async (root, data: any) =>
-  AnimalModel.findOne({ _id: data._id });
-
-const createAnimal = async (root, { input }) => {
-  console.log(input);
-
-  return AnimalModel.create({
-    _id: mongoose.Types.ObjectId(),
-    name: input.name,
-    type: input.type,
-    image_url: input.image_url,
-  });
-};
-
-const updateAnimal = async (root, { _id, input }) =>
-  AnimalModel.findOneAndUpdate({ _id }, input);
-
-const deleteAnimal = async (root, { _id }) =>
-  AnimalModel.findOneAndDelete({ _id });
-
-// Remember later to split resolvers to different files.
 const resolvers = {
   Query: {
     animals: getAnimals,
     animal: getAnimal,
+    users: getUsers,
+    user: getUser,
+    login,
   },
   Mutation: {
     createAnimal,
     updateAnimal,
     deleteAnimal,
+    createUser,
+    updateUser,
+    deleteUser,
   },
 };
 
