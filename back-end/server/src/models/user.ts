@@ -1,28 +1,27 @@
 import * as mongoose from "mongoose";
+
 const Schema = mongoose.Schema;
 
 // Create the Schema for Mongoose that corresponds to that type we set in GraphQL
-const animalSchema = new Schema({
+const userSchema = new Schema({
   _id: {
     type: Schema.Types.ObjectId,
     required: true,
   },
-  name: {
+  email: {
     type: String,
     required: true,
   },
-  type: {
+  password: {
     type: String,
     required: true,
   },
-  image_url: {
-    type: String,
-    required: false,
-  },
-  creator: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+  createdAnimals: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Animal",
+    },
+  ],
 });
 
-export const AnimalModel = mongoose.model("Animal", animalSchema); // create and export the model
+export const UserModel = mongoose.model("User", userSchema); // create and export the model

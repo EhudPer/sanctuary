@@ -144,7 +144,7 @@ export default defineComponent({
           type: "createAnimal",
           animalToCreateFields,
         });
-        console.log(result);
+        // console.log(result);
 
         //SWAL is not needed - just annoying for users.
         //Can be restored if needed later!.

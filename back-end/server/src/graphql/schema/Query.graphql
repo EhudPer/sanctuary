@@ -1,4 +1,8 @@
 type Query {
-    animals: [Animal]
+    animals: [Animal!]!
     animal(_id: String!): Animal
+
+    users: [User!]!
+    user(_id: String!): User
+    login(email: String!, password: String!): AuthData!
 }
