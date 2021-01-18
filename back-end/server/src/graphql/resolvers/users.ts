@@ -85,8 +85,11 @@ export const updateUser = async (root, { _id, input }) => {
   }
 };
 
-export const login = async (root, { email, password }) => {
+export const login = async (root, { input }) => {
   try {
+    // console.log('login email: ', email, 'login password: ', password);
+    console.log("input: ", input);
+    const { email, password } = input;
     const user = await UserModel.findOne({ email });
     const wrongCredentialsErrorMessage = "Wrong credentials!.";
     if (user) {

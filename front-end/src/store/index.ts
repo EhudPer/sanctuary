@@ -6,6 +6,8 @@ import graphqlClient from "../utils/graphql";
 Vue.use(Vuex);
 //make sure all the state is in shim and typed correctly and gets warn when using wrong type!
 
+//split later the store for smaller parts modules related.
+
 const getters = {
   getLoadingStatus: (state: any) => {
     return state.loading;
@@ -66,6 +68,45 @@ const actions = {
   ) {
     commit("toggleLoader", loadingStatus);
   },
+
+  async loginUser(
+    { commit }: { commit: any },
+    { userToLoginFields }: { userToLoginFields: object }
+  ) {
+    try {
+      // return {
+      //   userEmail: userToLoginFields.userEmail,
+      //   userPassword: userToLoginFields.userPassword,
+      // };
+
+      console.log("userToLoginFields: ", userToLoginFields);
+
+      const response = await graphqlClient.query({
+        query: gql`
+          query login($userInput: UserInput!) {
+            login(input: $userInput) {
+              userId
+              token
+              tokenExpiration
+            }
+          }
+        `,
+        variables: {
+          userInput: {
+            email: userToLoginFields.userEmail,
+            password: userToLoginFields.userPassword,
+          },
+        },
+      });
+      console.log("store response data: ", response.data);
+      //
+      // commit("createAnimalInStore", response.data.createAnimal);
+      return response.data.login;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
   //consider removing the fetchAnimal if not used
   async fetchAnimal({ commit }: { commit: any }, _id: string) {
     const response = await graphqlClient.query({
