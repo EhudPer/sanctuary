@@ -1,9 +1,9 @@
 type Mutation {
-    createAnimal(input: AnimalInput): Animal
-    updateAnimal(_id: String!, input: AnimalInput): Animal
+    createAnimal(input: AnimalInput!): Animal
+    updateAnimal(_id: String!, input: AnimalInput!): Animal
     deleteAnimal(_id: String!): Animal
 
-    createUser(input: UserInput): User
-    updateUser(_id: String!, input: UserInput): User
+    createUser(input: UserInput!): User
+    updateUser(_id: String!, input: UserInput!): User
     deleteUser(_id: String!): User
 }
