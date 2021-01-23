@@ -1,11 +1,15 @@
 <template>
   <div>
     <h1 class="page-title">Login</h1>
+    <p class="page-sub-title">
+      For demo only: use - Email: demo@demo.com, Password: demouser
+    </p>
+    <p class="page-sub-title">For real user: register</p>
     <v-card max-width="1032" class="mx-auto">
       <v-list-item>
         <v-list-item-avatar color="grey"></v-list-item-avatar>
       </v-list-item>
-      <v-img src="@/assets/login.jpg" alt="Avatar" max-height="500"></v-img>
+      <v-img src="@/assets/login.jpg" alt="Avatar" max-height="280"></v-img>
 
       <v-form ref="myForm" v-model="valid" class="mb-4" lazy-validation>
         <v-text-field
@@ -136,7 +140,7 @@ export default defineComponent({
           root.$store.dispatch("togLoading", { loadingStatus: false });
 
           return root.$swal.fire({
-            title: "Wrong credentials!!",
+            title: "Wrong credentials!",
             confirmButtonColor: "red",
             icon: "warning",
             width: 600,
@@ -162,7 +166,7 @@ export default defineComponent({
 
         if (error.message.toString().includes("Wrong credentials!")) {
           root.$swal.fire({
-            title: "Wrong credentials!!",
+            title: "Wrong credentials!",
             confirmButtonColor: "red",
             icon: "warning",
             width: 600,
@@ -210,6 +214,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.page-sub-title {
+  //font-size: 1.2rem;
+  font-weight: normal;
+}
+
 .v-card {
   width: 100%;
   margin: 15px auto;
@@ -243,7 +252,6 @@ form {
 @media only screen and (min-width: 395px) {
   .v-card__actions {
     flex-direction: row;
-    //flex-wrap: wrap;
   }
 }
 

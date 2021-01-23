@@ -6,6 +6,14 @@
       Mange your sanctuary and keep track of all your animals related
       information
     </p>
+    <p>
+      Mange your sanctuary and keep track of all your animals related
+      information place holder.
+    </p>
+    <p>
+      Mange your sanctuary and keep track of all your animals related
+      information place holder.
+    </p>
   </div>
 </template>
 
@@ -40,11 +48,19 @@ export default defineComponent({
 <style lang="scss" scoped>
 img {
   width: 100%;
-  max-width: 650px;
+  //max-width: 650px;
+  max-height: 230px;
   margin: 15px 0;
+  object-fit: cover;
 }
 
 p {
   margin-bottom: 10px;
+}
+
+@media only screen and (min-width: 386px) {
+  img {
+    max-height: 280px;
+  }
 }
 </style>

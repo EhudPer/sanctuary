@@ -60,14 +60,13 @@ $color: #050505;
 
 #app {
   text-align: center;
+  font-family: Verdana, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
   //margin-top: 60px;
 
   body {
     //background-color: $bg-color;
-    color: $color;
-    font-size: 1.2em;
-    //font-family: cursive;
-    font-family: Verdana, Avenir, Helvetica, Arial, sans-serif;
+    //color: $color;
   }
   ul {
     list-style-type: none;
@@ -84,25 +83,11 @@ $color: #050505;
 }
 
 .view {
-  margin: 0 10px;
+  margin: 0 16px;
 }
 
 .page-title {
-  font-size: 1.2em;
-}
-
-@media only screen and (min-width: 386px) {
-  body {
-    font-size: 1.5em;
-  }
-
-  .logo {
-    max-width: 200px;
-  }
-
-  .page-title {
-    font-size: 1.5em;
-  }
+  font-size: 1.3em;
 }
 
 //temp setting here until nav component is ready.
@@ -116,5 +101,49 @@ $color: #050505;
 
 #nav {
   margin-bottom: 20px;
+}
+
+@media only screen and (min-width: 386px) {
+  #app {
+    font-size: 1.25em;
+  }
+
+  .view {
+    margin: 0 30px;
+  }
+
+  .logo {
+    max-width: 200px;
+  }
+
+  .page-title {
+    font-size: 1.4em;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .view {
+    margin: 0 50px;
+  }
+
+  //#app {
+  //  font-size: 1.25em;
+  //}
+
+  .page-title {
+    font-size: 1.45em;
+  }
+}
+
+@media only screen and (min-width: 1025px) {
+  .view {
+    margin: 0 70px;
+  }
+}
+
+@media only screen and (min-width: 2001px) {
+  .view {
+    margin: 0 90px;
+  }
 }
 </style>
