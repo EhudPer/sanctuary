@@ -1,4 +1,5 @@
 import * as bcrypt from "bcryptjs";
+import * as jwt from "jsonwebtoken";
 
 export const encryptPassword = async (unencryptedPassword) => {
   try {
@@ -15,6 +16,21 @@ export const testIfUserPasswordIsValid = async (
 ) => {
   try {
     return await bcrypt.compare(recievedLoginUserPassword, userDbPassword);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const createToken = async (userId, email) => {
+  try {
+    return await jwt.sign(
+      {
+        userId,
+        email,
+      },
+      process.env.JWT_PRIVATE_KEY,
+      { expiresIn: "1h" }
+    );
   } catch (error) {
     throw error;
   }

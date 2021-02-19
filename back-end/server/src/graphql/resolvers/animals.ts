@@ -9,7 +9,9 @@ export const getAnimals = async (root, data: any, { req }) => {
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
-    const fetchedAnimals = await AnimalModel.find({});
+
+    const fetchedAnimals = await AnimalModel.find({ creator: req.userId });
+
     const fetchedAnimalsWithCreatorDetails = await fetchedAnimals.map(
       async (animal) => {
         const animalObject = animal.toObject();
@@ -22,6 +24,7 @@ export const getAnimals = async (root, data: any, { req }) => {
         return animalWithCreatorInfo;
       }
     );
+
     return fetchedAnimalsWithCreatorDetails;
   } catch (error) {
     throw error;
@@ -40,7 +43,6 @@ export const getAnimal = async (root, data: any, { req }) => {
 };
 
 export const createAnimal = async (root, { input }, { req }) => {
-  console.log("reqnew:", req.isAuth);
   if (!req.isAuth) {
     throw new Error("Unauthenticated!");
   }
@@ -50,13 +52,11 @@ export const createAnimal = async (root, { input }, { req }) => {
       name: input.name,
       type: input.type,
       image_url: input.image_url,
-      // creator: "5fff1e1b44262d4cf353a026",
       creator: req.userId,
     });
 
     const createdAnimalObject = createdAnimal.toObject();
     const creatorUser = await UserModel.findOne({
-      // _id: "5fff1e1b44262d4cf353a026",
       _id: req.userId,
     });
     const creatorUserObject = creatorUser.toObject();
@@ -68,11 +68,7 @@ export const createAnimal = async (root, { input }, { req }) => {
       createdAnimals: creatorUserCreatedAnimalsCopy,
     };
 
-    await UserModel.findOneAndUpdate(
-      // { _id: "5fff1e1b44262d4cf353a026" },
-      { _id: req.userId },
-      creatorUserToUpdate
-    );
+    await UserModel.findOneAndUpdate({ _id: req.userId }, creatorUserToUpdate);
 
     return {
       ...createdAnimalObject,
