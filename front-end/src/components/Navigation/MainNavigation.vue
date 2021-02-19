@@ -13,14 +13,19 @@
             <router-link to="/">Home</router-link>
           </span>
         </v-btn>
-        <v-btn text to="/animals">
+        <v-btn v-if="token" text to="/animals">
           <span class="mr-2">
             <router-link to="/animals">Animals</router-link>
           </span>
         </v-btn>
-        <v-btn text to="/login">
+        <v-btn v-if="token" @click="logoutHandler" text to="/auth">
           <span class="mr-2">
-            <router-link to="/login">Login</router-link>
+            <router-link to="/auth">Log out</router-link>
+          </span>
+        </v-btn>
+        <v-btn v-if="!token" text to="/auth">
+          <span class="mr-2">
+            <router-link to="/auth">Auth</router-link>
           </span>
         </v-btn>
       </v-toolbar-items>
@@ -38,17 +43,22 @@
               <router-link to="/">Home</router-link>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item to="/animals">
+          <v-list-item v-if="token" to="/animals">
             <v-list-item-title
               ><router-link to="/animals"
                 >Animals</router-link
               ></v-list-item-title
             >
           </v-list-item>
-          <v-list-item to="/login">
+          <v-list-item v-if="!token" to="/auth">
             <v-list-item-title
-              ><router-link to="/login">Login</router-link></v-list-item-title
+              ><router-link to="/auth">Auth</router-link></v-list-item-title
             >
+          </v-list-item>
+          <v-list-item v-if="token" @click="logoutHandler" to="/auth">
+            <v-list-item-title
+              ><router-link to="/auth">Log out</router-link>
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -57,10 +67,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "@vue/composition-api";
+import { logout } from "../../helper-functions/auth";
 
 export default defineComponent({
   name: "MainNavigation",
+  setup(props, { root }) {
+    const token = computed(() => root.$store.getters.getToken);
+    const logoutHandler = () => {
+      logout(root);
+    };
+    return { token, logoutHandler };
+  },
 });
 </script>
 
@@ -69,6 +87,9 @@ export default defineComponent({
   .v-toolbar__items {
     a {
       color: white;
+      &.v-btn--active {
+        color: darkgrey;
+      }
     }
   }
 

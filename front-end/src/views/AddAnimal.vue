@@ -36,7 +36,7 @@
           width="100%"
           max-width="130"
         >
-          Validate
+          Add
         </v-btn>
 
         <v-btn
@@ -89,7 +89,6 @@ export default defineComponent({
     // but with the current animal's details from the db - all the time, even on refresh or loading from url directly.
     const animalName = ref("");
     const animalType = ref("");
-    // const newAnimalImageUrl = ref("");
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -144,25 +143,12 @@ export default defineComponent({
           type: "createAnimal",
           animalToCreateFields,
         });
-        // console.log(result);
-
-        //SWAL is not needed - just annoying for users.
-        //Can be restored if needed later!.
-        // root.$swal.fire({
-        //   title: "Animal created successfully!",
-        //   confirmButtonColor: "#0457E7",
-        //   icon: "success",
-        //   width: 600,
-        //   padding: "3em",
-        //   background: "#fff",
-        // });
 
         moveToAnimalDetails(result._id.toString());
       } catch (error) {
-        console.log(error);
         root.$swal.fire({
           title: "Error: animal not created!",
-          text: "Please try again at a later time.",
+          text: error.message.toString(),
           confirmButtonColor: "#D62E1F",
           icon: "error",
           width: 600,

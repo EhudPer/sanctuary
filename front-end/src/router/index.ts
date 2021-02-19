@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import HomePage from "@/views/HomePage.vue";
+import { isAuthToken } from "../helper-functions/auth";
 
 Vue.use(VueRouter);
 
@@ -11,10 +12,9 @@ const routes: Array<RouteConfig> = [
     component: HomePage,
   },
   {
-    path: "/login",
-    name: "Login",
-    component: () =>
-      import(/* webpackChunkName: "login" */ "@/views/Login.vue"),
+    path: "/auth",
+    name: "Auth",
+    component: () => import(/* webpackChunkName: "auth" */ "@/views/Auth.vue"),
   },
   {
     path: "/animals",
@@ -65,11 +65,15 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  const authenticatedUser = null;
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+router.beforeEach(async (to, from, next) => {
+  const isAuthenticatedUser = !localStorage.getItem("token")
+    ? false
+    : await isAuthToken(localStorage.getItem("token"));
 
-  if (requiresAuth && !authenticatedUser) next("login");
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  if (requiresAuth && !isAuthenticatedUser) next("auth");
+  else if (to.path.toString() === "/auth" && isAuthenticatedUser)
+    next("/animals");
   else next();
 });
 

@@ -3,7 +3,7 @@ type Mutation {
     updateAnimal(_id: String!, input: AnimalInput!): Animal
     deleteAnimal(_id: String!): Animal
 
-    createUser(input: UserInput!): User
+    createUser(input: UserInput!): AuthData
     updateUser(_id: String!, input: UserInput!): User
     deleteUser(_id: String!): User
 }

@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, onBeforeMount } from "@vue/composition-api";
 import Loader from "./components/Loader.vue";
 import MainNavigation from "@/components/Navigation/MainNavigation.vue";
 
@@ -48,6 +48,20 @@ export default defineComponent({
   //         }
   //     });
   // }
+
+  // setup(props, { root }) {
+
+  setup(props, { root }) {
+    onBeforeMount(async () => {
+      console.log("ss");
+      try {
+        await root.$store.dispatch("initTokenStateAction");
+      } catch (error) {
+        console.log(error);
+      }
+    });
+    // return onBeforeMount;
+  },
 });
 </script>
 
@@ -57,6 +71,8 @@ vuetify color map to and then reuse colors in the app.
 <style lang="scss">
 //$bg-color: #eff2f5;
 $color: #050505;
+
+// convert all px units to rem or em.
 
 #app {
   text-align: center;

@@ -42,15 +42,11 @@ export default defineComponent({
       }
       if (root.$store.state.animals.length === 0) {
         try {
-          const result = await root.$store.dispatch("fetchAnimals");
-          console.log("Fetched animals: ", result);
-          //add error handling in server and client.
-          //add loading in all app.
+          await root.$store.dispatch("fetchAnimals");
         } catch (error) {
-          console.log(error);
           root.$swal.fire({
             title: "Error: animals not fetched!",
-            text: "Please try again at a later time.",
+            text: error.message.toString(),
             confirmButtonColor: "#D62E1F",
             icon: "error",
             width: 600,
@@ -68,7 +64,6 @@ export default defineComponent({
     });
 
     const animals = computed(() => root.$store.state.animals);
-
     //check later to do this a global function to use here and in edit page and where it called also..
     function pushToAddAnimalPage() {
       root.$router.push({

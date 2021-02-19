@@ -12,6 +12,7 @@ import {
   updateUser,
   deleteUser,
   login,
+  validateToken,
 } from "./users";
 
 const resolvers = {
@@ -21,6 +22,7 @@ const resolvers = {
     users: getUsers,
     user: getUser,
     login,
+    validateToken,
   },
   Mutation: {
     createAnimal,

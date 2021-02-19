@@ -24,22 +24,6 @@
         {{ animal.type }}
       </v-card-text>
 
-      <v-card-text>
-        {{ animal.type }}
-      </v-card-text>
-
-      <v-card-text>
-        {{ animal.type }}
-      </v-card-text>
-
-      <v-card-text>
-        {{ animal.type }}
-      </v-card-text>
-
-      <v-card-text>
-        {{ animal.type }}
-      </v-card-text>
-
       <v-card-actions>
         <v-btn @click="pushToAddAnimalPage" text color="info accent-4">
           Add Animal
@@ -78,6 +62,11 @@ export default defineComponent({
     onBeforeMount(() => {
       if (document.readyState !== "complete") {
         root.$store.dispatch("togLoading", { loadingStatus: true });
+
+        const isAnimals = root.$store.getters.getAnimals.length !== 0;
+        if (!isAnimals) {
+          root.$store.dispatch("fetchAnimals");
+        }
       }
     });
 
