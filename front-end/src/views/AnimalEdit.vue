@@ -19,7 +19,6 @@
         alt="Avatar"
         max-height="500"
       ></v-img>
-
       <v-form ref="myForm" v-model="valid" lazy-validation>
         <v-text-field
           v-model="newAnimalName"
@@ -28,7 +27,6 @@
           label="Name"
           required
         ></v-text-field>
-
         <v-select
           v-model="newAnimalType"
           :items="items"
@@ -36,7 +34,6 @@
           label="Type"
           required
         ></v-select>
-
         <v-btn
           :disabled="!valid"
           color="success"
@@ -45,9 +42,8 @@
           width="100%"
           max-width="130"
         >
-          Validate
+          Edit
         </v-btn>
-
         <v-btn
           color="error"
           class="reset-form-btn"
@@ -57,7 +53,6 @@
         >
           Reset Form
         </v-btn>
-
         <v-btn
           class="reset-validation-btn"
           color="warning"
@@ -68,7 +63,6 @@
           Reset Validation
         </v-btn>
       </v-form>
-
       <v-card-actions>
         <v-btn @click="pushToAddAnimalPage" text color="info accent-4">
           Add Animal
@@ -107,6 +101,11 @@ export default defineComponent({
     //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
     if (document.readyState !== "complete") {
       root.$store.dispatch("togLoading", { loadingStatus: true });
+
+      const isAnimals = root.$store.getters.getAnimals.length !== 0;
+      if (!isAnimals) {
+        root.$store.dispatch("fetchAnimals");
+      }
     }
 
     onMounted(() => {
@@ -122,7 +121,6 @@ export default defineComponent({
     // but with the current animal's details from the db - all the time, even on refresh or loading from url directly.
     const newAnimalName = animal.value ? ref(animal.value.name) : ref("");
     const newAnimalType = animal.value ? ref(animal.value.type) : ref("");
-    // const newAnimalImageUrl = ref("");
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -163,8 +161,6 @@ export default defineComponent({
         _id: animalId,
         name: newAnimalName.value ? newAnimalName.value : newAnimalName,
         type: newAnimalType.value ? newAnimalType.value : newAnimalType,
-        // image_url: newAnimalImageUrl.value,
-        //
         image_url: animal.value.image_url ? animal.value.image_url : null,
       };
 
@@ -174,23 +170,11 @@ export default defineComponent({
           updatedAnimalFields,
         });
 
-        //SWAL is not needed - just annoying for users.
-        //Can be restored if needed later!.
-        // root.$swal.fire({
-        //   title: "Animal updated successfully!",
-        //   confirmButtonColor: "#0457E7",
-        //   icon: "success",
-        //   width: 600,
-        //   padding: "3em",
-        //   background: "#fff",
-        // });
-
         moveToAnimalDetails();
       } catch (error) {
-        console.log(error);
         root.$swal.fire({
           title: "Error: animal not updated!",
-          text: "Please try again at a later time.",
+          text: error.message.toString(),
           confirmButtonColor: "#D62E1F",
           icon: "error",
           width: 600,
@@ -223,7 +207,6 @@ export default defineComponent({
       animal,
       newAnimalName,
       newAnimalType,
-      // newAnimalImageUrl,
       myForm,
       valid,
       name,

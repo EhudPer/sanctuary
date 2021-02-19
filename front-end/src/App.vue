@@ -1,55 +1,67 @@
 <template>
-    <v-app
-        id="app"
-        :style="{ background: $vuetify.theme.themes.light.background }"
-        data-app
-    >
-        <div id="nav">
-            <img alt="Sanctuary logo" src="./assets/logo.png" class="logo" />
-            <router-link to="/">Home</router-link> |
-            <router-link to="/animals">Animals</router-link>
-        </div>
-        <div class="view">
-            <router-view />
-        </div>
-        <div class="loader">
-            <Loader></Loader>
-        </div>
-    </v-app>
+  <v-app
+    id="app"
+    :style="{ background: $vuetify.theme.themes.light.background }"
+    data-app
+  >
+    <MainNavigation />
+    <div class="view">
+      <router-view />
+    </div>
+    <div class="loader">
+      <Loader></Loader>
+    </div>
+  </v-app>
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount } from '@vue/composition-api';
-import Loader from './components/Loader.vue';
+import { defineComponent, onBeforeMount } from "@vue/composition-api";
+import Loader from "./components/Loader.vue";
+import MainNavigation from "@/components/Navigation/MainNavigation.vue";
 
 export default defineComponent({
-    name: 'App',
-    components: {
-        Loader
-    },
-    setup(props, { root }) {
-        onBeforeMount(async () => {
-            if (root.$store.state.animals.length === 0) {
-                try {
-                    const result = await root.$store.dispatch('fetchAnimals');
-                    console.log('Fetched animals: ', result);
-                    //add error handling in server and client.
-                    //add loading in all app.
-                } catch (error) {
-                    console.log(error);
-                    root.$swal.fire({
-                        title: 'Error: animals not fetched!',
-                        text: 'Please try again at a later time.',
-                        confirmButtonColor: '#D62E1F',
-                        icon: 'error',
-                        width: 600,
-                        padding: '3em',
-                        background: '#fff'
-                    });
-                }
-            }
-        });
-    }
+  name: "App",
+  components: {
+    MainNavigation,
+    Loader,
+  },
+  // setup(props, { root }) {
+  //     onBeforeMount(async () => {
+  //         if (root.$store.state.animals.length === 0) {
+  //             try {
+  //                 const result = await root.$store.dispatch('fetchAnimals');
+  //                 console.log('Fetched animals: ', result);
+  //                 //add error handling in server and client.
+  //                 //add loading in all app.
+  //             } catch (error) {
+  //                 console.log(error);
+  //                 root.$swal.fire({
+  //                     title: 'Error: animals not fetched!',
+  //                     text: 'Please try again at a later time.',
+  //                     confirmButtonColor: '#D62E1F',
+  //                     icon: 'error',
+  //                     width: 600,
+  //                     padding: '3em',
+  //                     background: '#fff'
+  //                 });
+  //             }
+  //         }
+  //     });
+  // }
+
+  // setup(props, { root }) {
+
+  setup(props, { root }) {
+    onBeforeMount(async () => {
+      console.log("ss");
+      try {
+        await root.$store.dispatch("initTokenStateAction");
+      } catch (error) {
+        console.log(error);
+      }
+    });
+    // return onBeforeMount;
+  },
 });
 </script>
 
@@ -60,63 +72,94 @@ vuetify color map to and then reuse colors in the app.
 //$bg-color: #eff2f5;
 $color: #050505;
 
+// convert all px units to rem or em.
+
 #app {
-    text-align: center;
-    //margin-top: 60px;
+  text-align: center;
+  font-family: Verdana, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
+  //margin-top: 60px;
 
-    body {
-        //background-color: $bg-color;
-        color: $color;
-        font-size: 1.2em;
-        //font-family: cursive;
-        font-family: Verdana, Avenir, Helvetica, Arial, sans-serif;
-    }
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    .router-link-exact-active {
-        color: brown;
-    }
+  body {
+    //background-color: $bg-color;
+    //color: $color;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  .router-link-exact-active {
+    color: brown;
+  }
 
-    a {
-        color: black;
-        text-decoration: none;
-    }
+  a {
+    color: black;
+    text-decoration: none;
+  }
 }
 
 .view {
-    margin: 0 10px;
+  margin: 0 16px;
 }
 
 .page-title {
-    font-size: 1.2em;
-}
-
-@media only screen and (min-width: 386px) {
-    body {
-        font-size: 1.5em;
-    }
-
-    .logo {
-        max-width: 200px;
-    }
-
-    .page-title {
-        font-size: 1.5em;
-    }
+  font-size: 1.3em;
 }
 
 //temp setting here until nav component is ready.
 .logo {
-    width: 100%;
-    max-width: 150px;
-    height: auto;
-    display: block;
-    margin: 15px auto;
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  display: block;
+  margin: 15px auto;
 }
 
 #nav {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+@media only screen and (min-width: 386px) {
+  #app {
+    font-size: 1.25em;
+  }
+
+  .view {
+    margin: 0 30px;
+  }
+
+  .logo {
+    max-width: 200px;
+  }
+
+  .page-title {
+    font-size: 1.4em;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .view {
+    margin: 0 50px;
+  }
+
+  //#app {
+  //  font-size: 1.25em;
+  //}
+
+  .page-title {
+    font-size: 1.45em;
+  }
+}
+
+@media only screen and (min-width: 1025px) {
+  .view {
+    margin: 0 70px;
+  }
+}
+
+@media only screen and (min-width: 2001px) {
+  .view {
+    margin: 0 90px;
+  }
 }
 </style>

@@ -1,14 +1,13 @@
 import * as mongoose from "mongoose";
 import * as jwt from "jsonwebtoken";
 
-// import { AnimalModel } from "../../models/animal";
 import { UserModel } from "../../models/user";
 
 import {
+  createToken,
   encryptPassword,
   testIfUserPasswordIsValid,
 } from "../../helper-functions/index";
-// import { getUserById, getAnimalsByIds } from "./merge";
 
 export const getUsers = async () => {
   const fetchedUsers = await UserModel.find({}).populate("createdAnimals");
@@ -33,8 +32,6 @@ export const getUser = async (root, data: any) => {
   return fetchedUserWithoutPassword;
 };
 
-// Later add a user const speratly and then pass it to the create method (for readabilty) - do it with new user constructor.
-
 export const createUser = async (root, { input }) => {
   try {
     const isUserEmailAlreadyTaken = await UserModel.findOne({
@@ -52,12 +49,15 @@ export const createUser = async (root, { input }) => {
         createdAnimals: [],
       });
 
-      const createdUserWithoutPassword = {
-        ...createdUser.toObject(),
-        password: null,
+      const token = createToken(
+        createdUser.toObject()._id.toString(),
+        createdUser.toObject().email
+      );
+      return {
+        userId: createdUser.toObject()._id,
+        token,
+        tokenExpiration: 1,
       };
-
-      return createdUserWithoutPassword;
     }
   } catch (error) {
     throw error;
@@ -85,8 +85,9 @@ export const updateUser = async (root, { _id, input }) => {
   }
 };
 
-export const login = async (root, { email, password }) => {
+export const login = async (root, { input }) => {
   try {
+    const { email, password } = input;
     const user = await UserModel.findOne({ email });
     const wrongCredentialsErrorMessage = "Wrong credentials!.";
     if (user) {
@@ -96,13 +97,9 @@ export const login = async (root, { email, password }) => {
       );
 
       if (isUserPasswordValid) {
-        const token = jwt.sign(
-          {
-            userId: user.toObject()._id.toString(),
-            email: user.toObject().email,
-          },
-          process.env.JWT_PRIVATE_KEY,
-          { expiresIn: "1h" }
+        const token = createToken(
+          user.toObject()._id.toString(),
+          user.toObject().email
         );
         return {
           userId: user.toObject()._id,
@@ -117,6 +114,19 @@ export const login = async (root, { email, password }) => {
     }
   } catch (error) {
     throw error;
+  }
+};
+
+export const validateToken = async (root, { token }) => {
+  try {
+    const result = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+    return result ? true : false;
+  } catch (error) {
+    if (error.message.toString().indexOf("jwt expired") !== -1) {
+      return false;
+    } else {
+      throw error;
+    }
   }
 };
 

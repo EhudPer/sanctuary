@@ -2,13 +2,22 @@ import Vue from "vue";
 import Vuex from "vuex";
 import gql from "graphql-tag";
 import graphqlClient from "../utils/graphql";
+import { isAuthToken, saveTokenToLocalStorage } from "../helper-functions/auth";
 
 Vue.use(Vuex);
 //make sure all the state is in shim and typed correctly and gets warn when using wrong type!
 
+//split later the store for smaller parts modules related.
+
 const getters = {
   getLoadingStatus: (state: any) => {
     return state.loading;
+  },
+  getToken: (state: any) => {
+    return state.token;
+  },
+  getAnimals: (state: any) => {
+    return state.animals;
   },
   getAnimalById: (state: any) => (animalId: string) => {
     return state.animals.find((animal: any) => animal._id === animalId);
@@ -19,18 +28,21 @@ const mutations = {
   toggleLoader(state: any, loadingNewStatus: boolean) {
     state.loading = loadingNewStatus;
   },
+  initTokenState: (state: any, tokenState) => {
+    state.token = tokenState ? localStorage.getItem("token") : null;
+  },
+  updateTokenState(state, token) {
+    state.token = token;
+  },
   setAnimal(state: any, animal: object) {
     state.animal = animal;
   },
-  setAnimals(state: any, animals: Array<object>) {
-    //temporary set animals array in reverse to show first the current added once for now untill
-    //i'll add filters and sorting features.
-    // state.animals = animals;
-    state.animals = animals.reverse();
+  setAnimals(state: any, animals) {
+    state.animals = animals;
   },
   createAnimalInStore(state: any, animalToCreate: object) {
     const animalsStateCopy = state.animals.slice();
-    animalsStateCopy.unshift(animalToCreate);
+    animalsStateCopy.push(animalToCreate);
     const updatedAnimalsState = animalsStateCopy;
 
     state.animals = updatedAnimalsState;
@@ -45,14 +57,12 @@ const mutations = {
     state.animals = updatedAnimalsState;
   },
   deleteAnimalFromStore(state: any, { _id }: object) {
-    console.log(_id);
     const animalsStateCopy = state.animals.slice();
     const animalIdx = animalsStateCopy.findIndex(
       (animal) => animal._id === _id
     );
-    console.log(animalIdx);
+
     animalsStateCopy.splice(animalIdx, 1);
-    console.log(animalsStateCopy);
     const updatedAnimalsState = animalsStateCopy;
 
     state.animals = updatedAnimalsState;
@@ -66,32 +76,101 @@ const actions = {
   ) {
     commit("toggleLoader", loadingStatus);
   },
-  //consider removing the fetchAnimal if not used
-  async fetchAnimal({ commit }: { commit: any }, _id: string) {
-    const response = await graphqlClient.query({
-      // It is important to not use the
-      // ES6 template syntax for variables
-      // directly inside the `gql` query,
-      // because this would make it impossible
-      // for Babel to optimize the code.
-      query: gql`
-        #        //change backto ID! instead of string all the way to graph schema and db... treat as id kind and not string all the way.
-        query Animal($animalId: String!) {
-          animal(_id: $animalId) {
-            _id
-            name
-            type
-            image_url
-          }
-        }
-      `,
-      variables: { animalId: _id },
-    });
 
-    // Trigger the `setAnimal` mutation
-    // which is defined above.
-    commit("setAnimal", response.data.animal);
+  async initTokenStateAction({ commit }: { commit: any }) {
+    const tokenState = !localStorage.getItem("token")
+      ? null
+      : await isAuthToken(localStorage.getItem("token"));
+
+    commit("initTokenState", tokenState);
   },
+
+  async loginUser(
+    { commit }: { commit: any },
+    { userToAuthFields }: { userToAuthFields: object }
+  ) {
+    try {
+      const response = await graphqlClient.query({
+        query: gql`
+          query login($userInput: UserInput!) {
+            login(input: $userInput) {
+              userId
+              token
+              tokenExpiration
+            }
+          }
+        `,
+        variables: {
+          userInput: {
+            email: userToAuthFields.userEmail,
+            password: userToAuthFields.userPassword,
+          },
+        },
+      });
+      const token = response.data.login.token;
+
+      saveTokenToLocalStorage(token);
+      commit("updateTokenState", token);
+      return "success";
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  async isAuthToken({ commit }: { commit: any }, token) {
+    try {
+      const response = await graphqlClient.query({
+        query: gql`
+          query validateToken($token: String!) {
+            validateToken(token: $token)
+          }
+        `,
+        variables: {
+          token: token,
+        },
+      });
+
+      const validateToken = response.data.validateToken;
+
+      return validateToken;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  async createUser(
+    { commit }: { commit: any },
+    { userToAuthFields }: { userToAuthFields: object }
+  ) {
+    try {
+      const response = await graphqlClient.mutate({
+        mutation: gql`
+          mutation createUser($userInput: UserInput!) {
+            createUser(input: $userInput) {
+              userId
+              token
+            }
+          }
+        `,
+        variables: {
+          userInput: {
+            email: userToAuthFields.userEmail,
+            password: userToAuthFields.userPassword,
+          },
+        },
+      });
+
+      const token = response.data.createUser.token;
+
+      saveTokenToLocalStorage(token);
+
+      commit("updateTokenState", token);
+      return "success";
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
   async fetchAnimals({ commit }: { commit: any }) {
     try {
       const response = await graphqlClient.query({
@@ -105,12 +184,14 @@ const actions = {
             }
           }
         `,
+        context: {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        },
       });
 
-      // Trigger the `setAnimals` mutation
-      // which is defined above.
       commit("setAnimals", response.data.animals);
-
       return response.data.animals;
     } catch (error) {
       throw new Error(error);
@@ -140,6 +221,11 @@ const actions = {
             image_url: animalToCreateFields.image_url,
           },
         },
+        context: {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        },
       });
 
       commit("createAnimalInStore", response.data.createAnimal);
@@ -153,7 +239,6 @@ const actions = {
     { commit }: { commit: any },
     { updatedAnimalFields }: { updatedAnimalFields: object }
   ) {
-    //change back to ID! instead of string all the way to graph schema and db... treat as id kind and not string all the way.
     try {
       const response = await graphqlClient.mutate({
         mutation: gql`
@@ -177,12 +262,16 @@ const actions = {
             image_url: updatedAnimalFields.image_url,
           },
         },
+        context: {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        },
       });
 
       // Trigger the `setAnimal` mutation
       // which is defined above.
       commit("updateAnimalInStore", response.data.updateAnimal);
-      // return response.data.updatedAnimal;
       return response.data.updateAnimal;
     } catch (error) {
       throw new Error(error);
@@ -193,7 +282,6 @@ const actions = {
     { commit }: { commit: any },
     { animalId }: { animalId: string }
   ) {
-    console.log(animalId);
     try {
       const response = await graphqlClient.mutate({
         mutation: gql`
@@ -206,6 +294,11 @@ const actions = {
         variables: {
           animalId: animalId,
         },
+        context: {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        },
       });
 
       commit("deleteAnimalFromStore", response.data.deleteAnimal);
@@ -216,9 +309,8 @@ const actions = {
   },
 };
 
-//Add getters for state!
 const state = {
-  animal: null,
+  token: null,
   animals: [],
   loading: false,
 };
