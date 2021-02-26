@@ -7,6 +7,7 @@ import {
   createToken,
   encryptPassword,
   testIfUserPasswordIsValid,
+  googleSigninOrSignup,
 } from "../../helper-functions/index";
 
 export const getUsers = async () => {
@@ -127,6 +128,17 @@ export const validateToken = async (root, { token }) => {
     } else {
       throw error;
     }
+  }
+};
+
+export const signGoogle = async (root, { token }) => {
+  try {
+    const validatedAppToken = await googleSigninOrSignup(token);
+    return {
+      token: validatedAppToken.token,
+    };
+  } catch (error) {
+    throw error;
   }
 };
 

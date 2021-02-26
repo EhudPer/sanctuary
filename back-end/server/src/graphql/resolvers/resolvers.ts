@@ -13,6 +13,7 @@ import {
   deleteUser,
   login,
   validateToken,
+  signGoogle,
 } from "./users";
 
 const resolvers = {
@@ -23,6 +24,7 @@ const resolvers = {
     user: getUser,
     login,
     validateToken,
+    signGoogle,
   },
   Mutation: {
     createAnimal,
