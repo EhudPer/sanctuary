@@ -6,4 +6,5 @@ type Query {
     user(_id: String!): User
     login(input: UserInput!): AuthData!
     validateToken(token: String!): Boolean!
+    signGoogle(token: String!): AuthData!
 }

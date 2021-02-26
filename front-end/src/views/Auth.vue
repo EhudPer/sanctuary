@@ -80,6 +80,17 @@
           Reset Validation
         </v-btn>
 
+        <p class="or-title">Or:</p>
+
+        <GoogleLogin
+          class="google-signin-btn-wrapper"
+          :params="params"
+          :renderParams="renderParams"
+          :onSuccess="onSuccess"
+          :onFailure="onFailure"
+        ></GoogleLogin>
+
+        <p class="or-title">Or:</p>
         <v-btn
           class="switch-to-register-btn"
           color="info"
@@ -110,9 +121,13 @@ import {
   reactive,
   ref,
 } from "@vue/composition-api";
+import GoogleLogin from "vue-google-login";
 
 export default defineComponent({
   name: "Auth",
+  components: {
+    GoogleLogin,
+  },
   setup(props, { root }) {
     //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
     if (document.readyState !== "complete") {
@@ -152,6 +167,74 @@ export default defineComponent({
       (v) =>
         v === userPassword.value || "The password confirmation does not match.",
     ]);
+
+    //Start - Google login area
+    //get secret or clinet id from backend later!:
+    const params = reactive({
+      client_id:
+        "525617387179-qpf4t5s671j058shidk8c8ap9brdvhhe.apps.googleusercontent.com",
+    });
+
+    const renderParams = reactive({
+      width: 250,
+      height: 50,
+      longtitle: true,
+    });
+
+    const onSuccess = async (googleUser) => {
+      const token = googleUser.uc.id_token;
+      console.log("googleUser-id token: ", token);
+
+      //try moving the flow all the way to db just with using the ggogle token and the clip
+      // so i can crEATE the user or get it from the db and return a token anyhow to local storage a
+      //should work like regular maybe.. at least make it work..
+
+      // This only gets the user information: id, name, imageUrl and email
+      // console.log(
+      //   "googleUser.getBasicProfile(): ",
+      //   googleUser.getBasicProfile()
+      // );
+
+      root.$store.dispatch("togLoading", { loadingStatus: true });
+      try {
+        const result = await root.$store.dispatch({
+          type: "signinOrSignupGoogle",
+          token,
+        });
+
+        if (result !== "success") {
+          root.$store.dispatch("togLoading", { loadingStatus: false });
+
+          return root.$swal.fire({
+            title: "Wrong credentials!",
+            confirmButtonColor: "red",
+            icon: "warning",
+            width: 600,
+            padding: "3em",
+            background: "#fff",
+          });
+        }
+
+        moveToAnimalsList();
+      } catch (error) {
+        root.$swal.fire({
+          title: "Error:",
+          text: error.message.toString(),
+          confirmButtonColor: "red",
+          icon: "warning",
+          width: 600,
+          padding: "3em",
+          background: "#fff",
+        });
+      }
+      root.$store.dispatch("togLoading", { loadingStatus: false });
+    };
+
+    const onFailure = () => {
+      console.log("error: ");
+    };
+
+    //End - Google login area
 
     const submitHandler = () => {
       //Make a new service file for importing the functions here from the file for more separation and order.
@@ -204,16 +287,6 @@ export default defineComponent({
             background: "#fff",
           });
         }
-        //SWAL is not needed - just annoying for users.
-        //Can be restored if needed later!.
-        // root.$swal.fire({
-        //   title: "Animal created successfully!",
-        //   confirmButtonColor: "#0457E7",
-        //   icon: "success",
-        //   width: 600,
-        //   padding: "3em",
-        //   background: "#fff",
-        // });
 
         moveToAnimalsList();
       } catch (error) {
@@ -263,17 +336,7 @@ export default defineComponent({
             background: "#fff",
           });
         }
-        //SWAL is not needed - just annoying for users.
-        //Can be restored if needed later!.
-        // root.$swal.fire({
-        //   title: "Animal created successfully!",
-        //   confirmButtonColor: "#0457E7",
-        //   icon: "success",
-        //   width: 600,
-        //   padding: "3em",
-        //   background: "#fff",
-        // });
-        // updateLoginState(result);
+
         moveToAnimalsList();
       } catch (error) {
         root.$swal.fire({
@@ -308,6 +371,10 @@ export default defineComponent({
       emailRules,
       passwordRules,
       rePasswordRules,
+      params,
+      renderParams,
+      onSuccess,
+      onFailure,
       submitHandler,
       loginUser,
       createUser,
@@ -355,6 +422,15 @@ form {
     display: block;
     margin: 0.5rem auto;
   }
+}
+
+.google-signin-btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.or-title {
+  margin-top: 10px;
 }
 
 @media only screen and (min-width: 296px) {
