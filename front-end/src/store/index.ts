@@ -171,6 +171,33 @@ const actions = {
     }
   },
 
+  async signinOrSignupGoogle(
+    { commit }: { commit: any },
+    { token }: { token: string }
+  ) {
+    console.log("store id token", token);
+    try {
+      const response = await graphqlClient.query({
+        query: gql`
+          query signGoogle($token: String!) {
+            signGoogle(token: $token) {
+              token
+            }
+          }
+        `,
+        variables: {
+          token: token,
+        },
+      });
+      const validatedToken = response.data.signGoogle.token;
+      saveTokenToLocalStorage(validatedToken);
+      commit("updateTokenState", token);
+      return "success";
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
   async fetchAnimals({ commit }: { commit: any }) {
     try {
       const response = await graphqlClient.query({

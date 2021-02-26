@@ -20,6 +20,7 @@
     "graphql-tag": "^2.11.0",
     "roboto-fontface": "*",
     "vue": "^2.6.12",
+    "vue-google-login": "^2.0.5",
     "vue-router": "^3.2.0",
     "vue-sweetalert2": "^3.0.8",
     "vue-template-compiler": "^2.6.12",
