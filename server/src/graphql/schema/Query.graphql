@@ -7,4 +7,5 @@ type Query {
     login(input: UserInput!): AuthData!
     validateToken(token: String!): Boolean!
     signGoogle(token: String!): AuthData!
+    linkPassword(tokenAndPassword: TokenAndPassword!): AuthData!
 }
