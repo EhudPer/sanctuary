@@ -14,6 +14,7 @@ import {
   login,
   validateToken,
   signGoogle,
+  linkPassword,
 } from "./users";
 
 const resolvers = {
@@ -25,6 +26,7 @@ const resolvers = {
     login,
     validateToken,
     signGoogle,
+    linkPassword,
   },
   Mutation: {
     createAnimal,
