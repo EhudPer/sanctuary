@@ -184,7 +184,6 @@ export default defineComponent({
 
     const onSuccess = async (googleUser) => {
       const token = googleUser.uc.id_token;
-      console.log("googleUser-id token: ", token);
 
       //try moving the flow all the way to db just with using the ggogle token and the clip
       // so i can crEATE the user or get it from the db and return a token anyhow to local storage a
