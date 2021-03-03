@@ -6,6 +6,7 @@ import * as dotenv from "dotenv";
 import { isAuth } from "./middleware/is-auth";
 import schema from "./graphql/schema/schema";
 import resolvers from "./graphql/resolvers/resolvers";
+import path from "path";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config({ path: __dirname + "/.env" });
@@ -17,6 +18,14 @@ const start = async () => {
   const app = express();
 
   app.use(isAuth);
+
+  if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "./dist")));
+    app.get("/*", (req, res) => {
+      res.sendFile(path.join(__dirname, "./dist", "index.html"));
+    });
+  }
+
   mongoose.connect(MONGO_URL, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
@@ -41,7 +50,7 @@ const start = async () => {
 
   server.applyMiddleware({ app, path: "/graphql" });
 
-  app.listen({ port: 8000 }, () => {
+  app.listen({ port: process.env.PORT || 8000 }, () => {
     console.log("Apollo Server on http://localhost:8000/graphql");
   });
 };
