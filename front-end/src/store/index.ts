@@ -182,6 +182,7 @@ const actions = {
           query signGoogle($token: String!) {
             signGoogle(token: $token) {
               token
+              showToast
             }
           }
         `,
@@ -192,7 +193,38 @@ const actions = {
       const validatedToken = response.data.signGoogle.token;
       saveTokenToLocalStorage(validatedToken);
       commit("updateTokenState", token);
-      return "success";
+      return { isSuccess: true, showToast: response.data.signGoogle.showToast };
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  async linkPassword(
+    { commit }: { commit: any },
+    { tokenAndPassword }: { tokenAndPassword: object }
+  ) {
+    const { token, password } = tokenAndPassword;
+
+    try {
+      const response = await graphqlClient.query({
+        query: gql`
+          query linkPassword($tokenAndPassword: TokenAndPassword!) {
+            linkPassword(tokenAndPassword: $tokenAndPassword) {
+              token
+            }
+          }
+        `,
+        variables: {
+          tokenAndPassword: {
+            token,
+            password,
+          },
+        },
+      });
+      const validatedToken = response.data.linkPassword.token;
+      saveTokenToLocalStorage(validatedToken);
+      commit("updateTokenState", validatedToken);
+      return { isSuccess: true, showToast: false };
     } catch (error) {
       throw new Error(error);
     }

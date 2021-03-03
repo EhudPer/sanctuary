@@ -8,6 +8,7 @@ import {
   encryptPassword,
   testIfUserPasswordIsValid,
   googleSigninOrSignup,
+  googleLinkPassword,
 } from "../../helper-functions/index";
 
 export const getUsers = async () => {
@@ -134,6 +135,22 @@ export const validateToken = async (root, { token }) => {
 export const signGoogle = async (root, { token }) => {
   try {
     const validatedAppToken = await googleSigninOrSignup(token);
+    return {
+      token: validatedAppToken.token,
+      showToast: validatedAppToken.showToast,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const linkPassword = async (root, { tokenAndPassword }) => {
+  try {
+    const validatedAppToken = await googleLinkPassword(
+      tokenAndPassword.token,
+      tokenAndPassword.password
+    );
+
     return {
       token: validatedAppToken.token,
     };

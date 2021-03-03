@@ -54,6 +54,30 @@ export const googleSigninOrSignup = async (token) => {
     );
     return {
       token: appToken,
+      showToast: googleUser.toObject().password !== "null" ? true : false,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const googleLinkPassword = async (token, password) => {
+  try {
+    const googleUserFromToken = await testIfGoogleTokenIsValid(token);
+    let googleUser = await checkIfGoogleUserExist(googleUserFromToken.email);
+
+    if (!googleUser) {
+      googleUser = await createNewUserByGoogle(googleUserFromToken);
+    }
+
+    await linkPasswordToUser(googleUser, password);
+
+    const appToken = await createToken(
+      googleUser.toObject()._id.toString(),
+      googleUser.toObject().email
+    );
+    return {
+      token: appToken,
     };
   } catch (error) {
     throw error;
@@ -80,6 +104,16 @@ export const createNewUserByGoogle = async (googleUser) => {
     });
 
     return createdUser;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const linkPasswordToUser = async (googleUser, password) => {
+  try {
+    googleUser.password = await encryptPassword(password);
+
+    await UserModel.findOneAndUpdate({ _id: googleUser._id }, googleUser);
   } catch (error) {
     throw error;
   }

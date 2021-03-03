@@ -80,7 +80,8 @@
           Reset Validation
         </v-btn>
 
-        <p class="or-title">Or:</p>
+        <p v-if="isLogin" class="or-title">Or:</p>
+        <p v-else class="or-title">Or link password:</p>
 
         <GoogleLogin
           class="google-signin-btn-wrapper"
@@ -197,12 +198,23 @@ export default defineComponent({
 
       root.$store.dispatch("togLoading", { loadingStatus: true });
       try {
-        const result = await root.$store.dispatch({
-          type: "signinOrSignupGoogle",
-          token,
-        });
+        let result;
 
-        if (result !== "success") {
+        if (isLogin.value) {
+          result = await root.$store.dispatch({
+            type: "signinOrSignupGoogle",
+            token,
+          });
+        } else {
+          const tokenAndPassword = { token, password: userPassword.value };
+
+          result = await root.$store.dispatch({
+            type: "linkPassword",
+            tokenAndPassword,
+          });
+        }
+
+        if (!result.isSuccess) {
           root.$store.dispatch("togLoading", { loadingStatus: false });
 
           return root.$swal.fire({
@@ -216,6 +228,20 @@ export default defineComponent({
         }
 
         moveToAnimalsList();
+
+        if (result.showToast) {
+          setTimeout(() => {
+            root.$swal.fire({
+              text: "You can also login with your password",
+              toast: true,
+              timer: 3000,
+              position: "bottom",
+              width: 600,
+              padding: "3em",
+              background: "#fff",
+            });
+          }, 2000);
+        }
       } catch (error) {
         root.$swal.fire({
           title: "Error:",
@@ -287,6 +313,18 @@ export default defineComponent({
             background: "#fff",
           });
         }
+
+        setTimeout(() => {
+          root.$swal.fire({
+            text: "You can also login with google",
+            toast: true,
+            timer: 3000,
+            position: "bottom",
+            width: 600,
+            padding: "3em",
+            background: "#fff",
+          });
+        }, 2000);
 
         moveToAnimalsList();
       } catch (error) {
