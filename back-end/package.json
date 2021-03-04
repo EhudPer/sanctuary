@@ -5,7 +5,7 @@
     "main": "dist/index.js",
     "scripts": {
         "tsc": "tsc",
-        "start": "node dist/index.js",
+        "start": "cd ../front-end && npm run build && node dist/index.js",
         "predev": "cd server && tslint -c tslint.json -p tsconfig.json --fix",
         "dev": "nodemon --watch 'server' --ignore 'src/**/*.spec.ts' --exec 'ts-node' server/src/index.ts",
         "compile-typescript": "tsc"
