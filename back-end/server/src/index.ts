@@ -6,7 +6,8 @@ import * as dotenv from "dotenv";
 import { isAuth } from "./middleware/is-auth";
 import schema from "./graphql/schema/schema";
 import resolvers from "./graphql/resolvers/resolvers";
-import path from "path";
+// import path from "path";
+import path = require("path");
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config({ path: __dirname + "/.env" });
