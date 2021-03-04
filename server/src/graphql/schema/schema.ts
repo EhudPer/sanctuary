@@ -1,4 +1,5 @@
 import "graphql-import-node";
+// import "../../../../node_modules/graphql-import-node";
 import * as animalInputSchema from "./animal/AnimalInput.graphql";
 import * as animalSchema from "./animal/Animal.graphql";
 import * as userInputSchema from "./user/UserInput.graphql";
