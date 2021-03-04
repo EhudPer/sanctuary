@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export const deleteAnimal = async (
   root,
   animalId,

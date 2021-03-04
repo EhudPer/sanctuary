@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import graphqlClient from "../utils/graphql";
 import store from "@/store/index";
 

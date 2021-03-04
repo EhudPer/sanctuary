@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import Vue from "vue";
 import Vuex from "vuex";
 import gql from "graphql-tag";
