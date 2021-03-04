@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
-/dist
-dist/
+#temp allowing the dist in git for heroku deploy later can do the build in herkou and ignore it again and cut from repo
+#/dist
+#dist/
 
 
 # local env files
