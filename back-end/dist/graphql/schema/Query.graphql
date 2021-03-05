@@ -1,0 +1,11 @@
+type Query {
+    animals: [Animal!]!
+    animal(_id: String!): Animal
+
+    users: [User!]!
+    user(_id: String!): User
+    login(input: UserInput!): AuthData!
+    validateToken(token: String!): Boolean!
+    signGoogle(token: String!): AuthData!
+    linkPassword(tokenAndPassword: TokenAndPassword!): AuthData!
+}
