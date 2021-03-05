@@ -14,8 +14,6 @@ const path = require("path");
 if (process.env.NODE_ENV !== "production") {
     dotenv.config({ path: __dirname + "/.env" });
 }
-console.log("path env plus dirname", __dirname + "/.env");
-console.log("process.env.MONGO_URL", process.env.MONGO_URL);
 const MONGO_URL = process.env.MONGO_URL;
 const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const app = express();
