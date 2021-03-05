@@ -1,5 +1,6 @@
 import express = require("express");
-import * as mongoose from "mongoose";
+// import * as mongoose from "mongoose";
+import mongoose = require("mongoose");
 import { ApolloServer } from "apollo-server-express";
 import * as dotenv from "dotenv";
 
