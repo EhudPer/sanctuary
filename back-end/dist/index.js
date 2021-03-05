@@ -21,7 +21,8 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     if (process.env.NODE_ENV === "production") {
         app.use(express.static(path.join(__dirname, "./dist")));
         app.get("/*", (req, res) => {
-            res.sendFile(path.join(__dirname, "./dist", "index.html"));
+            // res.sendFile(path.join(__dirname, "./dist", "index.html"));
+            res.sendFile(path.join(__dirname, "./index.html"));
         });
     }
     mongoose.connect(MONGO_URL, {
