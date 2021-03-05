@@ -240,6 +240,7 @@ export default defineComponent({
           }, 2000);
         }
       } catch (error) {
+        alert(error.toString());
         root.$swal.fire({
           title: "Error:",
           // text: error.message.toString(),
