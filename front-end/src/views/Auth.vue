@@ -242,7 +242,13 @@ export default defineComponent({
       } catch (error) {
         root.$swal.fire({
           title: "Error:",
-          text: error.message.toString(),
+          // text: error.message.toString(),
+          text:
+            error.message.toString() +
+            " " +
+            error.toString() +
+            " " +
+            error.graphQLErrors.toString(),
           confirmButtonColor: "red",
           icon: "warning",
           width: 600,
