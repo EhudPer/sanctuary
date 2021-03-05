@@ -336,8 +336,9 @@ export default defineComponent({
           });
         } else {
           root.$swal.fire({
-            title: "Error: login failed!",
-            text: "Please try again at a later time.",
+            // title: "Error: login failed!",
+            // text: "Please try again at a later time.",
+            text: error.message.toString(),
             confirmButtonColor: "#D62E1F",
             icon: "error",
             width: 600,
