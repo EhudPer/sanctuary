@@ -19,11 +19,14 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const app = express();
     app.use(is_auth_1.isAuth);
     if (process.env.NODE_ENV === "production") {
-        app.use(express.static(path.join(__dirname, "./dist")));
+        // app.use(express.static(path.join(__dirname, "./dist")));
+        app.use(express.static("dist"));
         // app.get("/*", (req, res) => {
-        app.get("/", (req, res) => {
-            // res.sendFile(path.join(__dirname, "./dist", "index.html"));
-            res.sendFile(path.join(__dirname, "./index.html"));
+        // app.get("/", (req, res) => {
+        // res.sendFile(path.join(__dirname, "./dist", "index.html"));
+        app.get("*", (req, res) => {
+            // res.sendFile(path.join(__dirname, "./index.html"));
+            res.sendFile(path.resolve(__dirname, "dist", "index.html"));
         });
     }
     mongoose.connect(MONGO_URL, {
