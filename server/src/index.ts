@@ -2,7 +2,7 @@ import express = require("express");
 import mongoose = require("mongoose");
 import { ApolloServer } from "apollo-server-express";
 import * as dotenv from "dotenv";
-import * as cors from "cors";
+// import * as cors from "cors";
 
 import { isAuth } from "./middleware/is-auth";
 import schema from "./graphql/schema/schema";
@@ -13,12 +13,18 @@ if (process.env.NODE_ENV !== "production") {
   dotenv.config({ path: __dirname + "/.env" });
 }
 
+// CORS configuration
+const corsOptions = {
+  origin: "http://localhost:8000",
+  credentials: true,
+};
+
 const MONGO_URL = process.env.MONGO_URL;
 
 const start = async () => {
   const app = express();
 
-  app.use(cors());
+  // app.use(cors());
   app.use(isAuth);
 
   if (process.env.NODE_ENV === "production") {
@@ -50,7 +56,7 @@ const start = async () => {
     context: ({ req, res }) => ({ req, res }),
   });
 
-  server.applyMiddleware({ app, path: "/graphql" });
+  server.applyMiddleware({ app, path: "/graphql", cors: corsOptions });
 
   app.listen({ port: process.env.PORT || 8000 }, () => {
     console.log("Apollo Server on http://localhost:8000/graphql");
