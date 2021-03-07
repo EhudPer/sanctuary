@@ -2,7 +2,7 @@ import express = require("express");
 import mongoose = require("mongoose");
 import { ApolloServer } from "apollo-server-express";
 import * as dotenv from "dotenv";
-// import cors = require("cors");
+import * as cors from "cors";
 
 import { isAuth } from "./middleware/is-auth";
 import schema from "./graphql/schema/schema";
@@ -18,7 +18,7 @@ const MONGO_URL = process.env.MONGO_URL;
 const start = async () => {
   const app = express();
 
-  // app.use(cors());
+  app.use(cors());
   app.use(isAuth);
 
   if (process.env.NODE_ENV === "production") {
