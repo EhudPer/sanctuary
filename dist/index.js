@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const express = require("express");
+// import * as mongoose from "mongoose";
 const mongoose = require("mongoose");
 const apollo_server_express_1 = require("apollo-server-express");
 const dotenv = tslib_1.__importStar(require("dotenv"));
@@ -9,6 +10,7 @@ const cors = require("cors");
 const is_auth_1 = require("./middleware/is-auth");
 const schema_1 = tslib_1.__importDefault(require("./graphql/schema/schema"));
 const resolvers_1 = tslib_1.__importDefault(require("./graphql/resolvers/resolvers"));
+// import path from "path";
 const path = require("path");
 if (process.env.NODE_ENV !== "production") {
     dotenv.config({ path: __dirname + "/.env" });
@@ -19,8 +21,14 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     app.use(cors());
     app.use(is_auth_1.isAuth);
     if (process.env.NODE_ENV === "production") {
+        // app.use(express.static(path.join(__dirname, "./dist")));
         app.use(express.static("dist"));
+        // app.get("/*", (req, res) => {
+        // app.get("/", (req, res) => {
+        // res.sendFile(path.join(__dirname, "./dist", "index.html"));
         app.get("*", (req, res) => {
+            // res.sendFile(path.join(__dirname, "./index.html"));
+            // res.sendFile(path.resolve(__dirname, "dist", "index.html"));
             res.sendFile(path.resolve(__dirname + "/../dist/index.html"));
         });
     }
