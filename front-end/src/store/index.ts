@@ -177,6 +177,7 @@ const actions = {
     { commit }: { commit: any },
     { token }: { token: string }
   ) {
+    console.log("store id token", token);
     try {
       const response = await graphqlClient.query({
         query: gql`

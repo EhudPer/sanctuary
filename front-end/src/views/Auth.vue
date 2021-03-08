@@ -192,6 +192,10 @@ export default defineComponent({
       //should work like regular maybe.. at least make it work..
 
       // This only gets the user information: id, name, imageUrl and email
+      // console.log(
+      //   "googleUser.getBasicProfile(): ",
+      //   googleUser.getBasicProfile()
+      // );
 
       root.$store.dispatch("togLoading", { loadingStatus: true });
       try {
