@@ -6,7 +6,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const apollo_server_express_1 = require("apollo-server-express");
 const dotenv = tslib_1.__importStar(require("dotenv"));
-const cors = require("cors");
+// import * as cors from "cors";
 const is_auth_1 = require("./middleware/is-auth");
 const schema_1 = tslib_1.__importDefault(require("./graphql/schema/schema"));
 const resolvers_1 = tslib_1.__importDefault(require("./graphql/resolvers/resolvers"));
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== "production") {
 const MONGO_URL = process.env.MONGO_URL;
 const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const app = express();
-    app.use(cors());
+    // app.use(cors());
     app.use(is_auth_1.isAuth);
     if (process.env.NODE_ENV === "production") {
         // app.use(express.static(path.join(__dirname, "./dist")));
