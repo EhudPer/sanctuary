@@ -244,18 +244,18 @@ export default defineComponent({
           }, 2000);
         }
       } catch (error) {
-        console.log(
-          error.graphQLErrors
-            ? error.graphQLErrors.toString()
-            : "no graphqlerror types"
-        );
+        // console.log(
+        //   error.graphQLErrors
+        //     ? error.graphQLErrors.toString()
+        //     : "no graphqlerror types"
+        // );
 
         console.log("error obj: ", error);
 
         root.$swal.fire({
           title: "Error:",
           // text: error.message.toString(),
-          text: error.message.toString(),
+          text: "Error is here!",
           confirmButtonColor: "red",
           icon: "warning",
           width: 600,
