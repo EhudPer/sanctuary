@@ -250,12 +250,13 @@ export default defineComponent({
         //     : "no graphqlerror types"
         // );
 
-        console.log("error obj -: ", error);
+        console.log("error :");
+        console.log(error);
 
         root.$swal.fire({
           title: "Error:",
-          // text: error.message.toString(),
-          text: "Error is here!",
+          text: error.message.toString(),
+          // text: "Error is here!",
           confirmButtonColor: "red",
           icon: "warning",
           width: 600,

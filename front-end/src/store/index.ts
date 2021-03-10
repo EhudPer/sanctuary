@@ -177,7 +177,6 @@ const actions = {
     { commit }: { commit: any },
     { token }: { token: string }
   ) {
-    console.log("store id token", token);
     try {
       const response = await graphqlClient.query({
         query: gql`
@@ -197,6 +196,8 @@ const actions = {
       commit("updateTokenState", token);
       return { isSuccess: true, showToast: response.data.signGoogle.showToast };
     } catch (error) {
+      console.log("error obj: ");
+      console.log(error);
       throw new Error(error);
     }
   },
