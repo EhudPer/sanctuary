@@ -250,7 +250,7 @@ export default defineComponent({
         //     : "no graphqlerror types"
         // );
 
-        console.log("error obj: ", error);
+        console.log("error obj -: ", error);
 
         root.$swal.fire({
           title: "Error:",
