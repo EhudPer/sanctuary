@@ -39,12 +39,16 @@ exports.testIfGoogleTokenIsValid = (token) => tslib_1.__awaiter(void 0, void 0, 
 });
 exports.googleSigninOrSignup = (token) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("googleSigninOrSignup in func token recived is: ", token);
         const googleUserFromToken = yield exports.testIfGoogleTokenIsValid(token);
+        console.log("googleUserFromToken: in googlesigninorsignup helper func: ", googleUserFromToken);
         let googleUser = yield exports.checkIfGoogleUserExist(googleUserFromToken.email);
+        console.log("googleuser after checkifgoogle user exists in helper:", googleUser);
         if (!googleUser) {
             googleUser = yield exports.createNewUserByGoogle(googleUserFromToken);
         }
         const appToken = yield exports.createToken(googleUser.toObject()._id.toString(), googleUser.toObject().email);
+        console.log("appToken for google new or exsiting user: ", appToken);
         return {
             token: appToken,
             showToast: googleUser.toObject().password !== "null" ? true : false,

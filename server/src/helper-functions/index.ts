@@ -41,8 +41,20 @@ export const testIfGoogleTokenIsValid = async (token) => {
 
 export const googleSigninOrSignup = async (token) => {
   try {
+    console.log("googleSigninOrSignup in func token recived is: ", token);
     const googleUserFromToken = await testIfGoogleTokenIsValid(token);
+
+    console.log(
+      "googleUserFromToken: in googlesigninorsignup helper func: ",
+      googleUserFromToken
+    );
+
     let googleUser = await checkIfGoogleUserExist(googleUserFromToken.email);
+
+    console.log(
+      "googleuser after checkifgoogle user exists in helper:",
+      googleUser
+    );
 
     if (!googleUser) {
       googleUser = await createNewUserByGoogle(googleUserFromToken);
@@ -52,6 +64,9 @@ export const googleSigninOrSignup = async (token) => {
       googleUser.toObject()._id.toString(),
       googleUser.toObject().email
     );
+
+    console.log("appToken for google new or exsiting user: ", appToken);
+
     return {
       token: appToken,
       showToast: googleUser.toObject().password !== "null" ? true : false,
