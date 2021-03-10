@@ -113,6 +113,8 @@ exports.signGoogle = (root, { token }) => tslib_1.__awaiter(void 0, void 0, void
         };
     }
     catch (error) {
+        console.log("error here in signGoogle func: ");
+        console.log(error);
         throw error;
     }
 });
