@@ -140,6 +140,9 @@ export const signGoogle = async (root, { token }) => {
       showToast: validatedAppToken.showToast,
     };
   } catch (error) {
+    console.log("error here in signGoogle func: ");
+    console.log(error);
+
     throw error;
   }
 };

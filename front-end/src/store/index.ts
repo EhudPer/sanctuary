@@ -198,6 +198,8 @@ const actions = {
     } catch (error) {
       console.log("error obj: ");
       console.log(error);
+      console.log("network error: ");
+      console.log(error.networkError);
       throw new Error(error);
     }
   },
