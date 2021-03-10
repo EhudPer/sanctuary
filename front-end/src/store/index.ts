@@ -177,6 +177,8 @@ const actions = {
     { commit }: { commit: any },
     { token }: { token: string }
   ) {
+    console.log("token recived store signinOrSignupGoogle action: ", token);
+
     try {
       const response = await graphqlClient.query({
         query: gql`
@@ -191,9 +193,19 @@ const actions = {
           token: token,
         },
       });
+
+      console.log("response data of signinorsignup google: ", response.data);
+
       const validatedToken = response.data.signGoogle.token;
+      console.log("validatedToken in store siginupgoogle: ", validatedToken);
       saveTokenToLocalStorage(validatedToken);
       commit("updateTokenState", token);
+
+      console.log(
+        "response.data.signGoogle.showToast: ",
+        response.data.signGoogle.showToast
+      );
+
       return { isSuccess: true, showToast: response.data.signGoogle.showToast };
     } catch (error) {
       console.log("error obj: ");

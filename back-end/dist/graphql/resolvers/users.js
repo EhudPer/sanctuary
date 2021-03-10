@@ -106,7 +106,9 @@ exports.validateToken = (root, { token }) => tslib_1.__awaiter(void 0, void 0, v
 });
 exports.signGoogle = (root, { token }) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("in server signgoogle resolver and the token recived: ", token);
         const validatedAppToken = yield index_1.googleSigninOrSignup(token);
+        console.log("validatedAppToken in signgoogle resolver: ", validatedAppToken);
         return {
             token: validatedAppToken.token,
             showToast: validatedAppToken.showToast,
