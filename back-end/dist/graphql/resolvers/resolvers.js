@@ -6,7 +6,6 @@ const resolvers = {
     Query: {
         animals: animals_1.getAnimals,
         animal: animals_1.getAnimal,
-        getProductionPortAndHost: users_1.getProductionPortAndHost,
         users: users_1.getUsers,
         user: users_1.getUser,
         login: users_1.login,

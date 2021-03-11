@@ -72,25 +72,6 @@ const mutations = {
 };
 
 const actions = {
-  async getProductionPortAndHost({ commit }: { commit: any }) {
-    try {
-      const response = await graphqlClient.query({
-        query: gql`
-          query getProductionPortAndHost {
-            productionPortAndHost
-          }
-        `,
-      });
-
-      const productionPortAndHost = `https://sanctuary-app.herokuapp.com:${response.data.getProductionPortAndHost}`;
-
-      console.log("productionPortAndHost: ", productionPortAndHost);
-      return productionPortAndHost;
-    } catch (error) {
-      throw new Error(error);
-    }
-  },
-
   async togLoading(
     { commit }: { commit: any },
     { loadingStatus }: { loadingStatus: boolean }

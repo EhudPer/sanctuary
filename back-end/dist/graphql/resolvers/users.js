@@ -1,19 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.linkPassword = exports.signGoogle = exports.validateToken = exports.login = exports.updateUser = exports.createUser = exports.getUser = exports.getUsers = exports.getProductionPortAndHost = void 0;
+exports.deleteUser = exports.linkPassword = exports.signGoogle = exports.validateToken = exports.login = exports.updateUser = exports.createUser = exports.getUser = exports.getUsers = void 0;
 const tslib_1 = require("tslib");
 const mongoose = tslib_1.__importStar(require("mongoose"));
 const jwt = tslib_1.__importStar(require("jsonwebtoken"));
 const user_1 = require("../../models/user");
 const index_1 = require("../../helper-functions/index");
-exports.getProductionPortAndHost = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    try {
-        return process.env.PORT;
-    }
-    catch (error) {
-        throw error;
-    }
-});
 exports.getUsers = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const fetchedUsers = yield user_1.UserModel.find({}).populate("createdAnimals");
     const fetchedUsersWithoutPasswords = fetchedUsers.map((user) => {
