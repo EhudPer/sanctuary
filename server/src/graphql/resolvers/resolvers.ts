@@ -6,7 +6,6 @@ import {
   deleteAnimal,
 } from "./animals";
 import {
-  getProductionPortAndHost,
   getUsers,
   getUser,
   createUser,
@@ -22,7 +21,6 @@ const resolvers = {
   Query: {
     animals: getAnimals,
     animal: getAnimal,
-    getProductionPortAndHost,
     users: getUsers,
     user: getUser,
     login,

@@ -123,17 +123,18 @@ if (process.env.NODE_ENV !== "production") {
 }
 const MONGO_URL = process.env.MONGO_URL;
 const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const configurations = {
-        // Note: You may need sudo to run on port 443
-        production: {
-            ssl: true,
-            port: process.env.PORT,
-            hostname: "sanctuary-app.herokuapp.com",
-        },
-        development: { ssl: false, port: 8000, hostname: "localhost" },
-    };
-    const environment = process.env.NODE_ENV || "production";
-    const config = configurations[environment];
+    // const configurations = {
+    //   // Note: You may need sudo to run on port 443
+    //   production: {
+    //     ssl: true,
+    //     port: process.env.PORT,
+    //     hostname: "localhost",
+    //   },
+    //   development: { ssl: false, port: 8000, hostname: "localhost" },
+    // };
+    //
+    // const environment = process.env.NODE_ENV || "production";
+    // const config = configurations[environment];
     const app = express();
     // app.use(cors());
     app.use(is_auth_1.isAuth);
@@ -188,7 +189,7 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     apollo.applyMiddleware({ app, path: "/graphql" });
     // Create the HTTPS or HTTP server, per configuration
     let server;
-    if (config.ssl === true) {
+    if (process.env.NODE_ENV === "production") {
         // Assumes certificates are in a .ssl folder off of the package root. Make sure
         // these files are secured.
         server = https.createServer({
@@ -199,9 +200,9 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     else {
         server = http.createServer(app);
     }
-    // server.listen({ port: process.env.PORT || 8000 }, () => {
-    server.listen({ port: config.port }, () => {
-        console.log("🚀 Server ready at", `http${config.ssl ? "s" : ""}://${config.hostname}:${config.port}${apollo.graphqlPath}`);
+    server.listen({ port: process.env.PORT || 8000 }, () => {
+        // server.listen({ port: config.port }, () => {
+        console.log("🚀 Server ready at", `http${process.env.NODE_ENV === "production" ? "s" : ""}://localhost:${process.env.PORT}${apollo.graphqlPath}`);
     });
 });
 start();
