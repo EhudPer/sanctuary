@@ -1,7 +1,19 @@
 import express = require("express");
 // import * as mongoose from "mongoose";
 import mongoose = require("mongoose");
-import { ApolloServer } from "apollo-server-express";
+// import { ApolloServer } from "apollo-server-express";
+import {
+  ApolloServer,
+  SyntaxError,
+  UserInputError,
+  AuthenticationError,
+  ForbiddenError,
+} from "apollo-server-express";
+import { GraphQLErrorTrackingExtension } from "graphql-error-tracking-extension";
+import { ErrorReporting } from "@google-cloud/error-reporting";
+
+const errorReporting = new ErrorReporting();
+
 import * as dotenv from "dotenv";
 // import * as cors from "cors";
 
@@ -55,6 +67,25 @@ const start = async () => {
   const server = new ApolloServer({
     typeDefs: schema,
     resolvers,
+    extensions: [
+      () =>
+        new GraphQLErrorTrackingExtension({
+          maskHeaders: ["x-forwarded-for", "authorization"],
+          revealErrorTypes: [
+            SyntaxError,
+            UserInputError,
+            AuthenticationError,
+            ForbiddenError,
+          ],
+          onUnrevealedError: (err, originalError) => {
+            if (originalError) {
+              errorReporting.report(err.originalError.stack);
+            } else {
+              errorReporting.report(err.stack);
+            }
+          },
+        }),
+    ],
     context: ({ req, res }) => ({ req, res }),
   });
 
