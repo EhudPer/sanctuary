@@ -2,7 +2,7 @@ type Query {
     animals: [Animal!]!
     animal(_id: String!): Animal
 
-    productionPortAndHost: String!
+    getProductionPortAndHost: String!
 
     users: [User!]!
     user(_id: String!): User
