@@ -136,7 +136,11 @@ const MONGO_URL = process.env.MONGO_URL;
 const start = async () => {
   const configurations = {
     // Note: You may need sudo to run on port 443
-    production: { ssl: true, port: 443, hostname: "localhost" },
+    production: {
+      ssl: true,
+      port: process.env.PORT,
+      hostname: "sanctuary-app.herokuapp.com",
+    },
     development: { ssl: false, port: 8000, hostname: "localhost" },
   };
 

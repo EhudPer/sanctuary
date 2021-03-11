@@ -11,6 +11,14 @@ import {
   googleLinkPassword,
 } from "../../helper-functions/index";
 
+export const getProductionPortAndHost = async () => {
+  try {
+    return process.env.PORT;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getUsers = async () => {
   const fetchedUsers = await UserModel.find({}).populate("createdAnimals");
   const fetchedUsersWithoutPasswords = fetchedUsers.map((user) => {
