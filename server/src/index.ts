@@ -101,6 +101,10 @@
 import express = require("express");
 // import * as mongoose from "mongoose";
 import mongoose = require("mongoose");
+
+// import fs from "fs";
+import * as https from "https";
+import * as http from "http";
 // import { ApolloServer } from "apollo-server-express";
 import {
   ApolloServer,
@@ -130,6 +134,15 @@ if (process.env.NODE_ENV !== "production") {
 const MONGO_URL = process.env.MONGO_URL;
 
 const start = async () => {
+  const configurations = {
+    // Note: You may need sudo to run on port 443
+    production: { ssl: true, port: 443, hostname: "localhost" },
+    development: { ssl: false, port: 8000, hostname: "localhost" },
+  };
+
+  const environment = process.env.NODE_ENV || "production";
+  const config = configurations[environment];
+
   const app = express();
 
   // app.use(cors());
@@ -164,7 +177,7 @@ const start = async () => {
 
   mongoose.set("returnOriginal", false);
 
-  const server = new ApolloServer({
+  const apollo = new ApolloServer({
     typeDefs: schema,
     resolvers,
     extensions: [
@@ -189,10 +202,32 @@ const start = async () => {
     context: ({ req, res }) => ({ req, res }),
   });
 
-  server.applyMiddleware({ app, path: "/graphql" });
+  apollo.applyMiddleware({ app, path: "/graphql" });
 
-  app.listen({ port: process.env.PORT || 8000 }, () => {
-    console.log("Apollo Server on http://localhost:8000/graphql");
+  // Create the HTTPS or HTTP server, per configuration
+  let server;
+  if (config.ssl === true) {
+    // Assumes certificates are in a .ssl folder off of the package root. Make sure
+    // these files are secured.
+    server = https.createServer(
+      {
+        key: process.env.SSL_SERVER_KEY,
+        cert: process.env.SSL_SERVER_CRT,
+      },
+      app
+    );
+  } else {
+    server = http.createServer(app);
+  }
+
+  // server.listen({ port: process.env.PORT || 8000 }, () => {
+  server.listen({ port: config.port }, () => {
+    console.log(
+      "🚀 Server ready at",
+      `http${config.ssl ? "s" : ""}://${config.hostname}:${config.port}${
+        apollo.graphqlPath
+      }`
+    );
   });
 };
 
