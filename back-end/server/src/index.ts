@@ -108,15 +108,15 @@ import * as http from "http";
 // import { ApolloServer } from "apollo-server-express";
 import {
   ApolloServer,
-  SyntaxError,
-  UserInputError,
-  AuthenticationError,
-  ForbiddenError,
+  // SyntaxError,
+  // UserInputError,
+  // AuthenticationError,
+  // ForbiddenError,
 } from "apollo-server-express";
-import { GraphQLErrorTrackingExtension } from "graphql-error-tracking-extension";
-import { ErrorReporting } from "@google-cloud/error-reporting";
+// import { GraphQLErrorTrackingExtension } from "graphql-error-tracking-extension";
+// import { ErrorReporting } from "@google-cloud/error-reporting";
 
-const errorReporting = new ErrorReporting();
+// const errorReporting = new ErrorReporting();
 
 import * as dotenv from "dotenv";
 // import * as cors from "cors";
@@ -184,25 +184,25 @@ const start = async () => {
   const apollo = new ApolloServer({
     typeDefs: schema,
     resolvers,
-    extensions: [
-      () =>
-        new GraphQLErrorTrackingExtension({
-          maskHeaders: ["x-forwarded-for", "authorization"],
-          revealErrorTypes: [
-            SyntaxError,
-            UserInputError,
-            AuthenticationError,
-            ForbiddenError,
-          ],
-          onUnrevealedError: (err, originalError) => {
-            if (originalError) {
-              errorReporting.report(err.originalError.stack);
-            } else {
-              errorReporting.report(err.stack);
-            }
-          },
-        }),
-    ],
+    // extensions: [
+    //   () =>
+    //     new GraphQLErrorTrackingExtension({
+    //       maskHeaders: ["x-forwarded-for", "authorization"],
+    //       revealErrorTypes: [
+    //         SyntaxError,
+    //         UserInputError,
+    //         AuthenticationError,
+    //         ForbiddenError,
+    //       ],
+    //       onUnrevealedError: (err, originalError) => {
+    //         if (originalError) {
+    //           errorReporting.report(err.originalError.stack);
+    //         } else {
+    //           errorReporting.report(err.stack);
+    //         }
+    //       },
+    //     }),
+    // ],
     context: ({ req, res }) => ({ req, res }),
   });
 
@@ -210,7 +210,7 @@ const start = async () => {
 
   // Create the HTTPS or HTTP server, per configuration
   let server;
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production@") {
     // Assumes certificates are in a .ssl folder off of the package root. Make sure
     // these files are secured.
     server = https.createServer(
@@ -228,8 +228,8 @@ const start = async () => {
     // server.listen({ port: config.port }, () => {
     console.log(
       "🚀 Server ready at",
-      `http${process.env.NODE_ENV === "production" ? "s" : ""}://localhost:${
-        process.env.PORT
+      `http${process.env.NODE_ENV === "production@" ? "s" : ""}://localhost:${
+        process.env.PORT || 8000
       }${apollo.graphqlPath}`
     );
   });
