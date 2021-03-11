@@ -4,7 +4,11 @@ const tslib_1 = require("tslib");
 const express = require("express");
 // import * as mongoose from "mongoose";
 const mongoose = require("mongoose");
+// import { ApolloServer } from "apollo-server-express";
 const apollo_server_express_1 = require("apollo-server-express");
+const graphql_error_tracking_extension_1 = require("graphql-error-tracking-extension");
+const error_reporting_1 = require("@google-cloud/error-reporting");
+const errorReporting = new error_reporting_1.ErrorReporting();
 const dotenv = tslib_1.__importStar(require("dotenv"));
 // import * as cors from "cors";
 const is_auth_1 = require("./middleware/is-auth");
@@ -47,6 +51,25 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const server = new apollo_server_express_1.ApolloServer({
         typeDefs: schema_1.default,
         resolvers: resolvers_1.default,
+        extensions: [
+            () => new graphql_error_tracking_extension_1.GraphQLErrorTrackingExtension({
+                maskHeaders: ["x-forwarded-for", "authorization"],
+                revealErrorTypes: [
+                    apollo_server_express_1.SyntaxError,
+                    apollo_server_express_1.UserInputError,
+                    apollo_server_express_1.AuthenticationError,
+                    apollo_server_express_1.ForbiddenError,
+                ],
+                onUnrevealedError: (err, originalError) => {
+                    if (originalError) {
+                        errorReporting.report(err.originalError.stack);
+                    }
+                    else {
+                        errorReporting.report(err.stack);
+                    }
+                },
+            }),
+        ],
         context: ({ req, res }) => ({ req, res }),
     });
     server.applyMiddleware({ app, path: "/graphql" });
