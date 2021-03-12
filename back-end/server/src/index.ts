@@ -210,7 +210,7 @@ const start = async () => {
 
   // Create the HTTPS or HTTP server, per configuration
   let server;
-  if (process.env.NODE_ENV === "production@") {
+  if (process.env.NODE_ENV === "production") {
     // Assumes certificates are in a .ssl folder off of the package root. Make sure
     // these files are secured.
     server = https.createServer(
@@ -228,7 +228,7 @@ const start = async () => {
     // server.listen({ port: config.port }, () => {
     console.log(
       "🚀 Server ready at",
-      `http${process.env.NODE_ENV === "production@" ? "s" : ""}://localhost:${
+      `http${process.env.NODE_ENV === "production" ? "s" : ""}://localhost:${
         process.env.PORT || 8000
       }${apollo.graphqlPath}`
     );
