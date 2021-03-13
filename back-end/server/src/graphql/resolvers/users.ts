@@ -1,4 +1,5 @@
-import * as mongoose from "mongoose";
+// import * as mongoose from "mongoose";
+import mongoose = require("mongoose");
 import * as jwt from "jsonwebtoken";
 
 import { UserModel } from "../../models/user";
@@ -58,7 +59,7 @@ export const createUser = async (root, { input }) => {
       return {
         userId: createdUser.toObject()._id,
         token,
-        tokenExpiration: 1,
+        tokenExpiration: 720,
       };
     }
   } catch (error) {
@@ -106,7 +107,7 @@ export const login = async (root, { input }) => {
         return {
           userId: user.toObject()._id,
           token,
-          tokenExpiration: 1,
+          tokenExpiration: 720,
         };
       } else {
         throw new Error(wrongCredentialsErrorMessage);

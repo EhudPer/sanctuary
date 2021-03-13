@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.linkPassword = exports.signGoogle = exports.validateToken = exports.login = exports.updateUser = exports.createUser = exports.getUser = exports.getUsers = void 0;
 const tslib_1 = require("tslib");
-const mongoose = tslib_1.__importStar(require("mongoose"));
+// import * as mongoose from "mongoose";
+const mongoose = require("mongoose");
 const jwt = tslib_1.__importStar(require("jsonwebtoken"));
 const user_1 = require("../../models/user");
 const index_1 = require("../../helper-functions/index");
@@ -41,7 +42,7 @@ exports.createUser = (root, { input }) => tslib_1.__awaiter(void 0, void 0, void
             return {
                 userId: createdUser.toObject()._id,
                 token,
-                tokenExpiration: 1,
+                tokenExpiration: 720,
             };
         }
     }
@@ -75,7 +76,7 @@ exports.login = (root, { input }) => tslib_1.__awaiter(void 0, void 0, void 0, f
                 return {
                     userId: user.toObject()._id,
                     token,
-                    tokenExpiration: 1,
+                    tokenExpiration: 720,
                 };
             }
             else {
