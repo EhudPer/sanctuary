@@ -126,11 +126,11 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     // const configurations = {
     //   // Note: You may need sudo to run on port 443
     //   production: {
-    //     ssl: true,
+    //     ssl-localhost: true,
     //     port: process.env.PORT,
     //     hostname: "localhost",
     //   },
-    //   development: { ssl: false, port: 8000, hostname: "localhost" },
+    //   development: { ssl-localhost: false, port: 8000, hostname: "localhost" },
     // };
     //
     // const environment = process.env.NODE_ENV || "production";
@@ -189,8 +189,8 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     apollo.applyMiddleware({ app, path: "/graphql" });
     // Create the HTTPS or HTTP server, per configuration
     let server;
-    if (process.env.NODE_ENV === "production@") {
-        // Assumes certificates are in a .ssl folder off of the package root. Make sure
+    if (process.env.NODE_ENV === "production") {
+        // Assumes certificates are in a .ssl-localhost folder off of the package root. Make sure
         // these files are secured.
         server = https.createServer({
             key: process.env.SSL_SERVER_KEY,
@@ -202,7 +202,9 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     }
     server.listen({ port: process.env.PORT || 8000 }, () => {
         // server.listen({ port: config.port }, () => {
-        console.log("🚀 Server ready at", `http${process.env.NODE_ENV === "production@" ? "s" : ""}://localhost:${process.env.PORT || 8000}${apollo.graphqlPath}`);
+        console.log("🚀 Server ready at", `http${process.env.NODE_ENV === "production" ? "s" : ""}://${process.env.NODE_ENV === "production"
+            ? "sanctuary-app.herokuapp.com"
+            : "localhost"}:${process.env.PORT || 8000}${apollo.graphqlPath}`);
     });
 });
 start();

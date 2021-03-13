@@ -137,11 +137,11 @@ const start = async () => {
   // const configurations = {
   //   // Note: You may need sudo to run on port 443
   //   production: {
-  //     ssl: true,
+  //     ssl-localhost: true,
   //     port: process.env.PORT,
   //     hostname: "localhost",
   //   },
-  //   development: { ssl: false, port: 8000, hostname: "localhost" },
+  //   development: { ssl-localhost: false, port: 8000, hostname: "localhost" },
   // };
   //
   // const environment = process.env.NODE_ENV || "production";
@@ -210,8 +210,8 @@ const start = async () => {
 
   // Create the HTTPS or HTTP server, per configuration
   let server;
-  if (process.env.NODE_ENV === "production@") {
-    // Assumes certificates are in a .ssl folder off of the package root. Make sure
+  if (process.env.NODE_ENV === "production") {
+    // Assumes certificates are in a .ssl-localhost folder off of the package root. Make sure
     // these files are secured.
     server = https.createServer(
       {
@@ -228,9 +228,11 @@ const start = async () => {
     // server.listen({ port: config.port }, () => {
     console.log(
       "🚀 Server ready at",
-      `http${process.env.NODE_ENV === "production@" ? "s" : ""}://localhost:${
-        process.env.PORT || 8000
-      }${apollo.graphqlPath}`
+      `http${process.env.NODE_ENV === "production" ? "s" : ""}://${
+        process.env.NODE_ENV === "production"
+          ? "sanctuary-app.herokuapp.com"
+          : "localhost"
+      }:${process.env.PORT || 8000}${apollo.graphqlPath}`
     );
   });
 };
