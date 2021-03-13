@@ -26,4 +26,5 @@ pnpm-debug.log*
 *.sw?
 
 # secrets
+ssl-localhost/
 ssl/
