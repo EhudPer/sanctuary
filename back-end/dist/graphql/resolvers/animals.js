@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAnimal = exports.updateAnimal = exports.createAnimal = exports.getAnimal = exports.getAnimals = void 0;
 const tslib_1 = require("tslib");
-const mongoose = tslib_1.__importStar(require("mongoose"));
+// import * as mongoose from "mongoose";
+const mongoose = require("mongoose");
 const animal_1 = require("../../models/animal");
 const user_1 = require("../../models/user");
 const merge_1 = require("./merge");

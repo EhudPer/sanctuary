@@ -1,4 +1,5 @@
-import * as mongoose from "mongoose";
+// import * as mongoose from "mongoose";
+import mongoose = require("mongoose");
 import { AnimalModel } from "../../models/animal";
 import { UserModel } from "../../models/user";
 import { getUserById } from "./merge";
