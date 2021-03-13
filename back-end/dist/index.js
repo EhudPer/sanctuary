@@ -189,7 +189,7 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     apollo.applyMiddleware({ app, path: "/graphql" });
     // Create the HTTPS or HTTP server, per configuration
     let server;
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "production@") {
         // Assumes certificates are in a .ssl-localhost folder off of the package root. Make sure
         // these files are secured.
         server = https.createServer({
@@ -202,7 +202,7 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     }
     server.listen({ port: process.env.PORT || 8000 }, () => {
         // server.listen({ port: config.port }, () => {
-        console.log("🚀 Server ready at", `http${process.env.NODE_ENV === "production" ? "s" : ""}://${process.env.NODE_ENV === "production"
+        console.log("🚀 Server ready at", `http${process.env.NODE_ENV === "production@" ? "s" : ""}://${process.env.NODE_ENV === "production@"
             ? "sanctuary-app.herokuapp.com"
             : "localhost"}:${process.env.PORT || 8000}${apollo.graphqlPath}`);
     });
