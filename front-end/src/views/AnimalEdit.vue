@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="page-title">Animal Edit</h1>
+    <!--    <h1 class="page-title">Animal Edit</h1>-->
     <v-card v-if="animal" max-width="1032" class="mx-auto">
       <v-list-item>
-        <v-list-item-avatar color="grey"></v-list-item-avatar>
+        <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
         <v-list-item-content>
           <v-list-item-title class="headline">
             {{ animal.name }}
@@ -11,11 +11,13 @@
         </v-list-item-content>
       </v-list-item>
       <v-img
+        @click="moveToAnimalDetails"
         :src="
           animal.image_url
             ? animal.image_url
             : require(`@/assets/${animal.type.toLowerCase()}.jpg`)
         "
+        :style="'cursor: pointer'"
         alt="Avatar"
         max-height="500"
       ></v-img>
@@ -42,44 +44,44 @@
           width="100%"
           max-width="130"
         >
-          Edit
+          Save
         </v-btn>
-        <v-btn
-          color="error"
-          class="reset-form-btn"
-          @click="reset"
-          width="100%"
-          max-width="130"
-        >
-          Reset Form
-        </v-btn>
-        <v-btn
-          class="reset-validation-btn"
-          color="warning"
-          @click="resetValidation"
-          width="100%"
-          max-width="178"
-        >
-          Reset Validation
-        </v-btn>
+        <!--        <v-btn-->
+        <!--          color="error"-->
+        <!--          class="reset-form-btn"-->
+        <!--          @click="reset"-->
+        <!--          width="100%"-->
+        <!--          max-width="130"-->
+        <!--        >-->
+        <!--          Reset Form-->
+        <!--        </v-btn>-->
+        <!--        <v-btn-->
+        <!--          class="reset-validation-btn"-->
+        <!--          color="warning"-->
+        <!--          @click="resetValidation"-->
+        <!--          width="100%"-->
+        <!--          max-width="178"-->
+        <!--        >-->
+        <!--          Reset Validation-->
+        <!--        </v-btn>-->
       </v-form>
       <v-card-actions>
-        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">
-          Add Animal
-        </v-btn>
-        <v-btn @click="moveToAnimalDetails" text color="success accent-4">
-          Details
-        </v-btn>
-        <v-btn @click="deleteAnimalClicked" text color="error accent-4">
+        <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
+        <!--          Add Animal-->
+        <!--        </v-btn>-->
+        <!--        <v-btn @click="moveToAnimalDetails" text color="success accent-4">-->
+        <!--          Details-->
+        <!--        </v-btn>-->
+        <v-btn @click="deleteAnimalClicked" color="error accent-4">
           Delete
         </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon>mdi-share-variant</v-icon>
-        </v-btn>
+        <!--        <v-spacer></v-spacer>-->
+        <!--        <v-btn icon>-->
+        <!--          <v-icon>mdi-heart</v-icon>-->
+        <!--        </v-btn>-->
+        <!--        <v-btn icon>-->
+        <!--          <v-icon>mdi-share-variant</v-icon>-->
+        <!--        </v-btn>-->
       </v-card-actions>
     </v-card>
   </div>
@@ -240,9 +242,9 @@ export default defineComponent({
 form {
   padding: 0 8px;
 
-  .validate-btn,
-  .reset-form-btn,
-  .reset-validation-btn {
+  //.reset-form-btn,
+  //.reset-validation-btn
+  .validate-btn {
     margin-top: 10px;
   }
 }
@@ -252,9 +254,9 @@ form {
     margin-right: 3px;
   }
 
-  .reset-form-btn {
-    margin-left: 3px;
-  }
+  //.reset-form-btn {
+  //  margin-left: 3px;
+  //}
 }
 
 @media only screen and (min-width: 395px) {
@@ -264,13 +266,13 @@ form {
   }
 }
 
-@media only screen and (min-width: 480px) {
-  .reset-form-btn {
-    margin-right: 3px;
-  }
-
-  .reset-validation-btn {
-    margin-left: 3px;
-  }
-}
+//@media only screen and (min-width: 480px) {
+//  .reset-form-btn {
+//    margin-right: 3px;
+//  }
+//
+//  .reset-validation-btn {
+//    margin-left: 3px;
+//  }
+//}
 </style>

@@ -1,10 +1,9 @@
 <template>
   <div class="animals-list">
-    <h1 class="page-title">Animals</h1>
+    <!--    <h1 class="page-title">Animals</h1>-->
     <v-btn
       @click="pushToAddAnimalPage"
       class="mt-3"
-      text
       x-large
       color="info accent-4"
     >

@@ -10,7 +10,7 @@
       <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp">
         <v-btn text to="/">
           <span class="mr-2">
-            <router-link to="/">Home</router-link>
+            <router-link to="/">About</router-link>
           </span>
         </v-btn>
         <v-btn v-if="token" text to="/animals">
@@ -40,7 +40,7 @@
         <v-list>
           <v-list-item to="/">
             <v-list-item-title>
-              <router-link to="/">Home</router-link>
+              <router-link to="/">About</router-link>
             </v-list-item-title>
           </v-list-item>
           <v-list-item v-if="token" to="/animals">
@@ -105,8 +105,8 @@ export default defineComponent({
   max-width: 250px;
 
   .main-navigation__nav__logo {
-    background-image: url(~@/assets/logo.png);
-    background-size: contain;
+    //background-image: url(~@/assets/logo.png);
+    //background-size: contain;
     width: 100%;
     max-width: 250px;
     height: auto;
