@@ -60,25 +60,25 @@
           {{ isLogin ? "Login" : "Register" }}
         </v-btn>
 
-        <v-btn
-          color="error"
-          class="reset-form-btn"
-          @click="reset"
-          width="100%"
-          max-width="130"
-        >
-          Reset Form
-        </v-btn>
+        <!--        <v-btn-->
+        <!--          color="error"-->
+        <!--          class="reset-form-btn"-->
+        <!--          @click="reset"-->
+        <!--          width="100%"-->
+        <!--          max-width="130"-->
+        <!--        >-->
+        <!--          Reset Form-->
+        <!--        </v-btn>-->
 
-        <v-btn
-          class="reset-validation-btn"
-          color="warning"
-          @click="resetValidation"
-          width="100%"
-          max-width="178"
-        >
-          Reset Validation
-        </v-btn>
+        <!--        <v-btn-->
+        <!--          class="reset-validation-btn"-->
+        <!--          color="warning"-->
+        <!--          @click="resetValidation"-->
+        <!--          width="100%"-->
+        <!--          max-width="178"-->
+        <!--        >-->
+        <!--          Reset Validation-->
+        <!--        </v-btn>-->
 
         <p v-if="isLogin" class="or-title">Or:</p>
         <p v-else class="or-title">Or link password:</p>
@@ -191,12 +191,6 @@ export default defineComponent({
       // so i can crEATE the user or get it from the db and return a token anyhow to local storage a
       //should work like regular maybe.. at least make it work..
 
-      // This only gets the user information: id, name, imageUrl and email
-      // console.log(
-      //   "googleUser.getBasicProfile(): ",
-      //   googleUser.getBasicProfile()
-      // );
-
       root.$store.dispatch("togLoading", { loadingStatus: true });
       try {
         let result;
@@ -244,13 +238,6 @@ export default defineComponent({
           }, 2000);
         }
       } catch (error) {
-        // console.log(
-        //   error.graphQLErrors
-        //     ? error.graphQLErrors.toString()
-        //     : "no graphqlerror types"
-        // );
-
-        console.log("error :");
         console.log(error);
 
         root.$swal.fire({
@@ -468,8 +455,8 @@ form {
   padding: 0 8px;
 
   .auth-btn,
-  .reset-form-btn,
-  .reset-validation-btn,
+  //.reset-form-btn,
+  //.reset-validation-btn,
   .switch-to-register-btn {
     margin-top: 10px;
   }
@@ -494,9 +481,9 @@ form {
     margin-right: 3px;
   }
 
-  .reset-form-btn {
-    margin-left: 3px;
-  }
+  //.reset-form-btn {
+  //  margin-left: 3px;
+  //}
 }
 
 @media only screen and (min-width: 395px) {
@@ -505,13 +492,13 @@ form {
   }
 }
 
-@media only screen and (min-width: 480px) {
-  .reset-form-btn {
-    margin-right: 3px;
-  }
-
-  .reset-validation-btn {
-    margin-left: 3px;
-  }
-}
+//@media only screen and (min-width: 480px) {
+//  .reset-form-btn {
+//    margin-right: 3px;
+//  }
+//
+//  .reset-validation-btn {
+//    margin-left: 3px;
+//  }
+//}
 </style>

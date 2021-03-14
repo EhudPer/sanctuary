@@ -25,35 +25,9 @@ export default defineComponent({
     MainNavigation,
     Loader,
   },
-  // setup(props, { root }) {
-  //     onBeforeMount(async () => {
-  //         if (root.$store.state.animals.length === 0) {
-  //             try {
-  //                 const result = await root.$store.dispatch('fetchAnimals');
-  //                 console.log('Fetched animals: ', result);
-  //                 //add error handling in server and client.
-  //                 //add loading in all app.
-  //             } catch (error) {
-  //                 console.log(error);
-  //                 root.$swal.fire({
-  //                     title: 'Error: animals not fetched!',
-  //                     text: 'Please try again at a later time.',
-  //                     confirmButtonColor: '#D62E1F',
-  //                     icon: 'error',
-  //                     width: 600,
-  //                     padding: '3em',
-  //                     background: '#fff'
-  //                 });
-  //             }
-  //         }
-  //     });
-  // }
-
-  // setup(props, { root }) {
 
   setup(props, { root }) {
     onBeforeMount(async () => {
-      console.log("ss");
       try {
         await root.$store.dispatch("initTokenStateAction");
       } catch (error) {

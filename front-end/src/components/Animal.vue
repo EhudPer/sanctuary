@@ -1,7 +1,7 @@
 <template>
   <v-card max-width="344" class="mx-auto">
     <v-list-item>
-      <v-list-item-avatar color="grey"></v-list-item-avatar>
+      <!--      <v-list-item-avatar color="grey"></v-list-item-avatar>-->
       <v-list-item-content>
         <v-list-item-title class="headline">
           {{ props.animal.name }}
@@ -10,6 +10,7 @@
     </v-list-item>
 
     <v-img
+      @click="moveToAnimalDetails"
       :src="
         props.animal.image_url
           ? props.animal.image_url
@@ -17,6 +18,7 @@
       "
       alt="Avatar"
       height="194"
+      :style="'cursor: pointer'"
     ></v-img>
 
     <v-card-text>
@@ -24,22 +26,20 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn @click="moveToAnimalDetails" text color="success accent-4">
-        Details
-      </v-btn>
-      <v-btn @click="moveToAnimalEdit" text color="warning accent-4">
-        Edit
-      </v-btn>
-      <v-btn @click="deleteAnimalClicked" text color="error accent-4">
+      <!--      <v-btn @click="moveToAnimalDetails" text color="success accent-4">-->
+      <!--        Details-->
+      <!--      </v-btn>-->
+      <v-btn @click="moveToAnimalEdit" color="warning accent-4"> Edit </v-btn>
+      <v-btn @click="deleteAnimalClicked" color="error accent-4">
         Delete
       </v-btn>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-share-variant</v-icon>
-      </v-btn>
+      <!--      <v-spacer></v-spacer>-->
+      <!--      <v-btn icon>-->
+      <!--        <v-icon>mdi-heart</v-icon>-->
+      <!--      </v-btn>-->
+      <!--      <v-btn icon>-->
+      <!--        <v-icon>mdi-share-variant</v-icon>-->
+      <!--      </v-btn>-->
     </v-card-actions>
   </v-card>
 </template>
@@ -93,6 +93,16 @@ export default defineComponent({
 
 .v-img {
   width: 100%;
+}
+
+//.v-image__image {
+//  &:hover {
+//    cursor: pointer;
+//  }
+//}
+
+.v-card__text {
+  font-size: 1.2rem;
 }
 
 .v-card__actions {
