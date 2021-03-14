@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="page-title">Add Animal</h1>
+    <!--    <h1 class="page-title">Add Animal</h1>-->
     <v-card max-width="1032" class="mx-auto">
       <v-list-item>
-        <v-list-item-avatar color="grey"></v-list-item-avatar>
+        <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
       </v-list-item>
       <v-img
         src="../assets/add-animal.jpg"
