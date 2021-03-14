@@ -39,25 +39,25 @@
           Add
         </v-btn>
 
-        <v-btn
-          color="error"
-          class="reset-form-btn"
-          @click="reset"
-          width="100%"
-          max-width="130"
-        >
-          Reset Form
-        </v-btn>
+        <!--        <v-btn-->
+        <!--          color="error"-->
+        <!--          class="reset-form-btn"-->
+        <!--          @click="reset"-->
+        <!--          width="100%"-->
+        <!--          max-width="130"-->
+        <!--        >-->
+        <!--          Reset Form-->
+        <!--        </v-btn>-->
 
-        <v-btn
-          class="reset-validation-btn"
-          color="warning"
-          @click="resetValidation"
-          width="100%"
-          max-width="178"
-        >
-          Reset Validation
-        </v-btn>
+        <!--        <v-btn-->
+        <!--          class="reset-validation-btn"-->
+        <!--          color="warning"-->
+        <!--          @click="resetValidation"-->
+        <!--          width="100%"-->
+        <!--          max-width="178"-->
+        <!--        >-->
+        <!--          Reset Validation-->
+        <!--        </v-btn>-->
       </v-form>
     </v-card>
   </div>
@@ -201,9 +201,9 @@ export default defineComponent({
 form {
   padding: 0 8px;
 
-  .validate-btn,
-  .reset-form-btn,
-  .reset-validation-btn {
+  //.reset-form-btn,
+  //.reset-validation-btn
+  .validate-btn {
     margin-top: 10px;
   }
 }
@@ -213,9 +213,9 @@ form {
     margin-right: 3px;
   }
 
-  .reset-form-btn {
-    margin-left: 3px;
-  }
+  //.reset-form-btn {
+  //  margin-left: 3px;
+  //}
 }
 
 @media only screen and (min-width: 395px) {
@@ -225,13 +225,13 @@ form {
   }
 }
 
-@media only screen and (min-width: 480px) {
-  .reset-form-btn {
-    margin-right: 3px;
-  }
-
-  .reset-validation-btn {
-    margin-left: 3px;
-  }
-}
+//@media only screen and (min-width: 480px) {
+//  .reset-form-btn {
+//    margin-right: 3px;
+//  }
+//
+//  .reset-validation-btn {
+//    margin-left: 3px;
+//  }
+//}
 </style>

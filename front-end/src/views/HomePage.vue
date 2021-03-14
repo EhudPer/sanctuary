@@ -1,18 +1,15 @@
 <template>
   <div class="home-page">
-    <h1 class="page-title">Welcome to Sanctuary</h1>
+    <!--    <h1 class="page-title">Welcome to Sanctuary</h1>-->
     <img src="../assets/home.jpeg" alt="Home" />
+    <p>This is an alpha POC app for helping rescued animals sanctuary farms</p>
+    <p>Author: Ehud Perlman</p>
+    <v-img src="../assets/profile.jpg" class="profile" max-height="150"></v-img>
+    <p>Email: ehudperlman83@gmail.com</p>
+    <p>I am a full stack web developer</p>
     <p>
-      Mange your sanctuary and keep track of all your animals related
-      information
-    </p>
-    <p>
-      Mange your sanctuary and keep track of all your animals related
-      information place holder.
-    </p>
-    <p>
-      Mange your sanctuary and keep track of all your animals related
-      information place holder.
+      Project main technologies: Javascript, Nodejs, Express, Graphql, Mongodb,
+      Mongoose, Apollo, Vue, Vuex, Scss
     </p>
   </div>
 </template>
@@ -52,6 +49,18 @@ img {
   max-height: 230px;
   margin: 15px 0;
   object-fit: cover;
+}
+
+.profile {
+  //background-image: url(~@/assets/logo.png);
+  //background-size: contain;
+  //width: 100%;
+  max-width: 150px;
+  margin: 15px auto;
+  //height: auto;
+  //display: block;
+  //margin: 15px auto;
+  //font-size: 2rem;
 }
 
 p {

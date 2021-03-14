@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="page-title">Animal Details</h1>
+    <!--    <h1 class="page-title">Animal Details</h1>-->
     <v-card v-if="animal" max-width="1032" class="mx-auto">
       <v-list-item>
-        <v-list-item-avatar color="grey"></v-list-item-avatar>
+        <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
         <v-list-item-content>
           <v-list-item-title class="headline">
             {{ animal.name }}
@@ -25,22 +25,20 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">
-          Add Animal
-        </v-btn>
-        <v-btn @click="moveToAnimalEdit" text color="warning accent-4">
-          Edit
-        </v-btn>
-        <v-btn @click="deleteAnimalClicked" text color="error accent-4">
+        <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
+        <!--          Add Animal-->
+        <!--        </v-btn>-->
+        <v-btn @click="moveToAnimalEdit" color="warning accent-4"> Edit </v-btn>
+        <v-btn @click="deleteAnimalClicked" color="error accent-4">
           Delete
         </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon>mdi-share-variant</v-icon>
-        </v-btn>
+        <!--        <v-spacer></v-spacer>-->
+        <!--        <v-btn icon>-->
+        <!--          <v-icon>mdi-heart</v-icon>-->
+        <!--        </v-btn>-->
+        <!--        <v-btn icon>-->
+        <!--          <v-icon>mdi-share-variant</v-icon>-->
+        <!--        </v-btn>-->
       </v-card-actions>
     </v-card>
   </div>
@@ -109,6 +107,10 @@ export default defineComponent({
   width: 100%;
   margin: 15px auto;
   overflow: scroll;
+}
+
+.v-card__text {
+  font-size: 1.2rem;
 }
 
 .v-card__actions {
