@@ -191,12 +191,6 @@ export default defineComponent({
       // so i can crEATE the user or get it from the db and return a token anyhow to local storage a
       //should work like regular maybe.. at least make it work..
 
-      // This only gets the user information: id, name, imageUrl and email
-      // console.log(
-      //   "googleUser.getBasicProfile(): ",
-      //   googleUser.getBasicProfile()
-      // );
-
       root.$store.dispatch("togLoading", { loadingStatus: true });
       try {
         let result;
@@ -244,13 +238,6 @@ export default defineComponent({
           }, 2000);
         }
       } catch (error) {
-        // console.log(
-        //   error.graphQLErrors
-        //     ? error.graphQLErrors.toString()
-        //     : "no graphqlerror types"
-        // );
-
-        console.log("error :");
         console.log(error);
 
         root.$swal.fire({
