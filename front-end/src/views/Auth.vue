@@ -3,7 +3,7 @@
     <!--    <h1 class="page-title">{{ isLogin ? "Login" : "Register" }}</h1>-->
     <v-card max-width="1032" class="mx-auto">
       <v-list-item>
-        <v-list-item-avatar color="grey"></v-list-item-avatar>
+        <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
       </v-list-item>
 
       <v-img
