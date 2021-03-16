@@ -35,6 +35,10 @@
           <v-btn icon v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
+
+          <!--          <v-btn v-if="isShowRenderBackButton" @click="backBtnHandler">-->
+          <!--          <v-btn ref="backBtn" class="hide" @click="backBtnHandler">-->
+          <v-btn ref="backBtn" @click="backBtnHandler"> Back </v-btn>
         </template>
 
         <v-list>
@@ -67,23 +71,87 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent, ref, watch } from "@vue/composition-api";
 import { logout } from "../../helper-functions/auth";
 
 export default defineComponent({
   name: "MainNavigation",
   setup(props, { root }) {
+    const backBtn = ref(null);
+    // let backCounter = ref(0);
     const token = computed(() => root.$store.getters.getToken);
+    // const routeName = computed(() => ref(root.$route.name));
+    // let isRouteNameNotHome = ref(false);
+    // const isShowRenderBackButton = computed(() => {
+    //   console.log("isRouteNameNotHome", isRouteNameNotHome.value);
+    //   return isRouteNameNotHome.value;
+    // });
+    // const routeNameReal = ref(root.$route.name);
+
+    watch(
+      () => root.$route,
+      (newParams, oldParams) => {
+        // routeName.value = newParams.toString();
+        console.log("in");
+        console.log(newParams);
+        console.log(newParams.name);
+        console.log("old params", oldParams);
+
+        // const elBackBtn = backBtn.value.$el;
+
+        // if (newParams.name === "Home") {
+        //   console.log(elBackBtn);
+        //   elBackBtn.classList.add("hide");
+        // } else {
+        //   elBackBtn.classList.remove("hide");
+        //   console.log(elBackBtn);
+        // }
+
+        // if (oldParams.name === null) {
+        //   elBackBtn.classList.add("hide");
+        // } else {
+        //   elBackBtn.classList.remove("hide");
+        // }
+
+        // isRouteNameNotHome.value = newParams.name === "Home" ? false : true;
+        // console.log("isRouteNameNotHome", isRouteNameNotHome.value);
+        // console.log("isShowRenderBackButton", isShowRenderBackButton.value);
+      }
+    );
+
+    // watch(root.$route.path, (currentValue, oldValue) => {
+    //   console.log(currentValue);
+    //   console.log(oldValue);
+    // });
+
     const logoutHandler = () => {
       logout(root);
     };
-    return { token, logoutHandler };
+    const backBtnHandler = () => {
+      // backCounter.value++;
+      console.log(root.$router);
+      root.$router.go(-1);
+    };
+    return {
+      root,
+      backBtn,
+      // backCounter,
+      token,
+      // isRouteNameNotHome,
+      // isShowRenderBackButton,
+      logoutHandler,
+      backBtnHandler,
+    };
   },
 });
 </script>
 
 <style lang="scss" scoped>
 #app {
+  .hide {
+    display: none;
+  }
+
   .v-toolbar__items {
     a {
       color: white;
