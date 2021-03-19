@@ -36,6 +36,14 @@
           label="Type"
           required
         ></v-select>
+
+        <v-select
+          v-model="newAnimalMedicineType"
+          :items="medicineTypeItems"
+          label="Medicine Type"
+          clearable
+        ></v-select>
+
         <div class="btns-container">
           <v-card-actions>
             <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
@@ -110,12 +118,17 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       try {
+        // await root.$store.dispatch("fetchAnimals");
+        const isAnimals = root.$store.getters.getAnimals.length !== 0;
+        if (!isAnimals) {
+          await root.$store.dispatch("fetchAnimals");
+        }
         if (document.readyState !== "complete") {
           root.$store.dispatch("togLoading", { loadingStatus: true });
         }
         // const isAnimals = root.$store.getters.getAnimals.length !== 0;
         // if (!isAnimals) {
-        await root.$store.dispatch("fetchAnimals");
+        // await root.$store.dispatch("fetchAnimals");
         // }
         // }
       } catch (error) {
@@ -130,12 +143,24 @@ export default defineComponent({
     });
 
     const animalId = root.$route.params.animalId;
+    console.log("animalId", animalId);
     const animal = computed(() => root.$store.getters.getAnimalById(animalId));
-
+    console.log("animal", animal);
+    if (!animal.value) {
+      console.log("");
+    }
     //Later try to set that when the edit page is loaded that the values of the controls will not be empty -
     // but with the current animal's details from the db - all the time, even on refresh or loading from url directly.
+
+    console.log("animal.value", animal.value);
     const newAnimalName = animal.value ? ref(animal.value.name) : ref("");
     const newAnimalType = animal.value ? ref(animal.value.type) : ref("");
+    const newAnimalMedicineType =
+      animal.value && animal.value.medicineType
+        ? ref(animal.value.medicineType)
+        : ref("");
+
+    console.log("newanimalmedicinetype", newAnimalMedicineType);
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -152,6 +177,16 @@ export default defineComponent({
       "Cow",
       "Horse",
       "Donkey",
+      "Other",
+    ]);
+
+    const medicineTypeItems = reactive([
+      "Convenia",
+      "Superflex",
+      "Tsistophan",
+      "Cinolux",
+      "Doxilin",
+      "Activile",
       "Other",
     ]);
 
@@ -176,6 +211,10 @@ export default defineComponent({
         _id: animalId,
         name: newAnimalName.value ? newAnimalName.value : newAnimalName,
         type: newAnimalType.value ? newAnimalType.value : newAnimalType,
+        medicineType: newAnimalMedicineType.value
+          ? newAnimalMedicineType.value
+          : "",
+        // : newAnimalMedicineType,
         image_url: animal.value.image_url ? animal.value.image_url : null,
       };
 
@@ -222,12 +261,14 @@ export default defineComponent({
       animal,
       newAnimalName,
       newAnimalType,
+      newAnimalMedicineType,
       myForm,
       valid,
       name,
       nameRules,
       select,
       items,
+      medicineTypeItems,
       validate,
       reset,
       resetValidation,

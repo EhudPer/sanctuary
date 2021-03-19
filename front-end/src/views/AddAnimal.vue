@@ -28,6 +28,12 @@
           required
         ></v-select>
 
+        <v-select
+          v-model="animalMedicineType"
+          :items="medicineTypeItems"
+          label="Medicine Type"
+        ></v-select>
+
         <div class="btn-container">
           <v-btn
             v-if="valid && animalName !== '' && animalType !== ''"
@@ -96,6 +102,7 @@ export default defineComponent({
     // but with the current animal's details from the db - all the time, even on refresh or loading from url directly.
     const animalName = ref("");
     const animalType = ref("");
+    const animalMedicineType = ref("");
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -104,7 +111,7 @@ export default defineComponent({
       (v) => !!v || "Name is required",
       (v) => (v && v.length <= 30) || "Name must be less than 30 characters",
     ]);
-    const select = ref(null);
+    // const select = ref(null);
     //later move those types of animals to one file and read them from it for all
     //the places needed with the types list like the select box etc.
     const items = reactive([
@@ -114,6 +121,16 @@ export default defineComponent({
       "Cow",
       "Horse",
       "Donkey",
+      "Other",
+    ]);
+
+    const medicineTypeItems = reactive([
+      "Convenia",
+      "Superflex",
+      "Tsistophan",
+      "Cinolux",
+      "Doxilin",
+      "Activile",
       "Other",
     ]);
 
@@ -137,6 +154,7 @@ export default defineComponent({
       const animalToCreateFields = {
         name: animalName.value,
         type: animalType.value,
+        medicineType: animalMedicineType.value,
 
         //For now it's always null and when loading animal it will check and see that it's null so it will load default
         // image by animal type
@@ -177,12 +195,14 @@ export default defineComponent({
     return {
       animalName,
       animalType,
+      animalMedicineType,
       myForm,
       valid,
       name,
       nameRules,
-      select,
+      // select,
       items,
+      medicineTypeItems,
       validate,
       // reset,
       // resetValidation,

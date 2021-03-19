@@ -15,6 +15,10 @@ const animalSchema = new Schema({
     type: String,
     required: true,
   },
+  medicineType: {
+    type: String,
+    required: false,
+  },
   image_url: {
     type: String,
     required: false,

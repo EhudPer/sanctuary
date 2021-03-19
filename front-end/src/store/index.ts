@@ -22,6 +22,9 @@ const getters = {
     return state.animals;
   },
   getAnimalById: (state: any) => (animalId: string) => {
+    console.log("getAnimalsById the id:", animalId);
+    console.log("stateafteraddanimalstore:", state.animals);
+    console.log(state.animals.find((animal: any) => animal._id === animalId));
     return state.animals.find((animal: any) => animal._id === animalId);
   },
 };
@@ -48,6 +51,7 @@ const mutations = {
     const updatedAnimalsState = animalsStateCopy;
 
     state.animals = updatedAnimalsState;
+    console.log("updatedanimalinstore", updatedAnimalsState);
   },
   updateAnimalInStore(state: any, animalToUpdate: object) {
     const animalToUpdateIdx = state.animals.findIndex(
@@ -243,6 +247,7 @@ const actions = {
               _id
               name
               type
+              medicineType
               image_url
             }
           }
@@ -273,6 +278,7 @@ const actions = {
               _id
               name
               type
+              medicineType
               image_url
             }
           }
@@ -281,6 +287,7 @@ const actions = {
           animalInput: {
             name: animalToCreateFields.name,
             type: animalToCreateFields.type,
+            medicineType: animalToCreateFields.medicineType,
             image_url: animalToCreateFields.image_url,
           },
         },
@@ -303,6 +310,11 @@ const actions = {
     { updatedAnimalFields }: { updatedAnimalFields: object }
   ) {
     try {
+      console.log(
+        "updatedAnimalFields.medicineType",
+        updatedAnimalFields.medicineType
+      );
+
       const response = await graphqlClient.mutate({
         mutation: gql`
           mutation updateAnimal(
@@ -313,6 +325,7 @@ const actions = {
               _id
               name
               type
+              medicineType
               image_url
             }
           }
@@ -322,6 +335,7 @@ const actions = {
           animalInput: {
             name: updatedAnimalFields.name,
             type: updatedAnimalFields.type,
+            medicineType: updatedAnimalFields.medicineType,
             image_url: updatedAnimalFields.image_url,
           },
         },

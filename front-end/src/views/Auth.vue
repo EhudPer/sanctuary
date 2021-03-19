@@ -201,7 +201,11 @@ export default defineComponent({
     });
 
     const onSuccess = async (googleUser) => {
-      const token = googleUser.uc.id_token;
+      console.log("googleUser.uc", googleUser.uc);
+      console.log("googleUser", googleUser);
+      const token = googleUser.uc
+        ? googleUser.uc.id_token
+        : googleUser.tc.id_token;
 
       //try moving the flow all the way to db just with using the ggogle token and the clip
       // so i can crEATE the user or get it from the db and return a token anyhow to local storage a
@@ -270,8 +274,9 @@ export default defineComponent({
       root.$store.dispatch("togLoading", { loadingStatus: false });
     };
 
-    const onFailure = () => {
+    const onFailure = (error) => {
       console.log("error: ");
+      console.log(error);
     };
 
     //End - Google login area
