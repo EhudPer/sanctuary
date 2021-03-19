@@ -36,16 +36,37 @@
           label="Type"
           required
         ></v-select>
-        <v-btn
-          :disabled="!valid"
-          color="success"
-          class="validate-btn"
-          @click="validate"
-          width="100%"
-          max-width="130"
-        >
-          Save
-        </v-btn>
+        <div class="btns-container">
+          <v-card-actions>
+            <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
+            <!--          Add Animal-->
+            <!--        </v-btn>-->
+            <!--        <v-btn @click="moveToAnimalDetails" text color="success accent-4">-->
+            <!--          Details-->
+            <!--        </v-btn>-->
+            <v-btn
+              v-if="valid && newAnimalName !== '' && newAnimalType !== ''"
+              color="success"
+              class="validate-btn"
+              @click="validate"
+              width="100%"
+              max-width="130"
+            >
+              Save
+            </v-btn>
+
+            <v-btn @click="deleteAnimalClicked" color="error accent-4">
+              Delete
+            </v-btn>
+            <!--        <v-spacer></v-spacer>-->
+            <!--        <v-btn icon>-->
+            <!--          <v-icon>mdi-heart</v-icon>-->
+            <!--        </v-btn>-->
+            <!--        <v-btn icon>-->
+            <!--          <v-icon>mdi-share-variant</v-icon>-->
+            <!--        </v-btn>-->
+          </v-card-actions>
+        </div>
         <!--        <v-btn-->
         <!--          color="error"-->
         <!--          class="reset-form-btn"-->
@@ -65,24 +86,6 @@
         <!--          Reset Validation-->
         <!--        </v-btn>-->
       </v-form>
-      <v-card-actions>
-        <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
-        <!--          Add Animal-->
-        <!--        </v-btn>-->
-        <!--        <v-btn @click="moveToAnimalDetails" text color="success accent-4">-->
-        <!--          Details-->
-        <!--        </v-btn>-->
-        <v-btn @click="deleteAnimalClicked" color="error accent-4">
-          Delete
-        </v-btn>
-        <!--        <v-spacer></v-spacer>-->
-        <!--        <v-btn icon>-->
-        <!--          <v-icon>mdi-heart</v-icon>-->
-        <!--        </v-btn>-->
-        <!--        <v-btn icon>-->
-        <!--          <v-icon>mdi-share-variant</v-icon>-->
-        <!--        </v-btn>-->
-      </v-card-actions>
     </v-card>
   </div>
 </template>
@@ -93,6 +96,7 @@
 import {
   computed,
   defineComponent,
+  onBeforeMount,
   onMounted,
   reactive,
   ref,
@@ -103,17 +107,24 @@ export default defineComponent({
   name: "AnimalEdit",
   setup(props, { root }) {
     //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
-    if (document.readyState !== "complete") {
-      root.$store.dispatch("togLoading", { loadingStatus: true });
 
-      const isAnimals = root.$store.getters.getAnimals.length !== 0;
-      if (!isAnimals) {
-        root.$store.dispatch("fetchAnimals");
+    onBeforeMount(async () => {
+      try {
+        if (document.readyState !== "complete") {
+          root.$store.dispatch("togLoading", { loadingStatus: true });
+        }
+        // const isAnimals = root.$store.getters.getAnimals.length !== 0;
+        // if (!isAnimals) {
+        await root.$store.dispatch("fetchAnimals");
+        // }
+        // }
+      } catch (error) {
+        console.log(error);
       }
-    }
+    });
 
     onMounted(() => {
-      window.onload = function () {
+      window.onload = async () => {
         root.$store.dispatch("togLoading", { loadingStatus: false });
       };
     });
@@ -235,36 +246,40 @@ export default defineComponent({
   overflow: scroll;
 }
 
-.v-card__actions {
-  flex-direction: column;
-}
+//.v-card__actions {
+//  flex-direction: column;
+//}
 
 form {
   padding: 0 8px;
 
   //.reset-form-btn,
   //.reset-validation-btn
-  .validate-btn {
-    margin-top: 10px;
-  }
-}
-
-@media only screen and (min-width: 296px) {
-  .validate-btn {
-    margin-right: 3px;
+  .btns-container {
+    display: flex;
   }
 
-  //.reset-form-btn {
-  //  margin-left: 3px;
+  //.validate-btn {
+  //  margin-top: 10px;
   //}
 }
 
-@media only screen and (min-width: 395px) {
-  .v-card__actions {
-    flex-direction: row;
-    //flex-wrap: wrap;
-  }
-}
+//@media only screen and (min-width: 296px) {
+//  .validate-btn {
+//    margin-right: 3px;
+//  }
+//
+//  //.reset-form-btn {
+//  //  margin-left: 3px;
+//  //}
+//}
+
+//@media only screen and (min-width: 395px) {
+//  .v-card__actions {
+//    flex-direction: row;
+//    //flex-wrap: wrap;
+//  }
+//}
 
 //@media only screen and (min-width: 480px) {
 //  .reset-form-btn {

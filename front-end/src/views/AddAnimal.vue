@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="page-title">Add Animal</h1>
+    <!--    <h1 class="page-title">Add Animal</h1>-->
     <v-card max-width="1032" class="mx-auto">
       <v-list-item>
-        <v-list-item-avatar color="grey"></v-list-item-avatar>
+        <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
       </v-list-item>
       <v-img
         src="../assets/add-animal.jpg"
@@ -14,7 +14,7 @@
       <v-form ref="myForm" v-model="valid" class="mb-4" lazy-validation>
         <v-text-field
           v-model="animalName"
-          :counter="10"
+          :counter="30"
           :rules="nameRules"
           label="Name"
           required
@@ -28,17 +28,18 @@
           required
         ></v-select>
 
-        <v-btn
-          :disabled="!valid"
-          color="success"
-          class="validate-btn"
-          @click="validate"
-          width="100%"
-          max-width="130"
-        >
-          Add
-        </v-btn>
-
+        <div class="btn-container">
+          <v-btn
+            v-if="valid && animalName !== '' && animalType !== ''"
+            color="success"
+            class="validate-btn"
+            @click="validate"
+            width="100%"
+            max-width="130"
+          >
+            Add
+          </v-btn>
+        </div>
         <!--        <v-btn-->
         <!--          color="error"-->
         <!--          class="reset-form-btn"-->
@@ -68,6 +69,7 @@
 
 import {
   defineComponent,
+  onBeforeMount,
   onMounted,
   reactive,
   ref,
@@ -77,9 +79,12 @@ export default defineComponent({
   name: "AddAnimal",
   setup(props, { root }) {
     //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
-    if (document.readyState !== "complete") {
-      root.$store.dispatch("togLoading", { loadingStatus: true });
-    }
+
+    onBeforeMount(async () => {
+      if (document.readyState !== "complete") {
+        root.$store.dispatch("togLoading", { loadingStatus: true });
+      }
+    });
 
     onMounted(() => {
       window.onload = function () {
@@ -97,7 +102,7 @@ export default defineComponent({
     const name = ref("");
     const nameRules = reactive([
       (v) => !!v || "Name is required",
-      (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
+      (v) => (v && v.length <= 30) || "Name must be less than 30 characters",
     ]);
     const select = ref(null);
     //later move those types of animals to one file and read them from it for all
@@ -119,13 +124,13 @@ export default defineComponent({
       }
     };
 
-    const reset = () => {
-      myForm.value.reset();
-    };
-
-    const resetValidation = () => {
-      myForm.value.resetValidation();
-    };
+    // const reset = () => {
+    //   myForm.value.reset();
+    // };
+    //
+    // const resetValidation = () => {
+    //   myForm.value.resetValidation();
+    // };
 
     const addAnimal = async () => {
       root.$store.dispatch("togLoading", { loadingStatus: true });
@@ -179,8 +184,8 @@ export default defineComponent({
       select,
       items,
       validate,
-      reset,
-      resetValidation,
+      // reset,
+      // resetValidation,
       moveToAnimalDetails,
     };
   },
@@ -188,11 +193,24 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.hide {
+  display: none;
+}
+
 .v-card {
   width: 100%;
   margin: 15px auto;
   overflow: scroll;
 }
+
+.btn-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+//.v-btn--disabled {
+//  display: none !important;
+//}
 
 .v-card__actions {
   flex-direction: column;

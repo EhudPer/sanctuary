@@ -99,7 +99,7 @@
             color="info"
             @click="switchHandler"
             width="100%"
-            max-width="198"
+            max-width="130"
           >
             <!--          Switch to Register-->
             <!--          Switch to {{ isLogin ? "register" : "login" }}-->
@@ -133,6 +133,7 @@
 
 import {
   defineComponent,
+  onBeforeMount,
   onMounted,
   reactive,
   ref,
@@ -146,9 +147,11 @@ export default defineComponent({
   },
   setup(props, { root }) {
     //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
-    if (document.readyState !== "complete") {
-      root.$store.dispatch("togLoading", { loadingStatus: true });
-    }
+    onBeforeMount(async () => {
+      if (document.readyState !== "complete") {
+        root.$store.dispatch("togLoading", { loadingStatus: true });
+      }
+    });
 
     onMounted(() => {
       window.onload = function () {
