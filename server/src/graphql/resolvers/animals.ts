@@ -52,6 +52,8 @@ export const createAnimal = async (root, { input }, { req }) => {
       _id: mongoose.Types.ObjectId(),
       name: input.name,
       type: input.type,
+      // medicineType: input.medicineType,
+      medicineType: input.medicineType ? input.medicineType : null,
       image_url: input.image_url,
       creator: req.userId,
     });
@@ -74,6 +76,10 @@ export const createAnimal = async (root, { input }, { req }) => {
     return {
       ...createdAnimalObject,
       creator: getUserById.bind(this, createdAnimalObject.creator),
+      medicineType:
+        createdAnimalObject.medicineType !== null
+          ? createdAnimalObject.medicineType
+          : "",
     };
   } catch (error) {
     throw error;
@@ -87,10 +93,14 @@ export const updateAnimal = async (root, { _id, input }, { req }) => {
   try {
     const animalToUpdate = await AnimalModel.findOne({ _id });
     const animalToUpdateObject = animalToUpdate.toObject();
+    const medicineType = input.medicineType ? input.medicineType : null;
     const inputWithCreator = {
       ...input,
+      medicineType,
       creator: animalToUpdateObject.creator,
     };
+
+    console.log("medicinetype", medicineType);
     const updatedAnimal = await AnimalModel.findOneAndUpdate(
       { _id },
       inputWithCreator
@@ -98,6 +108,9 @@ export const updateAnimal = async (root, { _id, input }, { req }) => {
     return {
       ...updatedAnimal.toObject(),
       creator: getUserById.bind(this, updatedAnimal.toObject().creator),
+      medicineType: updatedAnimal.toObject().medicineType
+        ? updatedAnimal.toObject().medicineType
+        : null,
     };
   } catch (error) {
     throw error;

@@ -59,7 +59,7 @@ export const createUser = async (root, { input }) => {
       return {
         userId: createdUser.toObject()._id,
         token,
-        tokenExpiration: 720,
+        tokenExpiration: 1000,
       };
     }
   } catch (error) {
@@ -107,7 +107,7 @@ export const login = async (root, { input }) => {
         return {
           userId: user.toObject()._id,
           token,
-          tokenExpiration: 720,
+          tokenExpiration: 1000,
         };
       } else {
         throw new Error(wrongCredentialsErrorMessage);
