@@ -34,6 +34,18 @@
           label="Medicine Type"
         ></v-select>
 
+        <v-text-field
+          v-model="animalDosage"
+          :rules="[
+            (v) =>
+              (v >= 1 && !isNaN(v)) ||
+              v === '' ||
+              'Dosage must be a NUMBER that is 1 or greater',
+          ]"
+          label="Dosage"
+          type="number"
+        ></v-text-field>
+
         <div class="btn-container">
           <v-btn
             v-if="valid && animalName !== '' && animalType !== ''"
@@ -103,6 +115,7 @@ export default defineComponent({
     const animalName = ref("");
     const animalType = ref("");
     const animalMedicineType = ref("");
+    const animalDosage = ref("");
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -111,6 +124,11 @@ export default defineComponent({
       (v) => !!v || "Name is required",
       (v) => (v && v.length <= 30) || "Name must be less than 30 characters",
     ]);
+
+    // const dosageRules = reactive([
+    //   // (v) => !!v || "Name is required",
+    //   // (v) => (v && v.length <= 30) || "Name must be less than 30 characters",
+    // ]);
     // const select = ref(null);
     //later move those types of animals to one file and read them from it for all
     //the places needed with the types list like the select box etc.
@@ -155,6 +173,12 @@ export default defineComponent({
         name: animalName.value,
         type: animalType.value,
         medicineType: animalMedicineType.value,
+        dosage:
+          animalDosage.value &&
+          animalDosage.value !== 0 &&
+          animalDosage.value !== ""
+            ? +animalDosage.value
+            : 0,
 
         //For now it's always null and when loading animal it will check and see that it's null so it will load default
         // image by animal type
@@ -196,10 +220,12 @@ export default defineComponent({
       animalName,
       animalType,
       animalMedicineType,
+      animalDosage,
       myForm,
       valid,
       name,
       nameRules,
+      // dosageRules,
       // select,
       items,
       medicineTypeItems,

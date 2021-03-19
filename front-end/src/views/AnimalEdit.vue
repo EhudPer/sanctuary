@@ -44,6 +44,13 @@
           clearable
         ></v-select>
 
+        <v-text-field
+          v-model="newAnimalDosage"
+          :rules="[(v) => v >= 1 || v === '' || 'Dosage must be 1 or greater']"
+          label="Dosage"
+          type="number"
+        ></v-text-field>
+
         <div class="btns-container">
           <v-card-actions>
             <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
@@ -159,8 +166,10 @@ export default defineComponent({
       animal.value && animal.value.medicineType
         ? ref(animal.value.medicineType)
         : ref("");
+    const newAnimalDosage =
+      animal.value && animal.value.dosage ? ref(animal.value.dosage) : ref("");
 
-    console.log("newanimalmedicinetype", newAnimalMedicineType);
+    console.log("newAnimaldosage", newAnimalDosage);
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -214,7 +223,13 @@ export default defineComponent({
         medicineType: newAnimalMedicineType.value
           ? newAnimalMedicineType.value
           : "",
-        // : newAnimalMedicineType,
+        // dosage: newAnimalDosage.value ? newAnimalDosage.value : "",
+        dosage:
+          newAnimalDosage.value &&
+          newAnimalDosage.value !== 0 &&
+          newAnimalDosage.value !== ""
+            ? +newAnimalDosage.value
+            : 0,
         image_url: animal.value.image_url ? animal.value.image_url : null,
       };
 
@@ -262,6 +277,7 @@ export default defineComponent({
       newAnimalName,
       newAnimalType,
       newAnimalMedicineType,
+      newAnimalDosage,
       myForm,
       valid,
       name,
