@@ -85,14 +85,16 @@
           <!--        <p v-if="isLogin" class="or-title">Or:</p>-->
           <p v-if="!isLogin" class="or-title">link password:</p>
 
-          <GoogleLogin
-            class="google-signin-btn-wrapper"
-            :params="params"
-            :renderParams="renderParams"
-            :onSuccess="onSuccess"
-            :onFailure="onFailure"
-          ></GoogleLogin>
-
+          <div class="google-btn-and-fixer-container">
+            <div class="google-text-fixer">Sign in with Google</div>
+            <GoogleLogin
+              class="google-signin-btn-wrapper"
+              :params="params"
+              :renderParams="renderParams"
+              :onSuccess="onSuccess"
+              :onFailure="onFailure"
+            ></GoogleLogin>
+          </div>
           <!--        <p class="or-title">Or:</p>-->
           <v-btn
             class="switch-to-register-btn"
@@ -154,7 +156,37 @@ export default defineComponent({
     });
 
     onMounted(() => {
+      // document.getElementById("connected3yap2b3ti7qi").textContent =
+      //   "Sign in with Google";
+      // ("inline-block");
+      console.log(root.$el.querySelector(".abcRioButtonContents span"));
+      console.log(root.$el.querySelector("#app"));
+
+      // // let result = document.evaluate(
+      // //   // '//div[@class="abcRioButtonContentWrapper"]/span[@class="abcRioButtonContents"]/following-sibling::text()[1]',
+      // //   '//span[text()="Signed in with Google"]',
+      // //   document,
+      // //   null,
+      // //   XPathResult.STRING_TYPE
+      // // ).stringValue;
+      //
+      // console.log(result.trim());
+
+      console.log(root.$el);
+      // console.log(root.$el.querySelector("span"));
+      console.log(root.$el.querySelector('[id^="connected"]'));
+      // console.log(document.querySelector(".abcRioButtonContents span"));
+      // console.log(root.$el.querySelector(".abcRioButtonContents span"));
+      // document.querySelector(".abcRioButtonContents span");
+
+      // console.log(root.$el.querySelector("span"));
+      // console.log(root.$el.querySelector('[id^="connected"]'));
+      const spansEls = document.querySelectorAll("span");
+      console.log(spansEls);
+
       window.onload = function () {
+        // console.log(this.$el.querySelector(".abcRioButtonContents span"));
+
         root.$store.dispatch("togLoading", { loadingStatus: false });
       };
     });
@@ -474,6 +506,33 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.google-btn-and-fixer-container {
+  //background: darkgrey;
+  color: gray;
+  width: 100%;
+  max-width: 254px;
+  margin-top: -20px;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  //display: flex;
+  //align-items: center;
+  //height: 0px;
+}
+
+.google-text-fixer {
+  pointer-events: none;
+  position: relative;
+  top: 38px;
+  //left: 80px;
+  left: 40px;
+  z-index: 100;
+  width: 100%;
+  max-width: 200px;
+  background: white;
+}
+
 .page-sub-title {
   //font-size: 1.2rem;
   font-weight: normal;
@@ -523,6 +582,10 @@ form {
 .google-signin-btn-wrapper {
   display: flex;
   justify-content: center;
+
+  //#connected3yap2b3ti7qi {
+  //  display: inline-block;
+  //}
 }
 
 //.or-title {
@@ -539,6 +602,12 @@ form {
   //}
 }
 
+@media only screen and (max-width: 290px) {
+  .google-text-fixer {
+    font-size: 16px;
+  }
+}
+
 @media only screen and (min-width: 395px) {
   .v-card__actions {
     flex-direction: row;
@@ -546,6 +615,11 @@ form {
 }
 
 @media only screen and (min-width: 960px) {
+  .google-btn-and-fixer-container {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
   .btns-container {
     display: flex;
     justify-content: space-between;
