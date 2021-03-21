@@ -42,7 +42,7 @@ exports.createUser = (root, { input }) => tslib_1.__awaiter(void 0, void 0, void
             return {
                 userId: createdUser.toObject()._id,
                 token,
-                tokenExpiration: 720,
+                tokenExpiration: 1000,
             };
         }
     }
@@ -76,7 +76,7 @@ exports.login = (root, { input }) => tslib_1.__awaiter(void 0, void 0, void 0, f
                 return {
                     userId: user.toObject()._id,
                     token,
-                    tokenExpiration: 720,
+                    tokenExpiration: 1000,
                 };
             }
             else {
