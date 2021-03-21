@@ -22,6 +22,9 @@ const getters = {
     return state.animals;
   },
   getAnimalById: (state: any) => (animalId: string) => {
+    console.log("getAnimalsById the id:", animalId);
+    console.log("stateafteraddanimalstore:", state.animals);
+    console.log(state.animals.find((animal: any) => animal._id === animalId));
     return state.animals.find((animal: any) => animal._id === animalId);
   },
 };
@@ -48,6 +51,7 @@ const mutations = {
     const updatedAnimalsState = animalsStateCopy;
 
     state.animals = updatedAnimalsState;
+    console.log("updatedanimalinstore", updatedAnimalsState);
   },
   updateAnimalInStore(state: any, animalToUpdate: object) {
     const animalToUpdateIdx = state.animals.findIndex(
@@ -243,6 +247,8 @@ const actions = {
               _id
               name
               type
+              medicineType
+              dosage
               image_url
             }
           }
@@ -273,6 +279,8 @@ const actions = {
               _id
               name
               type
+              medicineType
+              dosage
               image_url
             }
           }
@@ -281,6 +289,8 @@ const actions = {
           animalInput: {
             name: animalToCreateFields.name,
             type: animalToCreateFields.type,
+            medicineType: animalToCreateFields.medicineType,
+            dosage: animalToCreateFields.dosage,
             image_url: animalToCreateFields.image_url,
           },
         },
@@ -291,8 +301,21 @@ const actions = {
         },
       });
 
-      commit("createAnimalInStore", response.data.createAnimal);
-      return response.data.createAnimal;
+      // commit("createAnimalInStore", response.data.createAnimal);
+      // return response.data.createAnimal;
+      const dosage =
+        response.data.createAnimal.dosage !== 0
+          ? response.data.createAnimal.dosage
+          : "";
+      const createdAnimalWithCorrectDosage = {
+        ...response.data.createAnimal,
+        dosage,
+      };
+      // commit("createAnimalInStore", response.data.createAnimal);
+      commit("createAnimalInStore", createdAnimalWithCorrectDosage);
+
+      // return {response.data.createAnimal, dosage};
+      return createdAnimalWithCorrectDosage;
     } catch (error) {
       throw new Error(error);
     }
@@ -303,6 +326,11 @@ const actions = {
     { updatedAnimalFields }: { updatedAnimalFields: object }
   ) {
     try {
+      console.log(
+        "updatedAnimalFields.medicineType",
+        updatedAnimalFields.medicineType
+      );
+
       const response = await graphqlClient.mutate({
         mutation: gql`
           mutation updateAnimal(
@@ -313,6 +341,8 @@ const actions = {
               _id
               name
               type
+              medicineType
+              dosage
               image_url
             }
           }
@@ -322,6 +352,8 @@ const actions = {
           animalInput: {
             name: updatedAnimalFields.name,
             type: updatedAnimalFields.type,
+            medicineType: updatedAnimalFields.medicineType,
+            dosage: updatedAnimalFields.dosage,
             image_url: updatedAnimalFields.image_url,
           },
         },
@@ -334,8 +366,22 @@ const actions = {
 
       // Trigger the `setAnimal` mutation
       // which is defined above.
-      commit("updateAnimalInStore", response.data.updateAnimal);
-      return response.data.updateAnimal;
+
+      // commit("updateAnimalInStore", response.data.updateAnimal);
+      // return response.data.updateAnimal;
+      const dosage =
+        response.data.updateAnimal.dosage !== 0
+          ? response.data.updateAnimal.dosage
+          : "";
+      const updatedAnimalWithCorrectDosage = {
+        ...response.data.updateAnimal,
+        dosage,
+      };
+      // commit("createAnimalInStore", response.data.createAnimal);
+      commit("updateAnimalInStore", updatedAnimalWithCorrectDosage);
+
+      // return {response.data.createAnimal, dosage};
+      return updatedAnimalWithCorrectDosage;
     } catch (error) {
       throw new Error(error);
     }

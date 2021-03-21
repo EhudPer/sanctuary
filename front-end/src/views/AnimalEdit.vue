@@ -10,17 +10,26 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <!--      <v-img-->
+      <!--        @click="moveToAnimalDetails"-->
+      <!--        :src="-->
+      <!--          animal.image_url-->
+      <!--            ? animal.image_url-->
+      <!--            : require(`@/assets/${animal.type.toLowerCase()}.jpg`)-->
+      <!--        "-->
+      <!--        :style="'cursor: pointer'"-->
+      <!--        alt="Avatar"-->
+      <!--        max-height="500"-->
+      <!--      ></v-img>-->
+
       <v-img
         @click="moveToAnimalDetails"
-        :src="
-          animal.image_url
-            ? animal.image_url
-            : require(`@/assets/${animal.type.toLowerCase()}.jpg`)
-        "
+        :src="require(`@/assets/${newAnimalType.toLowerCase()}.jpg`)"
         :style="'cursor: pointer'"
         alt="Avatar"
         max-height="500"
       ></v-img>
+
       <v-form ref="myForm" v-model="valid" lazy-validation>
         <v-text-field
           v-model="newAnimalName"
@@ -32,20 +41,56 @@
         <v-select
           v-model="newAnimalType"
           :items="items"
-          :rules="[(v) => !!v || 'Type is required']"
-          label="Type"
+          :rules="[(v) => !!v || 'Category is required']"
+          label="Category"
           required
         ></v-select>
-        <v-btn
-          :disabled="!valid"
-          color="success"
-          class="validate-btn"
-          @click="validate"
-          width="100%"
-          max-width="130"
-        >
-          Save
-        </v-btn>
+
+        <v-select
+          v-model="newAnimalMedicineType"
+          :items="medicineTypeItems"
+          label="Medicine Type"
+          clearable
+        ></v-select>
+
+        <v-text-field
+          v-model="newAnimalDosage"
+          :rules="[(v) => v >= 1 || v === '' || 'Dosage must be 1 or greater']"
+          label="Dosage"
+          type="number"
+        ></v-text-field>
+
+        <div class="btns-container">
+          <v-card-actions>
+            <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
+            <!--          Add Animal-->
+            <!--        </v-btn>-->
+            <!--        <v-btn @click="moveToAnimalDetails" text color="success accent-4">-->
+            <!--          Details-->
+            <!--        </v-btn>-->
+            <v-btn
+              v-if="valid && newAnimalName !== '' && newAnimalType !== ''"
+              color="success"
+              class="validate-btn"
+              @click="validate"
+              width="100%"
+              max-width="130"
+            >
+              Save
+            </v-btn>
+
+            <v-btn @click="deleteAnimalClicked" color="error accent-4">
+              Delete
+            </v-btn>
+            <!--        <v-spacer></v-spacer>-->
+            <!--        <v-btn icon>-->
+            <!--          <v-icon>mdi-heart</v-icon>-->
+            <!--        </v-btn>-->
+            <!--        <v-btn icon>-->
+            <!--          <v-icon>mdi-share-variant</v-icon>-->
+            <!--        </v-btn>-->
+          </v-card-actions>
+        </div>
         <!--        <v-btn-->
         <!--          color="error"-->
         <!--          class="reset-form-btn"-->
@@ -65,24 +110,6 @@
         <!--          Reset Validation-->
         <!--        </v-btn>-->
       </v-form>
-      <v-card-actions>
-        <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
-        <!--          Add Animal-->
-        <!--        </v-btn>-->
-        <!--        <v-btn @click="moveToAnimalDetails" text color="success accent-4">-->
-        <!--          Details-->
-        <!--        </v-btn>-->
-        <v-btn @click="deleteAnimalClicked" color="error accent-4">
-          Delete
-        </v-btn>
-        <!--        <v-spacer></v-spacer>-->
-        <!--        <v-btn icon>-->
-        <!--          <v-icon>mdi-heart</v-icon>-->
-        <!--        </v-btn>-->
-        <!--        <v-btn icon>-->
-        <!--          <v-icon>mdi-share-variant</v-icon>-->
-        <!--        </v-btn>-->
-      </v-card-actions>
     </v-card>
   </div>
 </template>
@@ -93,6 +120,7 @@
 import {
   computed,
   defineComponent,
+  onBeforeMount,
   onMounted,
   reactive,
   ref,
@@ -103,28 +131,54 @@ export default defineComponent({
   name: "AnimalEdit",
   setup(props, { root }) {
     //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
-    if (document.readyState !== "complete") {
-      root.$store.dispatch("togLoading", { loadingStatus: true });
 
-      const isAnimals = root.$store.getters.getAnimals.length !== 0;
-      if (!isAnimals) {
-        root.$store.dispatch("fetchAnimals");
+    onBeforeMount(async () => {
+      try {
+        // await root.$store.dispatch("fetchAnimals");
+        const isAnimals = root.$store.getters.getAnimals.length !== 0;
+        if (!isAnimals) {
+          await root.$store.dispatch("fetchAnimals");
+        }
+        if (document.readyState !== "complete") {
+          root.$store.dispatch("togLoading", { loadingStatus: true });
+        }
+        // const isAnimals = root.$store.getters.getAnimals.length !== 0;
+        // if (!isAnimals) {
+        // await root.$store.dispatch("fetchAnimals");
+        // }
+        // }
+      } catch (error) {
+        console.log(error);
       }
-    }
+    });
 
     onMounted(() => {
-      window.onload = function () {
+      window.onload = async () => {
         root.$store.dispatch("togLoading", { loadingStatus: false });
       };
     });
 
     const animalId = root.$route.params.animalId;
+    console.log("animalId", animalId);
     const animal = computed(() => root.$store.getters.getAnimalById(animalId));
-
+    console.log("animal", animal);
+    if (!animal.value) {
+      console.log("");
+    }
     //Later try to set that when the edit page is loaded that the values of the controls will not be empty -
     // but with the current animal's details from the db - all the time, even on refresh or loading from url directly.
+
+    console.log("animal.value", animal.value);
     const newAnimalName = animal.value ? ref(animal.value.name) : ref("");
     const newAnimalType = animal.value ? ref(animal.value.type) : ref("");
+    const newAnimalMedicineType =
+      animal.value && animal.value.medicineType
+        ? ref(animal.value.medicineType)
+        : ref("");
+    const newAnimalDosage =
+      animal.value && animal.value.dosage ? ref(animal.value.dosage) : ref("");
+
+    console.log("newAnimaldosage", newAnimalDosage);
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -141,6 +195,16 @@ export default defineComponent({
       "Cow",
       "Horse",
       "Donkey",
+      "Other",
+    ]);
+
+    const medicineTypeItems = reactive([
+      "Convenia",
+      "Superflex",
+      "Tsistophan",
+      "Cinolux",
+      "Doxilin",
+      "Activile",
       "Other",
     ]);
 
@@ -165,6 +229,16 @@ export default defineComponent({
         _id: animalId,
         name: newAnimalName.value ? newAnimalName.value : newAnimalName,
         type: newAnimalType.value ? newAnimalType.value : newAnimalType,
+        medicineType: newAnimalMedicineType.value
+          ? newAnimalMedicineType.value
+          : "",
+        // dosage: newAnimalDosage.value ? newAnimalDosage.value : "",
+        dosage:
+          newAnimalDosage.value &&
+          newAnimalDosage.value !== 0 &&
+          newAnimalDosage.value !== ""
+            ? +newAnimalDosage.value
+            : 0,
         image_url: animal.value.image_url ? animal.value.image_url : null,
       };
 
@@ -211,12 +285,15 @@ export default defineComponent({
       animal,
       newAnimalName,
       newAnimalType,
+      newAnimalMedicineType,
+      newAnimalDosage,
       myForm,
       valid,
       name,
       nameRules,
       select,
       items,
+      medicineTypeItems,
       validate,
       reset,
       resetValidation,
@@ -235,36 +312,40 @@ export default defineComponent({
   overflow: scroll;
 }
 
-.v-card__actions {
-  flex-direction: column;
-}
+//.v-card__actions {
+//  flex-direction: column;
+//}
 
 form {
   padding: 0 8px;
 
   //.reset-form-btn,
   //.reset-validation-btn
-  .validate-btn {
-    margin-top: 10px;
-  }
-}
-
-@media only screen and (min-width: 296px) {
-  .validate-btn {
-    margin-right: 3px;
+  .btns-container {
+    display: flex;
   }
 
-  //.reset-form-btn {
-  //  margin-left: 3px;
+  //.validate-btn {
+  //  margin-top: 10px;
   //}
 }
 
-@media only screen and (min-width: 395px) {
-  .v-card__actions {
-    flex-direction: row;
-    //flex-wrap: wrap;
-  }
-}
+//@media only screen and (min-width: 296px) {
+//  .validate-btn {
+//    margin-right: 3px;
+//  }
+//
+//  //.reset-form-btn {
+//  //  margin-left: 3px;
+//  //}
+//}
+
+//@media only screen and (min-width: 395px) {
+//  .v-card__actions {
+//    flex-direction: row;
+//    //flex-wrap: wrap;
+//  }
+//}
 
 //@media only screen and (min-width: 480px) {
 //  .reset-form-btn {

@@ -2,28 +2,28 @@
   <div>
     <!--    <h1 class="page-title">{{ isLogin ? "Login" : "Register" }}</h1>-->
     <v-card max-width="1032" class="mx-auto">
-      <v-list-item>
-        <v-list-item-avatar color="grey"></v-list-item-avatar>
-      </v-list-item>
+      <!--      <v-list-item>-->
+      <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
+      <!--      </v-list-item>-->
 
-      <v-img
-        v-if="isLogin"
-        src="@/assets/login.jpg"
-        alt="Avatar"
-        max-height="150"
-      ></v-img>
+      <!--      <v-img-->
+      <!--        v-if="isLogin"-->
+      <!--        src="@/assets/login.jpg"-->
+      <!--        alt="Avatar"-->
+      <!--        max-height="150"-->
+      <!--      ></v-img>-->
 
-      <v-img
-        v-else
-        src="@/assets/register.jpg"
-        alt="Avatar"
-        max-height="150"
-      ></v-img>
+      <!--      <v-img-->
+      <!--        v-else-->
+      <!--        src="@/assets/register.jpg"-->
+      <!--        alt="Avatar"-->
+      <!--        max-height="150"-->
+      <!--      ></v-img>-->
 
       <v-form ref="myForm" v-model="valid" class="mb-4" lazy-validation>
         <v-text-field
           v-model="userEmail"
-          :counter="30"
+          :counter="isLogin ? null : '30'"
           :rules="emailRules"
           type="email"
           label="Email"
@@ -31,8 +31,9 @@
         ></v-text-field>
 
         <v-text-field
+          @keyup.enter="submitHandler"
           v-model="userPassword"
-          :counter="30"
+          :counter="isLogin ? null : '30'"
           :rules="passwordRules"
           type="password"
           label="Password"
@@ -42,73 +43,87 @@
         <v-text-field
           v-if="!isLogin"
           v-model="reUserPassword"
-          :counter="30"
+          :counter="isLogin ? null : '30'"
           :rules="rePasswordRules"
           type="password"
           label="Confirm password"
           required
         ></v-text-field>
 
-        <v-btn
-          :disabled="!valid"
-          color="success"
-          class="auth-btn"
-          @click="submitHandler"
-          width="100%"
-          max-width="130"
-        >
-          {{ isLogin ? "Login" : "Register" }}
-        </v-btn>
+        <div class="btns-container">
+          <v-btn
+            :disabled="!valid"
+            color="success"
+            class="auth-btn"
+            @click="submitHandler"
+            width="100%"
+            max-width="130"
+          >
+            {{ isLogin ? "Sign in" : "Sign up" }}
+          </v-btn>
 
-        <!--        <v-btn-->
-        <!--          color="error"-->
-        <!--          class="reset-form-btn"-->
-        <!--          @click="reset"-->
-        <!--          width="100%"-->
-        <!--          max-width="130"-->
-        <!--        >-->
-        <!--          Reset Form-->
-        <!--        </v-btn>-->
+          <!--        <v-btn-->
+          <!--          color="error"-->
+          <!--          class="reset-form-btn"-->
+          <!--          @click="reset"-->
+          <!--          width="100%"-->
+          <!--          max-width="130"-->
+          <!--        >-->
+          <!--          Reset Form-->
+          <!--        </v-btn>-->
 
-        <!--        <v-btn-->
-        <!--          class="reset-validation-btn"-->
-        <!--          color="warning"-->
-        <!--          @click="resetValidation"-->
-        <!--          width="100%"-->
-        <!--          max-width="178"-->
-        <!--        >-->
-        <!--          Reset Validation-->
-        <!--        </v-btn>-->
+          <!--        <v-btn-->
+          <!--          class="reset-validation-btn"-->
+          <!--          color="warning"-->
+          <!--          @click="resetValidation"-->
+          <!--          width="100%"-->
+          <!--          max-width="178"-->
+          <!--        >-->
+          <!--          Reset Validation-->
+          <!--        </v-btn>-->
 
-        <p v-if="isLogin" class="or-title">Or:</p>
-        <p v-else class="or-title">Or link password:</p>
+          <!--        <p v-if="isLogin" class="or-title">Or:</p>-->
+          <p v-if="!isLogin" class="or-title">link password:</p>
 
-        <GoogleLogin
-          class="google-signin-btn-wrapper"
-          :params="params"
-          :renderParams="renderParams"
-          :onSuccess="onSuccess"
-          :onFailure="onFailure"
-        ></GoogleLogin>
+          <div class="google-btn-and-fixer-container">
+            <div class="google-text-fixer">Sign in with Google</div>
+            <GoogleLogin
+              class="google-signin-btn-wrapper"
+              :params="params"
+              :renderParams="renderParams"
+              :onSuccess="onSuccess"
+              :onFailure="onFailure"
+            ></GoogleLogin>
+          </div>
+          <!--        <p class="or-title">Or:</p>-->
+          <v-btn
+            class="switch-to-register-btn"
+            color="info"
+            @click="switchHandler"
+            width="100%"
+            max-width="130"
+          >
+            <!--          Switch to Register-->
+            <!--          Switch to {{ isLogin ? "register" : "login" }}-->
+            {{ isLogin ? "sign up" : "sign in" }}
+          </v-btn>
 
-        <p class="or-title">Or:</p>
-        <v-btn
-          class="switch-to-register-btn"
-          color="info"
-          @click="switchHandler"
-          width="100%"
-          max-width="198"
-        >
-          <!--          Switch to Register-->
-          Switch to {{ isLogin ? "register" : "login" }}
-        </v-btn>
-
-        <div v-if="isLogin">
-          <p class="page-sub-title">For demo use only:</p>
-          <p class="page-sub-title">
-            <span>Email: demo@demo.com</span>,
-            <span>Password: demouser</span>
-          </p>
+          <div v-if="isLogin">
+            <!--          <p class="page-sub-title">Try our demo account</p>-->
+            <!--          <p class="page-sub-title">-->
+            <!--            <span>Email: demo@demo.com</span>,-->
+            <!--            <span>Password: demouser</span>-->
+            <!--          </p>-->
+            <v-btn
+              class="demo-account-btn"
+              color="brown"
+              @click="demoHandler"
+              width="100%"
+              max-width="224"
+            >
+              Try our demo account
+            </v-btn>
+          </div>
         </div>
       </v-form>
     </v-card>
@@ -120,6 +135,7 @@
 
 import {
   defineComponent,
+  onBeforeMount,
   onMounted,
   reactive,
   ref,
@@ -133,12 +149,44 @@ export default defineComponent({
   },
   setup(props, { root }) {
     //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
-    if (document.readyState !== "complete") {
-      root.$store.dispatch("togLoading", { loadingStatus: true });
-    }
+    onBeforeMount(async () => {
+      if (document.readyState !== "complete") {
+        root.$store.dispatch("togLoading", { loadingStatus: true });
+      }
+    });
 
     onMounted(() => {
+      // document.getElementById("connected3yap2b3ti7qi").textContent =
+      //   "Sign in with Google";
+      // ("inline-block");
+      console.log(root.$el.querySelector(".abcRioButtonContents span"));
+      console.log(root.$el.querySelector("#app"));
+
+      // // let result = document.evaluate(
+      // //   // '//div[@class="abcRioButtonContentWrapper"]/span[@class="abcRioButtonContents"]/following-sibling::text()[1]',
+      // //   '//span[text()="Signed in with Google"]',
+      // //   document,
+      // //   null,
+      // //   XPathResult.STRING_TYPE
+      // // ).stringValue;
+      //
+      // console.log(result.trim());
+
+      console.log(root.$el);
+      // console.log(root.$el.querySelector("span"));
+      console.log(root.$el.querySelector('[id^="connected"]'));
+      // console.log(document.querySelector(".abcRioButtonContents span"));
+      // console.log(root.$el.querySelector(".abcRioButtonContents span"));
+      // document.querySelector(".abcRioButtonContents span");
+
+      // console.log(root.$el.querySelector("span"));
+      // console.log(root.$el.querySelector('[id^="connected"]'));
+      const spansEls = document.querySelectorAll("span");
+      console.log(spansEls);
+
       window.onload = function () {
+        // console.log(this.$el.querySelector(".abcRioButtonContents span"));
+
         root.$store.dispatch("togLoading", { loadingStatus: false });
       };
     });
@@ -185,7 +233,11 @@ export default defineComponent({
     });
 
     const onSuccess = async (googleUser) => {
-      const token = googleUser.uc.id_token;
+      console.log("googleUser.uc", googleUser.uc);
+      console.log("googleUser", googleUser);
+      const token = googleUser.uc
+        ? googleUser.uc.id_token
+        : googleUser.tc.id_token;
 
       //try moving the flow all the way to db just with using the ggogle token and the clip
       // so i can crEATE the user or get it from the db and return a token anyhow to local storage a
@@ -254,13 +306,22 @@ export default defineComponent({
       root.$store.dispatch("togLoading", { loadingStatus: false });
     };
 
-    const onFailure = () => {
+    const onFailure = (error) => {
       console.log("error: ");
+      console.log(error);
     };
 
     //End - Google login area
 
-    const submitHandler = () => {
+    const submitHandler = (event) => {
+      console.log(event);
+      if (
+        event.keyboardEvent &&
+        event.keyboardEvent.key === "Enter" &&
+        !isLogin.value
+      ) {
+        return;
+      }
       //Make a new service file for importing the functions here from the file for more separation and order.
       const valid = myForm.value.validate();
       if (valid) {
@@ -279,16 +340,28 @@ export default defineComponent({
       }
     };
 
-    const reset = () => {
-      myForm.value.reset();
-    };
+    // const reset = () => {
+    //   myForm.value.reset();
+    // };
 
-    const resetValidation = () => {
-      myForm.value.resetValidation();
-    };
+    // const resetValidation = () => {
+    //   myForm.value.resetValidation();
+    // };
 
     const switchHandler = () => {
       isLogin.value = !isLogin.value;
+      if (!isLogin.value) {
+        if (userEmail.value.indexOf("demo") !== -1) {
+          userEmail.value = "";
+          userPassword.value = "";
+          myForm.value.reset();
+        }
+      }
+    };
+
+    const demoHandler = () => {
+      userEmail.value = "demo@demo.com";
+      userPassword.value = "demouser";
     };
 
     const loginUser = async (userToAuthFields) => {
@@ -421,9 +494,10 @@ export default defineComponent({
       submitHandler,
       loginUser,
       createUser,
-      reset,
-      resetValidation,
+      // reset,
+      // resetValidation,
       switchHandler,
+      demoHandler,
       // updateLoginState,
       moveToAnimalsList,
     };
@@ -432,6 +506,33 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.google-btn-and-fixer-container {
+  //background: darkgrey;
+  color: gray;
+  width: 100%;
+  max-width: 254px;
+  margin-top: -20px;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  //display: flex;
+  //align-items: center;
+  //height: 0px;
+}
+
+.google-text-fixer {
+  pointer-events: none;
+  position: relative;
+  top: 38px;
+  //left: 80px;
+  left: 40px;
+  z-index: 100;
+  width: 100%;
+  max-width: 200px;
+  background: white;
+}
+
 .page-sub-title {
   //font-size: 1.2rem;
   font-weight: normal;
@@ -454,6 +555,13 @@ export default defineComponent({
 form {
   padding: 0 8px;
 
+  .btns-container {
+    button,
+    .google-signin-btn-wrapper {
+      margin-bottom: 20px;
+    }
+  }
+
   .auth-btn,
   //.reset-form-btn,
   //.reset-validation-btn,
@@ -467,14 +575,22 @@ form {
   }
 }
 
+.demo-account-btn {
+  color: white;
+}
+
 .google-signin-btn-wrapper {
   display: flex;
   justify-content: center;
+
+  //#connected3yap2b3ti7qi {
+  //  display: inline-block;
+  //}
 }
 
-.or-title {
-  margin-top: 10px;
-}
+//.or-title {
+//  margin-top: 10px;
+//}
 
 @media only screen and (min-width: 296px) {
   .auth-btn {
@@ -486,9 +602,45 @@ form {
   //}
 }
 
+@media only screen and (max-width: 290px) {
+  .google-text-fixer {
+    font-size: 16px;
+  }
+}
+
 @media only screen and (min-width: 395px) {
   .v-card__actions {
     flex-direction: row;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .google-btn-and-fixer-container {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
+  .btns-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 0;
+
+    .auth-btn,
+    .switch-to-register-btn,
+    google-signin-btn-wrapper,
+    demo-account-btn {
+      margin-top: 0px;
+      margin-right: 0px;
+      margin-left: 0;
+    }
+  }
+}
+
+@media only screen and (min-width: 1025px) {
+  .btns-container {
+    padding: 20px;
   }
 }
 
