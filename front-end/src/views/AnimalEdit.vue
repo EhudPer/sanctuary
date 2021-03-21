@@ -10,17 +10,26 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <!--      <v-img-->
+      <!--        @click="moveToAnimalDetails"-->
+      <!--        :src="-->
+      <!--          animal.image_url-->
+      <!--            ? animal.image_url-->
+      <!--            : require(`@/assets/${animal.type.toLowerCase()}.jpg`)-->
+      <!--        "-->
+      <!--        :style="'cursor: pointer'"-->
+      <!--        alt="Avatar"-->
+      <!--        max-height="500"-->
+      <!--      ></v-img>-->
+
       <v-img
         @click="moveToAnimalDetails"
-        :src="
-          animal.image_url
-            ? animal.image_url
-            : require(`@/assets/${animal.type.toLowerCase()}.jpg`)
-        "
+        :src="require(`@/assets/${newAnimalType.toLowerCase()}.jpg`)"
         :style="'cursor: pointer'"
         alt="Avatar"
         max-height="500"
       ></v-img>
+
       <v-form ref="myForm" v-model="valid" lazy-validation>
         <v-text-field
           v-model="newAnimalName"
@@ -32,8 +41,8 @@
         <v-select
           v-model="newAnimalType"
           :items="items"
-          :rules="[(v) => !!v || 'Type is required']"
-          label="Type"
+          :rules="[(v) => !!v || 'Category is required']"
+          label="Category"
           required
         ></v-select>
 

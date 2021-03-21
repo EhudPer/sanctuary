@@ -5,8 +5,15 @@
       <v-list-item>
         <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
       </v-list-item>
+      <!--      <v-img-->
+      <!--        src="../assets/add-animal.jpg"-->
+      <!--        alt="Avatar"-->
+      <!--        max-height="500"-->
+      <!--      ></v-img>-->
+
       <v-img
-        src="../assets/add-animal.jpg"
+        v-if="animalType"
+        :src="require(`@/assets/${animalType.toLowerCase()}.jpg`)"
         alt="Avatar"
         max-height="500"
       ></v-img>
@@ -23,8 +30,8 @@
         <v-select
           v-model="animalType"
           :items="items"
-          :rules="[(v) => !!v || 'Type is required']"
-          label="Type"
+          :rules="[(v) => !!v || 'Category is required']"
+          label="Category"
           required
         ></v-select>
 
@@ -188,12 +195,13 @@ export default defineComponent({
       };
 
       try {
-        const result = await root.$store.dispatch({
+        await root.$store.dispatch({
           type: "createAnimal",
           animalToCreateFields,
         });
 
-        moveToAnimalDetails(result._id.toString());
+        // moveToAnimalDetails(result._id.toString());
+        moveToAnimalsList();
       } catch (error) {
         root.$swal.fire({
           title: "Error: animal not created!",
@@ -209,10 +217,15 @@ export default defineComponent({
     };
 
     //use it from a global function later cause it's in more than one component.
-    const moveToAnimalDetails = (animalId) => {
+    // const moveToAnimalDetails = (animalId) => {
+    //   root.$router.push({
+    //     name: "AnimalDetails",
+    //     params: { animalId },
+    //   });
+    // };
+    const moveToAnimalsList = () => {
       root.$router.push({
-        name: "AnimalDetails",
-        params: { animalId },
+        name: "AnimalsList",
       });
     };
 
@@ -232,7 +245,7 @@ export default defineComponent({
       validate,
       // reset,
       // resetValidation,
-      moveToAnimalDetails,
+      moveToAnimalsList,
     };
   },
 });

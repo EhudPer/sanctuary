@@ -25,7 +25,7 @@
         </v-btn>
         <v-btn v-if="!token" text to="/auth">
           <span class="mr-2">
-            <router-link to="/auth">Auth</router-link>
+            <router-link to="/auth">Sign in</router-link>
           </span>
         </v-btn>
       </v-toolbar-items>
@@ -56,7 +56,7 @@
           </v-list-item>
           <v-list-item v-if="!token" to="/auth">
             <v-list-item-title
-              ><router-link to="/auth">Auth</router-link></v-list-item-title
+              ><router-link to="/auth">Sign in</router-link></v-list-item-title
             >
           </v-list-item>
           <v-list-item v-if="token" @click="logoutHandler" to="/auth">
