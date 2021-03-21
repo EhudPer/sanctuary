@@ -24,11 +24,19 @@
         {{ animal.type }}
       </v-card-text>
 
+      <v-card-text v-if="animal.medicineType">
+        Medicine Type: {{ animal.medicineType }}
+      </v-card-text>
+
+      <v-card-text v-if="animal.dosage">
+        Dosage: {{ animal.dosage }}
+      </v-card-text>
+
       <v-card-actions>
         <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
         <!--          Add Animal-->
         <!--        </v-btn>-->
-        <v-btn @click="moveToAnimalEdit" color="warning accent-4"> Edit </v-btn>
+        <v-btn @click="moveToAnimalEdit" color="yellow accent-4"> Edit </v-btn>
         <v-btn @click="deleteAnimalClicked" color="error accent-4">
           Delete
         </v-btn>
@@ -111,6 +119,10 @@ export default defineComponent({
 
 .v-card__text {
   font-size: 1.2rem;
+}
+
+.v-btn {
+  color: white;
 }
 
 .v-card__actions {

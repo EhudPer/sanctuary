@@ -1,8 +1,11 @@
 <template>
   <div class="home-page">
     <!--    <h1 class="page-title">Welcome to Sanctuary</h1>-->
-    <img src="../assets/home.jpeg" alt="Home" />
-    <p>This is an alpha POC app for helping rescued animals sanctuary farms</p>
+    <p>
+      <b
+        >This is an alpha POC app for helping rescued animals sanctuary farms</b
+      >
+    </p>
     <p>Author: Ehud Perlman</p>
     <v-img src="../assets/profile.jpg" class="profile" max-height="150"></v-img>
     <p>Email: ehudperlman83@gmail.com</p>
@@ -11,6 +14,7 @@
       Project main technologies: Javascript, Nodejs, Express, Graphql, Mongodb,
       Mongoose, Apollo, Vue, Vuex, Scss
     </p>
+    <img src="../assets/home.jpeg" alt="Home" />
   </div>
 </template>
 

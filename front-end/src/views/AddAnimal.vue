@@ -5,8 +5,15 @@
       <v-list-item>
         <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
       </v-list-item>
+      <!--      <v-img-->
+      <!--        src="../assets/add-animal.jpg"-->
+      <!--        alt="Avatar"-->
+      <!--        max-height="500"-->
+      <!--      ></v-img>-->
+
       <v-img
-        src="../assets/add-animal.jpg"
+        v-if="animalType"
+        :src="require(`@/assets/${animalType.toLowerCase()}.jpg`)"
         alt="Avatar"
         max-height="500"
       ></v-img>
@@ -14,7 +21,7 @@
       <v-form ref="myForm" v-model="valid" class="mb-4" lazy-validation>
         <v-text-field
           v-model="animalName"
-          :counter="10"
+          :counter="30"
           :rules="nameRules"
           label="Name"
           required
@@ -23,22 +30,41 @@
         <v-select
           v-model="animalType"
           :items="items"
-          :rules="[(v) => !!v || 'Type is required']"
-          label="Type"
+          :rules="[(v) => !!v || 'Category is required']"
+          label="Category"
           required
         ></v-select>
 
-        <v-btn
-          :disabled="!valid"
-          color="success"
-          class="validate-btn"
-          @click="validate"
-          width="100%"
-          max-width="130"
-        >
-          Add
-        </v-btn>
+        <v-select
+          v-model="animalMedicineType"
+          :items="medicineTypeItems"
+          label="Medicine Type"
+        ></v-select>
 
+        <v-text-field
+          v-model="animalDosage"
+          :rules="[
+            (v) =>
+              (v >= 1 && !isNaN(v)) ||
+              v === '' ||
+              'Dosage must be a NUMBER that is 1 or greater',
+          ]"
+          label="Dosage"
+          type="number"
+        ></v-text-field>
+
+        <div class="btn-container">
+          <v-btn
+            v-if="valid && animalName !== '' && animalType !== ''"
+            color="success"
+            class="validate-btn"
+            @click="validate"
+            width="100%"
+            max-width="130"
+          >
+            Add
+          </v-btn>
+        </div>
         <!--        <v-btn-->
         <!--          color="error"-->
         <!--          class="reset-form-btn"-->
@@ -68,6 +94,7 @@
 
 import {
   defineComponent,
+  onBeforeMount,
   onMounted,
   reactive,
   ref,
@@ -77,9 +104,12 @@ export default defineComponent({
   name: "AddAnimal",
   setup(props, { root }) {
     //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
-    if (document.readyState !== "complete") {
-      root.$store.dispatch("togLoading", { loadingStatus: true });
-    }
+
+    onBeforeMount(async () => {
+      if (document.readyState !== "complete") {
+        root.$store.dispatch("togLoading", { loadingStatus: true });
+      }
+    });
 
     onMounted(() => {
       window.onload = function () {
@@ -91,15 +121,22 @@ export default defineComponent({
     // but with the current animal's details from the db - all the time, even on refresh or loading from url directly.
     const animalName = ref("");
     const animalType = ref("");
+    const animalMedicineType = ref("");
+    const animalDosage = ref("");
 
     const myForm = ref(null);
     const valid = ref(true);
     const name = ref("");
     const nameRules = reactive([
       (v) => !!v || "Name is required",
-      (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
+      (v) => (v && v.length <= 30) || "Name must be less than 30 characters",
     ]);
-    const select = ref(null);
+
+    // const dosageRules = reactive([
+    //   // (v) => !!v || "Name is required",
+    //   // (v) => (v && v.length <= 30) || "Name must be less than 30 characters",
+    // ]);
+    // const select = ref(null);
     //later move those types of animals to one file and read them from it for all
     //the places needed with the types list like the select box etc.
     const items = reactive([
@@ -112,6 +149,16 @@ export default defineComponent({
       "Other",
     ]);
 
+    const medicineTypeItems = reactive([
+      "Convenia",
+      "Superflex",
+      "Tsistophan",
+      "Cinolux",
+      "Doxilin",
+      "Activile",
+      "Other",
+    ]);
+
     const validate = () => {
       const valid = myForm.value.validate();
       if (valid) {
@@ -119,19 +166,26 @@ export default defineComponent({
       }
     };
 
-    const reset = () => {
-      myForm.value.reset();
-    };
-
-    const resetValidation = () => {
-      myForm.value.resetValidation();
-    };
+    // const reset = () => {
+    //   myForm.value.reset();
+    // };
+    //
+    // const resetValidation = () => {
+    //   myForm.value.resetValidation();
+    // };
 
     const addAnimal = async () => {
       root.$store.dispatch("togLoading", { loadingStatus: true });
       const animalToCreateFields = {
         name: animalName.value,
         type: animalType.value,
+        medicineType: animalMedicineType.value,
+        dosage:
+          animalDosage.value &&
+          animalDosage.value !== 0 &&
+          animalDosage.value !== ""
+            ? +animalDosage.value
+            : 0,
 
         //For now it's always null and when loading animal it will check and see that it's null so it will load default
         // image by animal type
@@ -141,12 +195,13 @@ export default defineComponent({
       };
 
       try {
-        const result = await root.$store.dispatch({
+        await root.$store.dispatch({
           type: "createAnimal",
           animalToCreateFields,
         });
 
-        moveToAnimalDetails(result._id.toString());
+        // moveToAnimalDetails(result._id.toString());
+        moveToAnimalsList();
       } catch (error) {
         root.$swal.fire({
           title: "Error: animal not created!",
@@ -162,37 +217,59 @@ export default defineComponent({
     };
 
     //use it from a global function later cause it's in more than one component.
-    const moveToAnimalDetails = (animalId) => {
+    // const moveToAnimalDetails = (animalId) => {
+    //   root.$router.push({
+    //     name: "AnimalDetails",
+    //     params: { animalId },
+    //   });
+    // };
+    const moveToAnimalsList = () => {
       root.$router.push({
-        name: "AnimalDetails",
-        params: { animalId },
+        name: "AnimalsList",
       });
     };
 
     return {
       animalName,
       animalType,
+      animalMedicineType,
+      animalDosage,
       myForm,
       valid,
       name,
       nameRules,
-      select,
+      // dosageRules,
+      // select,
       items,
+      medicineTypeItems,
       validate,
-      reset,
-      resetValidation,
-      moveToAnimalDetails,
+      // reset,
+      // resetValidation,
+      moveToAnimalsList,
     };
   },
 });
 </script>
 
 <style lang="scss" scoped>
+.hide {
+  display: none;
+}
+
 .v-card {
   width: 100%;
   margin: 15px auto;
   overflow: scroll;
 }
+
+.btn-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+//.v-btn--disabled {
+//  display: none !important;
+//}
 
 .v-card__actions {
   flex-direction: column;
