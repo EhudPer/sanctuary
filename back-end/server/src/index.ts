@@ -228,8 +228,8 @@ const start = async () => {
     // server.listen({ port: config.port }, () => {
     console.log(
       "🚀 Server ready at",
-      `http${process.env.NODE_ENV === "production@" ? "s" : ""}://${
-        process.env.NODE_ENV === "production@"
+      `http${process.env.NODE_ENV === "production" ? "s" : ""}://${
+        process.env.NODE_ENV === "production"
           ? "sanctuary-app.herokuapp.com"
           : "localhost"
       }:${process.env.PORT || 8000}${apollo.graphqlPath}`
