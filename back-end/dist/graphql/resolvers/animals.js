@@ -9,11 +9,13 @@ const user_1 = require("../../models/user");
 const merge_1 = require("./merge");
 // remember to set all functions of animal by specific user only and not global of all the users.
 exports.getAnimals = (root, data, { req }) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    console.log("in get animals resolver");
     try {
         if (!req.isAuth) {
             throw new Error("Unauthenticated!");
         }
         const fetchedAnimals = yield animal_1.AnimalModel.find({ creator: req.userId });
+        console.log("fetched  animals in resolver: ", fetchedAnimals);
         const fetchedAnimalsWithCreatorDetails = yield fetchedAnimals.map((animal) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
             const animalObject = animal.toObject();
             const creatorWithDetails = merge_1.getUserById.bind(this, animalObject.creator);
