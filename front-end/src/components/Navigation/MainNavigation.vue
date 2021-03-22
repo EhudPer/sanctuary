@@ -90,15 +90,13 @@ export default defineComponent({
 
     watch(
       () => root.$route,
-      (newParams, oldParams) => {
+      () => {
         // routeName.value = newParams.toString();
-        console.log("in");
-        console.log(newParams);
-        console.log(newParams.name);
-        console.log("old params", oldParams);
-
+        // console.log("in");
+        // console.log(newParams);
+        // console.log(newParams.name);
+        // console.log("old params", oldParams);
         // const elBackBtn = backBtn.value.$el;
-
         // if (newParams.name === "Home") {
         //   console.log(elBackBtn);
         //   elBackBtn.classList.add("hide");
@@ -106,13 +104,11 @@ export default defineComponent({
         //   elBackBtn.classList.remove("hide");
         //   console.log(elBackBtn);
         // }
-
         // if (oldParams.name === null) {
         //   elBackBtn.classList.add("hide");
         // } else {
         //   elBackBtn.classList.remove("hide");
         // }
-
         // isRouteNameNotHome.value = newParams.name === "Home" ? false : true;
         // console.log("isRouteNameNotHome", isRouteNameNotHome.value);
         // console.log("isShowRenderBackButton", isShowRenderBackButton.value);
@@ -129,7 +125,7 @@ export default defineComponent({
     };
     const backBtnHandler = () => {
       // backCounter.value++;
-      console.log(root.$router);
+
       root.$router.go(-1);
     };
     return {
