@@ -53,6 +53,7 @@ export default defineComponent({
             padding: "3em",
             background: "#fff",
           });
+          throw error;
         }
       }
     });
