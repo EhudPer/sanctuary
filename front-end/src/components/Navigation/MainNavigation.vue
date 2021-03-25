@@ -38,7 +38,10 @@
 
           <!--          <v-btn v-if="isShowRenderBackButton" @click="backBtnHandler">-->
           <!--          <v-btn ref="backBtn" class="hide" @click="backBtnHandler">-->
-          <v-btn ref="backBtn" @click="backBtnHandler"> Back </v-btn>
+          <!--          <v-btn ref="backBtn" @click="backBtnHandler"> Back </v-btn>-->
+          <v-btn ref="backBtn" class="hide" @click="backBtnHandler">
+            Back
+          </v-btn>
         </template>
 
         <v-list>
@@ -77,7 +80,7 @@ import { logout } from "../../helper-functions/auth";
 export default defineComponent({
   name: "MainNavigation",
   setup(props, { root }) {
-    const backBtn = ref(null);
+    const backBtn = ref();
     // let backCounter = ref(0);
     const token = computed(() => root.$store.getters.getToken);
     // const routeName = computed(() => ref(root.$route.name));
@@ -90,22 +93,22 @@ export default defineComponent({
 
     watch(
       () => root.$route,
-      (newParams, oldParams) => {
+      (newParams) => {
         // routeName.value = newParams.toString();
-        console.log("in");
-        console.log(newParams);
-        console.log(newParams.name);
-        console.log("old params", oldParams);
+        // console.log("in");
+        // console.log(newParams);
+        // console.log(newParams.name);
+        // console.log("old params", oldParams);
 
-        // const elBackBtn = backBtn.value.$el;
+        const elBackBtn = backBtn.value.$el;
 
-        // if (newParams.name === "Home") {
-        //   console.log(elBackBtn);
-        //   elBackBtn.classList.add("hide");
-        // } else {
-        //   elBackBtn.classList.remove("hide");
-        //   console.log(elBackBtn);
-        // }
+        if (newParams.name === "Home") {
+          // console.log(elBackBtn);
+          elBackBtn.classList.add("hide");
+        } else {
+          elBackBtn.classList.remove("hide");
+          // console.log(elBackBtn);
+        }
 
         // if (oldParams.name === null) {
         //   elBackBtn.classList.add("hide");
@@ -129,8 +132,27 @@ export default defineComponent({
     };
     const backBtnHandler = () => {
       // backCounter.value++;
-      console.log(root.$router);
-      root.$router.go(-1);
+      // console.log(root.$router);
+
+      if (
+        root.$route.name === "Auth" ||
+        root.$route.name === "Start" ||
+        root.$route.name === "AnimalsList"
+      ) {
+        root.$router.push({
+          path: "/",
+        });
+      } else if (
+        root.$route.name === "AnimalAdd" ||
+        root.$route.name === "AnimalEdit" ||
+        root.$route.name === "AnimalDetails"
+      ) {
+        root.$router.push({
+          path: "/animals",
+        });
+      } else {
+        root.$router.go(-1);
+      }
     };
     return {
       root,
