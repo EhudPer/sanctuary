@@ -15,7 +15,12 @@
         </v-btn>
         <v-btn v-if="token" text to="/animals">
           <span class="mr-2">
-            <router-link to="/animals">Animals</router-link>
+            <router-link to="/animals">View Animals</router-link>
+          </span>
+        </v-btn>
+        <v-btn v-if="token" text to="/animals/add">
+          <span class="mr-2">
+            <router-link to="/animals/add">Add Animal</router-link>
           </span>
         </v-btn>
         <v-btn v-if="token" @click="logoutHandler" text to="/auth">
@@ -53,7 +58,14 @@
           <v-list-item v-if="token" to="/animals">
             <v-list-item-title
               ><router-link to="/animals"
-                >Animals</router-link
+                >View Animals</router-link
+              ></v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item v-if="token" to="/animals/add">
+            <v-list-item-title
+              ><router-link to="/animals/add"
+                >Add Animal</router-link
               ></v-list-item-title
             >
           </v-list-item>
@@ -100,7 +112,11 @@ export default defineComponent({
         // console.log(newParams.name);
         // console.log("old params", oldParams);
 
+        if (!backBtn.value) {
+          return;
+        }
         const elBackBtn = backBtn.value.$el;
+        console.log("elbackbtn", elBackBtn);
 
         if (newParams.name === "Home") {
           // console.log(elBackBtn);
@@ -143,7 +159,7 @@ export default defineComponent({
           path: "/",
         });
       } else if (
-        root.$route.name === "AnimalAdd" ||
+        root.$route.name === "AddAnimal" ||
         root.$route.name === "AnimalEdit" ||
         root.$route.name === "AnimalDetails"
       ) {
