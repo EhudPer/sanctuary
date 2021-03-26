@@ -2,18 +2,30 @@
   <div class="home-page">
     <!--    <h1 class="page-title">Welcome to Sanctuary</h1>-->
     <p>
-      <b
-        >This is an alpha POC app for helping rescued animals sanctuary farms</b
+      <b>Animal Sanctuary App</b>
+    </p>
+    <p>Managing the caring for rescued animals (work in progress)</p>
+    <p>Frameworks: nodejs, express, apollo-graphql, mongoose, vue + vuex</p>
+    <br />
+    <p>By <b>Ehud Perlman</b>, fullstack webapps developer</p>
+    <v-img
+      src="../assets/ehud-and-kfitz.jpg"
+      class="profile"
+      max-height="150"
+    ></v-img>
+    <p>
+      <b>github: </b>
+      <a href="https://github.com/EhudPer" target="_blank"
+        >https://github.com/EhudPer</a
       >
     </p>
-    <p>Author: Ehud Perlman</p>
-    <v-img src="../assets/profile.jpg" class="profile" max-height="150"></v-img>
-    <p>Email: ehudperlman83@gmail.com</p>
-    <p>I am a full stack web developer</p>
     <p>
-      Project main technologies: Javascript, Nodejs, Express, Graphql, Mongodb,
-      Mongoose, Apollo, Vue, Vuex, Scss
+      <b> Email: </b>
+      <a href="mailto:ehudperlman83@gmail.com">ehudperlman83@gmail.com</a>
     </p>
+
+    <p><i>Have an interesting project - I’d love to hear from you! </i></p>
+
     <img src="../assets/home.jpeg" alt="Home" />
   </div>
 </template>
@@ -56,19 +68,16 @@ img {
 }
 
 .profile {
-  //background-image: url(~@/assets/logo.png);
-  //background-size: contain;
-  //width: 100%;
   max-width: 150px;
   margin: 15px auto;
-  //height: auto;
-  //display: block;
-  //margin: 15px auto;
-  //font-size: 2rem;
 }
 
 p {
   margin-bottom: 10px;
+}
+
+a {
+  color: blue !important;
 }
 
 @media only screen and (min-width: 386px) {
