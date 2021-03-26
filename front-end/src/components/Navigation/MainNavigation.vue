@@ -37,16 +37,15 @@
 
       <v-menu v-if="!$vuetify.breakpoint.mdAndUp">
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+          <div class="btns-container">
+            <v-btn icon v-on="on">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
 
-          <!--          <v-btn v-if="isShowRenderBackButton" @click="backBtnHandler">-->
-          <!--          <v-btn ref="backBtn" class="hide" @click="backBtnHandler">-->
-          <!--          <v-btn ref="backBtn" @click="backBtnHandler"> Back </v-btn>-->
-          <v-btn ref="backBtn" class="hide" @click="backBtnHandler">
-            Back
-          </v-btn>
+            <v-btn ref="backBtn" class="hide" @click="backBtnHandler">
+              Back
+            </v-btn>
+          </div>
         </template>
 
         <v-list>
@@ -95,61 +94,27 @@ export default defineComponent({
     const backBtn = ref();
     // let backCounter = ref(0);
     const token = computed(() => root.$store.getters.getToken);
-    // const routeName = computed(() => ref(root.$route.name));
-    // let isRouteNameNotHome = ref(false);
-    // const isShowRenderBackButton = computed(() => {
-    //   console.log("isRouteNameNotHome", isRouteNameNotHome.value);
-    //   return isRouteNameNotHome.value;
-    // });
-    // const routeNameReal = ref(root.$route.name);
 
     watch(
       () => root.$route,
       (newParams) => {
-        // routeName.value = newParams.toString();
-        // console.log("in");
-        // console.log(newParams);
-        // console.log(newParams.name);
-        // console.log("old params", oldParams);
-
         if (!backBtn.value) {
           return;
         }
         const elBackBtn = backBtn.value.$el;
-        console.log("elbackbtn", elBackBtn);
 
         if (newParams.name === "Home") {
-          // console.log(elBackBtn);
           elBackBtn.classList.add("hide");
         } else {
           elBackBtn.classList.remove("hide");
-          // console.log(elBackBtn);
         }
-
-        // if (oldParams.name === null) {
-        //   elBackBtn.classList.add("hide");
-        // } else {
-        //   elBackBtn.classList.remove("hide");
-        // }
-
-        // isRouteNameNotHome.value = newParams.name === "Home" ? false : true;
-        // console.log("isRouteNameNotHome", isRouteNameNotHome.value);
-        // console.log("isShowRenderBackButton", isShowRenderBackButton.value);
       }
     );
-
-    // watch(root.$route.path, (currentValue, oldValue) => {
-    //   console.log(currentValue);
-    //   console.log(oldValue);
-    // });
 
     const logoutHandler = () => {
       logout(root);
     };
     const backBtnHandler = () => {
-      // backCounter.value++;
-      // console.log(root.$router);
-
       if (
         root.$route.name === "Auth" ||
         root.$route.name === "Start" ||
@@ -173,10 +138,7 @@ export default defineComponent({
     return {
       root,
       backBtn,
-      // backCounter,
       token,
-      // isRouteNameNotHome,
-      // isShowRenderBackButton,
       logoutHandler,
       backBtnHandler,
     };
@@ -187,6 +149,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 #app {
   .hide {
+    display: none;
+  }
+
+  .spacer {
     display: none;
   }
 
@@ -211,14 +177,11 @@ export default defineComponent({
   max-width: 250px;
 
   .main-navigation__nav__logo {
-    //background-image: url(~@/assets/logo.png);
-    //background-size: contain;
     width: 100%;
-    max-width: 250px;
     height: auto;
     display: block;
     margin: 15px auto;
-    font-size: 2rem;
+    font-size: 1.65rem;
   }
 }
 
@@ -229,12 +192,39 @@ export default defineComponent({
   }
 }
 
-@media only screen and (min-width: 386px) {
+.btns-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
+@media only screen and (min-width: 360px) {
   #app {
     .v-toolbar__title {
       .main-navigation__nav__logo {
         max-width: 375px;
       }
+    }
+  }
+}
+
+@media only screen and (min-width: 385px) {
+  #app {
+    .v-toolbar__title {
+      .main-navigation__nav__logo {
+        max-width: 375px;
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  #app {
+    .spacer {
+      display: initial;
     }
   }
 }
