@@ -1,6 +1,9 @@
 input AnimalInput {
     name: String!
     type: String!
+    medicineType: String
+    dosage: Float
+    frequency: Int
     image_url: String
     #    dateOfBirth: String
 }

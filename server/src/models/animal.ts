@@ -23,6 +23,10 @@ const animalSchema = new Schema({
     type: Number,
     required: false,
   },
+  frequency: {
+    type: Number,
+    required: false,
+  },
   image_url: {
     type: String,
     required: false,
