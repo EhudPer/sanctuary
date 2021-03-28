@@ -55,6 +55,7 @@ export const createAnimal = async (root, { input }, { req }) => {
       // medicineType: input.medicineType,
       medicineType: input.medicineType ? input.medicineType : null,
       dosage: input.dosage ? input.dosage : null,
+      frequency: input.frequency ? input.frequency : null,
       image_url: input.image_url,
       creator: req.userId,
     });
@@ -83,6 +84,10 @@ export const createAnimal = async (root, { input }, { req }) => {
           : "",
       dosage:
         createdAnimalObject.dosage !== null ? createdAnimalObject.dosage : 0,
+      frequency:
+        createdAnimalObject.frequency !== null
+          ? createdAnimalObject.frequency
+          : 0,
     };
   } catch (error) {
     throw error;

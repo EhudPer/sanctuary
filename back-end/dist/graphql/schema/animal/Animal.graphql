@@ -2,6 +2,9 @@ type Animal {
     _id: String!
     name: String!
     type: String!
+    medicineType: String
+    dosage: Float
+    frequency: Int
     image_url: String
     creator: User!
     #    dateOfBirth: String

@@ -32,6 +32,10 @@
         Dosage: {{ animal.dosage }}
       </v-card-text>
 
+      <v-card-text v-if="animal.frequency">
+        Frequency: {{ animal.frequency }}
+      </v-card-text>
+
       <v-card-actions>
         <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
         <!--          Add Animal-->
@@ -84,6 +88,7 @@ export default defineComponent({
 
     const animalId = root.$route.params.animalId;
     const animal = computed(() => root.$store.getters.getAnimalById(animalId));
+    console.log("animal", animal);
 
     function pushToAddAnimalPage() {
       root.$router.push({
