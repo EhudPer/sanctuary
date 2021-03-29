@@ -4,6 +4,7 @@ input AnimalInput {
     medicineType: String
     dosage: Float
     frequency: Int
+    timeUnit: String
     image_url: String
     #    dateOfBirth: String
 }
