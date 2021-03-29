@@ -8,11 +8,8 @@
     <p>Frameworks: nodejs, express, apollo-graphql, mongoose, vue + vuex</p>
     <br />
     <p>By <b>Ehud Perlman</b>, fullstack webapps developer</p>
-    <v-img
-      src="../assets/ehud-and-kfitz.jpg"
-      class="profile"
-      max-height="150"
-    ></v-img>
+    <!--    <v-img src="../assets/ehud-and-kfitz.jpg" class="profile"></v-img>-->
+    <v-img src="../assets/ehud-and-kfitz-cropped2.jpg" class="profile"></v-img>
     <p>
       <b>github: </b>
       <a href="https://github.com/EhudPer" target="_blank"
@@ -26,7 +23,7 @@
 
     <p><i>Have an interesting project - I’d love to hear from you! </i></p>
 
-    <img src="../assets/home.jpeg" alt="Home" />
+    <img class="main-img" src="../assets/home.jpeg" alt="Home" />
   </div>
 </template>
 
@@ -62,14 +59,22 @@ export default defineComponent({
 img {
   width: 100%;
   //max-width: 650px;
-  max-height: 230px;
+  //max-height: 230px;
   margin: 15px 0;
+}
+
+.main-img {
   object-fit: cover;
+  max-height: 230px;
 }
 
 .profile {
-  max-width: 150px;
+  //max-width: 1000px;
+  max-height: 230px;
+  //max-width: 400px;
   margin: 15px auto;
+  //object-fit: contain;
+  //object-position: right;
 }
 
 p {
@@ -81,8 +86,22 @@ a {
 }
 
 @media only screen and (min-width: 386px) {
-  img {
+  main-img {
     max-height: 280px;
   }
+
+  .profile {
+    max-height: none;
+    max-width: 600px;
+    //object-fit: contain;
+  }
 }
+
+//@media only screen and (min-width: 960px) {
+//  .profile {
+//    //max-height: 800px;
+//    //max-width: 1000px;
+//    //max-height: 500px;
+//  }
+//}
 </style>
