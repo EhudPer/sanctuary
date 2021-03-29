@@ -44,9 +44,10 @@ exports.createAnimal = (root, { input }, { req }) => tslib_1.__awaiter(void 0, v
             _id: mongoose.Types.ObjectId(),
             name: input.name,
             type: input.type,
-            // medicineType: input.medicineType,
             medicineType: input.medicineType ? input.medicineType : null,
             dosage: input.dosage ? input.dosage : null,
+            frequency: input.frequency ? input.frequency : null,
+            timeUnit: input.timeUnit ? input.timeUnit : null,
             image_url: input.image_url,
             creator: req.userId,
         });
@@ -61,7 +62,11 @@ exports.createAnimal = (root, { input }, { req }) => tslib_1.__awaiter(void 0, v
         yield user_1.UserModel.findOneAndUpdate({ _id: req.userId }, creatorUserToUpdate);
         return Object.assign(Object.assign({}, createdAnimalObject), { creator: merge_1.getUserById.bind(this, createdAnimalObject.creator), medicineType: createdAnimalObject.medicineType !== null
                 ? createdAnimalObject.medicineType
-                : "", dosage: createdAnimalObject.dosage !== null ? createdAnimalObject.dosage : 0 });
+                : "", dosage: createdAnimalObject.dosage !== null ? createdAnimalObject.dosage : 0, frequency: createdAnimalObject.frequency !== null
+                ? createdAnimalObject.frequency
+                : 0, timeUnit: createdAnimalObject.timeUnit !== null
+                ? createdAnimalObject.timeUnit
+                : "" });
     }
     catch (error) {
         throw error;
@@ -76,14 +81,22 @@ exports.updateAnimal = (root, { _id, input }, { req }) => tslib_1.__awaiter(void
         const animalToUpdateObject = animalToUpdate.toObject();
         const medicineType = input.medicineType ? input.medicineType : null;
         const dosage = input.dosage ? input.dosage : null;
+        const frequency = input.frequency ? input.frequency : null;
+        const timeUnit = input.timeUnit ? input.timeUnit : null;
         const inputWithCreator = Object.assign(Object.assign({}, input), { medicineType,
-            dosage, creator: animalToUpdateObject.creator });
+            dosage,
+            frequency,
+            timeUnit, creator: animalToUpdateObject.creator });
         // console.log("medicinetype", medicineType);
         const updatedAnimal = yield animal_1.AnimalModel.findOneAndUpdate({ _id }, inputWithCreator);
         return Object.assign(Object.assign({}, updatedAnimal.toObject()), { creator: merge_1.getUserById.bind(this, updatedAnimal.toObject().creator), medicineType: updatedAnimal.toObject().medicineType
                 ? updatedAnimal.toObject().medicineType
                 : null, dosage: updatedAnimal.toObject().dosage
                 ? updatedAnimal.toObject().dosage
+                : null, frequency: updatedAnimal.toObject().frequency
+                ? updatedAnimal.toObject().frequency
+                : null, timeUnit: updatedAnimal.toObject().timeUnit
+                ? updatedAnimal.toObject().timeUnit
                 : null });
     }
     catch (error) {
