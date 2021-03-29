@@ -26,6 +26,14 @@ const animalSchema = new Schema({
         type: Number,
         required: false,
     },
+    frequency: {
+        type: Number,
+        required: false,
+    },
+    timeUnit: {
+        type: String,
+        required: false,
+    },
     image_url: {
         type: String,
         required: false,
