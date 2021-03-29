@@ -61,6 +61,12 @@
           type="number"
         ></v-text-field>
 
+        <v-select
+          v-model="animalTimeUnit"
+          :items="timeUnitItems"
+          label="Time Unit"
+        ></v-select>
+
         <div class="btn-container">
           <v-btn
             v-if="valid && animalName !== '' && animalType !== ''"
@@ -113,6 +119,7 @@ export default defineComponent({
     const animalMedicineType = ref("");
     const animalDosage = ref("");
     const animalFrequency = ref("");
+    const animalTimeUnit = ref("");
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -144,6 +151,8 @@ export default defineComponent({
       "Other",
     ]);
 
+    const timeUnitItems = reactive(["Day", "Week", "Month", "Year"]);
+
     const validate = () => {
       const valid = myForm.value.validate();
       if (valid) {
@@ -173,6 +182,7 @@ export default defineComponent({
             ? +animalFrequency.value
             : 0,
 
+        timeUnit: animalTimeUnit.value,
         //For now it's always null and when loading animal it will check and see that it's null so it will load default
         // image by animal type
         //later will add option the upload image - and if so the image cloud url will be stored here, if not - then null.
@@ -221,6 +231,7 @@ export default defineComponent({
       animalMedicineType,
       animalDosage,
       animalFrequency,
+      animalTimeUnit,
       myForm,
       valid,
       name,
@@ -229,6 +240,7 @@ export default defineComponent({
       // select,
       items,
       medicineTypeItems,
+      timeUnitItems,
       validate,
       // reset,
       // resetValidation,

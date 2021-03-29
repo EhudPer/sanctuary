@@ -67,6 +67,13 @@
           type="number"
         ></v-text-field>
 
+        <v-select
+          v-model="newAnimalTimeUnit"
+          :items="timeUnitItems"
+          label="Time Unit"
+          clearable
+        ></v-select>
+
         <div class="btns-container">
           <v-card-actions>
             <v-btn
@@ -179,6 +186,10 @@ export default defineComponent({
       animal.value && animal.value.frequency
         ? ref(animal.value.frequency)
         : ref("");
+    const newAnimalTimeUnit =
+      animal.value && animal.value.timeUnit
+        ? ref(animal.value.timeUnit)
+        : ref("");
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -208,6 +219,8 @@ export default defineComponent({
       "Other",
     ]);
 
+    const timeUnitItems = reactive(["Day", "Week", "Month", "Year"]);
+
     const validate = () => {
       const valid = myForm.value.validate();
       if (valid) {
@@ -215,13 +228,13 @@ export default defineComponent({
       }
     };
 
-    const reset = () => {
-      myForm.value.reset();
-    };
-
-    const resetValidation = () => {
-      myForm.value.resetValidation();
-    };
+    // const reset = () => {
+    //   myForm.value.reset();
+    // };
+    //
+    // const resetValidation = () => {
+    //   myForm.value.resetValidation();
+    // };
 
     const updateAnimal = async () => {
       root.$store.dispatch("togLoading", { loadingStatus: true });
@@ -244,6 +257,7 @@ export default defineComponent({
           newAnimalFrequency.value !== ""
             ? +newAnimalFrequency.value
             : 0,
+        timeUnit: newAnimalTimeUnit.value ? newAnimalTimeUnit.value : "",
         image_url: animal.value.image_url ? animal.value.image_url : null,
       };
 
@@ -291,6 +305,7 @@ export default defineComponent({
       newAnimalName,
       newAnimalType,
       newAnimalMedicineType,
+      newAnimalTimeUnit,
       newAnimalDosage,
       newAnimalFrequency,
       myForm,
@@ -300,9 +315,8 @@ export default defineComponent({
       select,
       items,
       medicineTypeItems,
+      timeUnitItems,
       validate,
-      reset,
-      resetValidation,
       pushToAddAnimalPage,
       moveToAnimalDetails,
       deleteAnimalClicked,

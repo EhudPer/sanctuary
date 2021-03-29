@@ -25,16 +25,28 @@
       </v-card-text>
 
       <v-card-text v-if="animal.medicineType">
-        Medicine Type: {{ animal.medicineType }}
+        Treatment: {{ animal.medicineType }}
+        <span v-if="animal.dosage && animal.frequency && animal.timeUnit">
+          {{ animal.dosage }} units every {{ animal.frequency }}
+          {{ animal.timeUnit }}<span v-if="animal.frequency > 1">s</span></span
+        >
       </v-card-text>
 
-      <v-card-text v-if="animal.dosage">
-        Dosage: {{ animal.dosage }}
-      </v-card-text>
+      <!--      <v-card-text v-if="animal.medicineType">-->
+      <!--        Medicine Type: {{ animal.medicineType }}-->
+      <!--      </v-card-text>-->
 
-      <v-card-text v-if="animal.frequency">
-        Frequency: {{ animal.frequency }}
-      </v-card-text>
+      <!--      <v-card-text v-if="animal.dosage">-->
+      <!--        Dosage: {{ animal.dosage }}-->
+      <!--      </v-card-text>-->
+
+      <!--      <v-card-text v-if="animal.frequency">-->
+      <!--        Frequency: {{ animal.frequency }}-->
+      <!--      </v-card-text>-->
+
+      <!--      <v-card-text v-if="animal.timeUnit">-->
+      <!--        Time Unit: {{ animal.timeUnit }}-->
+      <!--      </v-card-text>-->
 
       <v-card-actions>
         <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
@@ -131,13 +143,13 @@ export default defineComponent({
 }
 
 .v-card__actions {
-  flex-direction: column;
+  //flex-direction: column;
 }
 
-@media only screen and (min-width: 375px) {
-  .v-card__actions {
-    flex-direction: row;
-    //flex-wrap: wrap;
-  }
-}
+//@media only screen and (min-width: 375px) {
+//  .v-card__actions {
+//    flex-direction: row;
+//    //flex-wrap: wrap;
+//  }
+//}
 </style>

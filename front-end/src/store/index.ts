@@ -246,6 +246,7 @@ const actions = {
               medicineType
               dosage
               frequency
+              timeUnit
               image_url
             }
           }
@@ -279,6 +280,7 @@ const actions = {
               medicineType
               dosage
               frequency
+              timeUnit
               image_url
             }
           }
@@ -290,6 +292,7 @@ const actions = {
             medicineType: animalToCreateFields.medicineType,
             dosage: animalToCreateFields.dosage,
             frequency: animalToCreateFields.frequency,
+            timeUnit: animalToCreateFields.timeUnit,
             image_url: animalToCreateFields.image_url,
           },
         },
@@ -347,6 +350,7 @@ const actions = {
               medicineType
               dosage
               frequency
+              timeUnit
               image_url
             }
           }
@@ -359,6 +363,7 @@ const actions = {
             medicineType: updatedAnimalFields.medicineType,
             dosage: updatedAnimalFields.dosage,
             frequency: updatedAnimalFields.frequency,
+            timeUnit: updatedAnimalFields.timeUnit,
             image_url: updatedAnimalFields.image_url,
           },
         },
