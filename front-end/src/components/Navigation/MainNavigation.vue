@@ -15,7 +15,12 @@
         </v-btn>
         <v-btn v-if="token" text to="/animals">
           <span class="mr-2">
-            <router-link to="/animals">Animals</router-link>
+            <router-link to="/animals">View Animals</router-link>
+          </span>
+        </v-btn>
+        <v-btn v-if="token" text to="/animals/add">
+          <span class="mr-2">
+            <router-link to="/animals/add">Add Animal</router-link>
           </span>
         </v-btn>
         <v-btn v-if="token" @click="logoutHandler" text to="/auth">
@@ -32,13 +37,15 @@
 
       <v-menu v-if="!$vuetify.breakpoint.mdAndUp">
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+          <div class="btns-container">
+            <v-btn icon v-on="on">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
 
-          <!--          <v-btn v-if="isShowRenderBackButton" @click="backBtnHandler">-->
-          <!--          <v-btn ref="backBtn" class="hide" @click="backBtnHandler">-->
-          <v-btn ref="backBtn" @click="backBtnHandler"> Back </v-btn>
+            <v-btn ref="backBtn" class="hide" @click="backBtnHandler">
+              Back
+            </v-btn>
+          </div>
         </template>
 
         <v-list>
@@ -50,7 +57,14 @@
           <v-list-item v-if="token" to="/animals">
             <v-list-item-title
               ><router-link to="/animals"
-                >Animals</router-link
+                >View Animals</router-link
+              ></v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item v-if="token" to="/animals/add">
+            <v-list-item-title
+              ><router-link to="/animals/add"
+                >Add Animal</router-link
               ></v-list-item-title
             >
           </v-list-item>
@@ -77,68 +91,54 @@ import { logout } from "../../helper-functions/auth";
 export default defineComponent({
   name: "MainNavigation",
   setup(props, { root }) {
-    const backBtn = ref(null);
+    const backBtn = ref();
     // let backCounter = ref(0);
     const token = computed(() => root.$store.getters.getToken);
-    // const routeName = computed(() => ref(root.$route.name));
-    // let isRouteNameNotHome = ref(false);
-    // const isShowRenderBackButton = computed(() => {
-    //   console.log("isRouteNameNotHome", isRouteNameNotHome.value);
-    //   return isRouteNameNotHome.value;
-    // });
-    // const routeNameReal = ref(root.$route.name);
 
     watch(
       () => root.$route,
-      (newParams, oldParams) => {
-        // routeName.value = newParams.toString();
-        console.log("in");
-        console.log(newParams);
-        console.log(newParams.name);
-        console.log("old params", oldParams);
+      (newParams) => {
+        if (!backBtn.value) {
+          return;
+        }
+        const elBackBtn = backBtn.value.$el;
 
-        // const elBackBtn = backBtn.value.$el;
-
-        // if (newParams.name === "Home") {
-        //   console.log(elBackBtn);
-        //   elBackBtn.classList.add("hide");
-        // } else {
-        //   elBackBtn.classList.remove("hide");
-        //   console.log(elBackBtn);
-        // }
-
-        // if (oldParams.name === null) {
-        //   elBackBtn.classList.add("hide");
-        // } else {
-        //   elBackBtn.classList.remove("hide");
-        // }
-
-        // isRouteNameNotHome.value = newParams.name === "Home" ? false : true;
-        // console.log("isRouteNameNotHome", isRouteNameNotHome.value);
-        // console.log("isShowRenderBackButton", isShowRenderBackButton.value);
+        if (newParams.name === "Home") {
+          elBackBtn.classList.add("hide");
+        } else {
+          elBackBtn.classList.remove("hide");
+        }
       }
     );
-
-    // watch(root.$route.path, (currentValue, oldValue) => {
-    //   console.log(currentValue);
-    //   console.log(oldValue);
-    // });
 
     const logoutHandler = () => {
       logout(root);
     };
     const backBtnHandler = () => {
-      // backCounter.value++;
-      console.log(root.$router);
-      root.$router.go(-1);
+      if (
+        root.$route.name === "Auth" ||
+        root.$route.name === "Start" ||
+        root.$route.name === "AnimalsList"
+      ) {
+        root.$router.push({
+          path: "/",
+        });
+      } else if (
+        root.$route.name === "AddAnimal" ||
+        root.$route.name === "AnimalEdit" ||
+        root.$route.name === "AnimalDetails"
+      ) {
+        root.$router.push({
+          path: "/animals",
+        });
+      } else {
+        root.$router.go(-1);
+      }
     };
     return {
       root,
       backBtn,
-      // backCounter,
       token,
-      // isRouteNameNotHome,
-      // isShowRenderBackButton,
       logoutHandler,
       backBtnHandler,
     };
@@ -149,6 +149,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 #app {
   .hide {
+    display: none;
+  }
+
+  .spacer {
     display: none;
   }
 
@@ -173,14 +177,11 @@ export default defineComponent({
   max-width: 250px;
 
   .main-navigation__nav__logo {
-    //background-image: url(~@/assets/logo.png);
-    //background-size: contain;
     width: 100%;
-    max-width: 250px;
     height: auto;
     display: block;
     margin: 15px auto;
-    font-size: 2rem;
+    font-size: 1.65rem;
   }
 }
 
@@ -191,12 +192,39 @@ export default defineComponent({
   }
 }
 
-@media only screen and (min-width: 386px) {
+.btns-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
+@media only screen and (min-width: 360px) {
   #app {
     .v-toolbar__title {
       .main-navigation__nav__logo {
         max-width: 375px;
       }
+    }
+  }
+}
+
+@media only screen and (min-width: 385px) {
+  #app {
+    .v-toolbar__title {
+      .main-navigation__nav__logo {
+        max-width: 375px;
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  #app {
+    .spacer {
+      display: initial;
     }
   }
 }

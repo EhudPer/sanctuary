@@ -10,19 +10,9 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <!--      <v-img-->
-      <!--        @click="moveToAnimalDetails"-->
-      <!--        :src="-->
-      <!--          animal.image_url-->
-      <!--            ? animal.image_url-->
-      <!--            : require(`@/assets/${animal.type.toLowerCase()}.jpg`)-->
-      <!--        "-->
-      <!--        :style="'cursor: pointer'"-->
-      <!--        alt="Avatar"-->
-      <!--        max-height="500"-->
-      <!--      ></v-img>-->
 
       <v-img
+        v-if="newAnimalType"
         @click="moveToAnimalDetails"
         :src="require(`@/assets/${newAnimalType.toLowerCase()}.jpg`)"
         :style="'cursor: pointer'"
@@ -55,19 +45,37 @@
 
         <v-text-field
           v-model="newAnimalDosage"
-          :rules="[(v) => v >= 1 || v === '' || 'Dosage must be 1 or greater']"
+          :rules="[
+            (v) =>
+              v >= 1 ||
+              v === '' ||
+              'Dosage must be a NUMBER that is 1 or greater',
+          ]"
           label="Dosage"
           type="number"
         ></v-text-field>
 
+        <v-text-field
+          v-model="newAnimalFrequency"
+          :rules="[
+            (v) =>
+              (v >= 1 && Number.isInteger(+v)) ||
+              v === '' ||
+              'Frequency must be an integer NUMBER that is 1 or greater',
+          ]"
+          label="Frequency"
+          type="number"
+        ></v-text-field>
+
+        <v-select
+          v-model="newAnimalTimeUnit"
+          :items="timeUnitItems"
+          label="Time Unit"
+          clearable
+        ></v-select>
+
         <div class="btns-container">
           <v-card-actions>
-            <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
-            <!--          Add Animal-->
-            <!--        </v-btn>-->
-            <!--        <v-btn @click="moveToAnimalDetails" text color="success accent-4">-->
-            <!--          Details-->
-            <!--        </v-btn>-->
             <v-btn
               v-if="valid && newAnimalName !== '' && newAnimalType !== ''"
               color="success"
@@ -159,16 +167,13 @@ export default defineComponent({
     });
 
     const animalId = root.$route.params.animalId;
-    console.log("animalId", animalId);
     const animal = computed(() => root.$store.getters.getAnimalById(animalId));
-    console.log("animal", animal);
     if (!animal.value) {
       console.log("");
     }
     //Later try to set that when the edit page is loaded that the values of the controls will not be empty -
     // but with the current animal's details from the db - all the time, even on refresh or loading from url directly.
 
-    console.log("animal.value", animal.value);
     const newAnimalName = animal.value ? ref(animal.value.name) : ref("");
     const newAnimalType = animal.value ? ref(animal.value.type) : ref("");
     const newAnimalMedicineType =
@@ -177,8 +182,14 @@ export default defineComponent({
         : ref("");
     const newAnimalDosage =
       animal.value && animal.value.dosage ? ref(animal.value.dosage) : ref("");
-
-    console.log("newAnimaldosage", newAnimalDosage);
+    const newAnimalFrequency =
+      animal.value && animal.value.frequency
+        ? ref(animal.value.frequency)
+        : ref("");
+    const newAnimalTimeUnit =
+      animal.value && animal.value.timeUnit
+        ? ref(animal.value.timeUnit)
+        : ref("");
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -208,6 +219,8 @@ export default defineComponent({
       "Other",
     ]);
 
+    const timeUnitItems = reactive(["Day", "Week", "Month", "Year"]);
+
     const validate = () => {
       const valid = myForm.value.validate();
       if (valid) {
@@ -215,13 +228,13 @@ export default defineComponent({
       }
     };
 
-    const reset = () => {
-      myForm.value.reset();
-    };
-
-    const resetValidation = () => {
-      myForm.value.resetValidation();
-    };
+    // const reset = () => {
+    //   myForm.value.reset();
+    // };
+    //
+    // const resetValidation = () => {
+    //   myForm.value.resetValidation();
+    // };
 
     const updateAnimal = async () => {
       root.$store.dispatch("togLoading", { loadingStatus: true });
@@ -232,13 +245,19 @@ export default defineComponent({
         medicineType: newAnimalMedicineType.value
           ? newAnimalMedicineType.value
           : "",
-        // dosage: newAnimalDosage.value ? newAnimalDosage.value : "",
         dosage:
           newAnimalDosage.value &&
           newAnimalDosage.value !== 0 &&
           newAnimalDosage.value !== ""
             ? +newAnimalDosage.value
             : 0,
+        frequency:
+          newAnimalFrequency.value &&
+          newAnimalFrequency.value !== 0 &&
+          newAnimalFrequency.value !== ""
+            ? +newAnimalFrequency.value
+            : 0,
+        timeUnit: newAnimalTimeUnit.value ? newAnimalTimeUnit.value : "",
         image_url: animal.value.image_url ? animal.value.image_url : null,
       };
 
@@ -286,7 +305,9 @@ export default defineComponent({
       newAnimalName,
       newAnimalType,
       newAnimalMedicineType,
+      newAnimalTimeUnit,
       newAnimalDosage,
+      newAnimalFrequency,
       myForm,
       valid,
       name,
@@ -294,9 +315,8 @@ export default defineComponent({
       select,
       items,
       medicineTypeItems,
+      timeUnitItems,
       validate,
-      reset,
-      resetValidation,
       pushToAddAnimalPage,
       moveToAnimalDetails,
       deleteAnimalClicked,
