@@ -43,6 +43,7 @@ export default defineComponent({
         try {
           await root.$store.dispatch("fetchAnimals");
         } catch (error) {
+          console.log("error log:", error);
           root.$swal.fire({
             title: "Error: animals not fetched!",
             text: error.message.toString(),

@@ -6,13 +6,14 @@ import { getUserById } from "./merge";
 
 // remember to set all functions of animal by specific user only and not global of all the users.
 export const getAnimals = async (root, data: any, { req }) => {
+  console.log("in get animals resolver");
   try {
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
 
     const fetchedAnimals = await AnimalModel.find({ creator: req.userId });
-
+    console.log("fetched  animals in resolver: ", fetchedAnimals);
     const fetchedAnimalsWithCreatorDetails = await fetchedAnimals.map(
       async (animal) => {
         const animalObject = animal.toObject();

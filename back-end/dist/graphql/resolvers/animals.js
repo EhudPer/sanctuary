@@ -9,11 +9,13 @@ const user_1 = require("../../models/user");
 const merge_1 = require("./merge");
 // remember to set all functions of animal by specific user only and not global of all the users.
 exports.getAnimals = (root, data, { req }) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    console.log("in get animals resolver");
     try {
         if (!req.isAuth) {
             throw new Error("Unauthenticated!");
         }
         const fetchedAnimals = yield animal_1.AnimalModel.find({ creator: req.userId });
+        console.log("fetched  animals in resolver: ", fetchedAnimals);
         const fetchedAnimalsWithCreatorDetails = yield fetchedAnimals.map((animal) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
             const animalObject = animal.toObject();
             const creatorWithDetails = merge_1.getUserById.bind(this, animalObject.creator);
@@ -42,6 +44,9 @@ exports.createAnimal = (root, { input }, { req }) => tslib_1.__awaiter(void 0, v
             _id: mongoose.Types.ObjectId(),
             name: input.name,
             type: input.type,
+            // medicineType: input.medicineType,
+            medicineType: input.medicineType ? input.medicineType : null,
+            dosage: input.dosage ? input.dosage : null,
             image_url: input.image_url,
             creator: req.userId,
         });
@@ -54,7 +59,9 @@ exports.createAnimal = (root, { input }, { req }) => tslib_1.__awaiter(void 0, v
         creatorUserCreatedAnimalsCopy.push(createdAnimalObject._id);
         const creatorUserToUpdate = Object.assign(Object.assign({}, creatorUserObject), { createdAnimals: creatorUserCreatedAnimalsCopy });
         yield user_1.UserModel.findOneAndUpdate({ _id: req.userId }, creatorUserToUpdate);
-        return Object.assign(Object.assign({}, createdAnimalObject), { creator: merge_1.getUserById.bind(this, createdAnimalObject.creator) });
+        return Object.assign(Object.assign({}, createdAnimalObject), { creator: merge_1.getUserById.bind(this, createdAnimalObject.creator), medicineType: createdAnimalObject.medicineType !== null
+                ? createdAnimalObject.medicineType
+                : "", dosage: createdAnimalObject.dosage !== null ? createdAnimalObject.dosage : 0 });
     }
     catch (error) {
         throw error;
@@ -67,9 +74,17 @@ exports.updateAnimal = (root, { _id, input }, { req }) => tslib_1.__awaiter(void
     try {
         const animalToUpdate = yield animal_1.AnimalModel.findOne({ _id });
         const animalToUpdateObject = animalToUpdate.toObject();
-        const inputWithCreator = Object.assign(Object.assign({}, input), { creator: animalToUpdateObject.creator });
+        const medicineType = input.medicineType ? input.medicineType : null;
+        const dosage = input.dosage ? input.dosage : null;
+        const inputWithCreator = Object.assign(Object.assign({}, input), { medicineType,
+            dosage, creator: animalToUpdateObject.creator });
+        // console.log("medicinetype", medicineType);
         const updatedAnimal = yield animal_1.AnimalModel.findOneAndUpdate({ _id }, inputWithCreator);
-        return Object.assign(Object.assign({}, updatedAnimal.toObject()), { creator: merge_1.getUserById.bind(this, updatedAnimal.toObject().creator) });
+        return Object.assign(Object.assign({}, updatedAnimal.toObject()), { creator: merge_1.getUserById.bind(this, updatedAnimal.toObject().creator), medicineType: updatedAnimal.toObject().medicineType
+                ? updatedAnimal.toObject().medicineType
+                : null, dosage: updatedAnimal.toObject().dosage
+                ? updatedAnimal.toObject().dosage
+                : null });
     }
     catch (error) {
         throw error;

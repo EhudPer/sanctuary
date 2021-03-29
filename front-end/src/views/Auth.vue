@@ -159,8 +159,6 @@ export default defineComponent({
       // document.getElementById("connected3yap2b3ti7qi").textContent =
       //   "Sign in with Google";
       // ("inline-block");
-      console.log(root.$el.querySelector(".abcRioButtonContents span"));
-      console.log(root.$el.querySelector("#app"));
 
       // // let result = document.evaluate(
       // //   // '//div[@class="abcRioButtonContentWrapper"]/span[@class="abcRioButtonContents"]/following-sibling::text()[1]',
@@ -172,17 +170,14 @@ export default defineComponent({
       //
       // console.log(result.trim());
 
-      console.log(root.$el);
       // console.log(root.$el.querySelector("span"));
-      console.log(root.$el.querySelector('[id^="connected"]'));
       // console.log(document.querySelector(".abcRioButtonContents span"));
       // console.log(root.$el.querySelector(".abcRioButtonContents span"));
       // document.querySelector(".abcRioButtonContents span");
 
       // console.log(root.$el.querySelector("span"));
       // console.log(root.$el.querySelector('[id^="connected"]'));
-      const spansEls = document.querySelectorAll("span");
-      console.log(spansEls);
+      // const spansEls = document.querySelectorAll("span");
 
       window.onload = function () {
         // console.log(this.$el.querySelector(".abcRioButtonContents span"));
@@ -233,8 +228,6 @@ export default defineComponent({
     });
 
     const onSuccess = async (googleUser) => {
-      console.log("googleUser.uc", googleUser.uc);
-      console.log("googleUser", googleUser);
       const token = googleUser.uc
         ? googleUser.uc.id_token
         : googleUser.tc.id_token;
@@ -314,7 +307,6 @@ export default defineComponent({
     //End - Google login area
 
     const submitHandler = (event) => {
-      console.log(event);
       if (
         event.keyboardEvent &&
         event.keyboardEvent.key === "Enter" &&

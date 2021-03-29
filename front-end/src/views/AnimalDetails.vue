@@ -81,13 +81,30 @@ export default defineComponent({
   name: "AnimalDetails",
   setup(props, { root }) {
     //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
-    onBeforeMount(() => {
+    onBeforeMount(async () => {
       if (document.readyState !== "complete") {
         root.$store.dispatch("togLoading", { loadingStatus: true });
 
-        const isAnimals = root.$store.getters.getAnimals.length !== 0;
-        if (!isAnimals) {
-          root.$store.dispatch("fetchAnimals");
+        // const isAnimals = root.$store.getters.getAnimals.length !== 0;
+        // if (!isAnimals) {
+        //   root.$store.dispatch("fetchAnimals");
+        // }
+      }
+
+      const isAnimals = root.$store.getters.getAnimals.length !== 0;
+      if (!isAnimals) {
+        try {
+          await root.$store.dispatch("fetchAnimals");
+        } catch (error) {
+          root.$swal.fire({
+            title: "Error: animal not fetched!",
+            text: error.message.toString(),
+            confirmButtonColor: "#D62E1F",
+            icon: "error",
+            width: 600,
+            padding: "3em",
+            background: "#fff",
+          });
         }
       }
     });

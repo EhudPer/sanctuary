@@ -42,7 +42,7 @@ exports.createUser = (root, { input }) => tslib_1.__awaiter(void 0, void 0, void
             return {
                 userId: createdUser.toObject()._id,
                 token,
-                tokenExpiration: 720,
+                tokenExpiration: 1000,
             };
         }
     }
@@ -76,7 +76,7 @@ exports.login = (root, { input }) => tslib_1.__awaiter(void 0, void 0, void 0, f
                 return {
                     userId: user.toObject()._id,
                     token,
-                    tokenExpiration: 720,
+                    tokenExpiration: 1000,
                 };
             }
             else {
@@ -107,17 +107,13 @@ exports.validateToken = (root, { token }) => tslib_1.__awaiter(void 0, void 0, v
 });
 exports.signGoogle = (root, { token }) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("in server signgoogle resolver and the token recived: ", token);
         const validatedAppToken = yield index_1.googleSigninOrSignup(token);
-        console.log("validatedAppToken in signgoogle resolver: ", validatedAppToken);
         return {
             token: validatedAppToken.token,
             showToast: validatedAppToken.showToast,
         };
     }
     catch (error) {
-        console.log("error here in signGoogle func: ");
-        console.log(error);
         throw error;
     }
 });

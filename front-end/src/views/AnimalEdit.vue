@@ -141,23 +141,38 @@ export default defineComponent({
     //check if i can put the code of mount and before mount in some function and only call it in all the component instead duplicate code.
 
     onBeforeMount(async () => {
-      try {
-        // await root.$store.dispatch("fetchAnimals");
-        const isAnimals = root.$store.getters.getAnimals.length !== 0;
-        if (!isAnimals) {
-          await root.$store.dispatch("fetchAnimals");
-        }
-        if (document.readyState !== "complete") {
-          root.$store.dispatch("togLoading", { loadingStatus: true });
-        }
-        // const isAnimals = root.$store.getters.getAnimals.length !== 0;
-        // if (!isAnimals) {
-        // await root.$store.dispatch("fetchAnimals");
-        // }
-        // }
-      } catch (error) {
-        console.log(error);
+      if (document.readyState !== "complete") {
+        root.$store.dispatch("togLoading", { loadingStatus: true });
       }
+      // try {
+      // await root.$store.dispatch("fetchAnimals");
+      const isAnimals = root.$store.getters.getAnimals.length !== 0;
+      if (!isAnimals) {
+        try {
+          await root.$store.dispatch("fetchAnimals");
+        } catch (error) {
+          root.$swal.fire({
+            title: "Error: animal not fetched!",
+            text: error.message.toString(),
+            confirmButtonColor: "#D62E1F",
+            icon: "error",
+            width: 600,
+            padding: "3em",
+            background: "#fff",
+          });
+        }
+      }
+      // if (document.readyState !== "complete") {
+      //   root.$store.dispatch("togLoading", { loadingStatus: true });
+      // }
+      // const isAnimals = root.$store.getters.getAnimals.length !== 0;
+      // if (!isAnimals) {
+      // await root.$store.dispatch("fetchAnimals");
+      // }
+      // }
+      // } catch (error) {
+      //   console.log(error);
+      // }
     });
 
     onMounted(() => {
@@ -168,9 +183,11 @@ export default defineComponent({
 
     const animalId = root.$route.params.animalId;
     const animal = computed(() => root.$store.getters.getAnimalById(animalId));
+
     if (!animal.value) {
       console.log("");
     }
+
     //Later try to set that when the edit page is loaded that the values of the controls will not be empty -
     // but with the current animal's details from the db - all the time, even on refresh or loading from url directly.
 

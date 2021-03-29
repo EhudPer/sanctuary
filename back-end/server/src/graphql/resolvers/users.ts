@@ -135,20 +135,12 @@ export const validateToken = async (root, { token }) => {
 
 export const signGoogle = async (root, { token }) => {
   try {
-    console.log("in server signgoogle resolver and the token recived: ", token);
     const validatedAppToken = await googleSigninOrSignup(token);
-    console.log(
-      "validatedAppToken in signgoogle resolver: ",
-      validatedAppToken
-    );
     return {
       token: validatedAppToken.token,
       showToast: validatedAppToken.showToast,
     };
   } catch (error) {
-    console.log("error here in signGoogle func: ");
-    console.log(error);
-
     throw error;
   }
 };
