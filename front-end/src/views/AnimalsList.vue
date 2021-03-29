@@ -1,14 +1,14 @@
 <template>
   <div class="animals-list">
     <!--    <h1 class="page-title">Animals</h1>-->
-    <v-btn
-      @click="pushToAddAnimalPage"
-      class="mt-3"
-      x-large
-      color="info accent-4"
-    >
-      Add Animal
-    </v-btn>
+    <!--    <v-btn-->
+    <!--      @click="pushToAddAnimalPage"-->
+    <!--      class="mt-3"-->
+    <!--      x-large-->
+    <!--      color="info accent-4"-->
+    <!--    >-->
+    <!--      Add Animal-->
+    <!--    </v-btn>-->
     <ul>
       <li v-for="animal in animals" :key="animal._id">
         <Animal :animal="animal" />
@@ -65,14 +65,14 @@ export default defineComponent({
 
     const animals = computed(() => root.$store.state.animals);
     //check later to do this a global function to use here and in edit page and where it called also..
-    function pushToAddAnimalPage() {
-      root.$router.push({
-        path: "/animals/add",
-      });
-    }
+    // function pushToAddAnimalPage() {
+    //   root.$router.push({
+    //     path: "/animals/add",
+    //   });
+    // }
     return {
       animals,
-      pushToAddAnimalPage,
+      /*pushToAddAnimalPage,*/
     };
   },
 });

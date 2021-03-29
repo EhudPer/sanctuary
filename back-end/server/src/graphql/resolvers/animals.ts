@@ -53,9 +53,10 @@ export const createAnimal = async (root, { input }, { req }) => {
       _id: mongoose.Types.ObjectId(),
       name: input.name,
       type: input.type,
-      // medicineType: input.medicineType,
       medicineType: input.medicineType ? input.medicineType : null,
       dosage: input.dosage ? input.dosage : null,
+      frequency: input.frequency ? input.frequency : null,
+      timeUnit: input.timeUnit ? input.timeUnit : null,
       image_url: input.image_url,
       creator: req.userId,
     });
@@ -84,6 +85,14 @@ export const createAnimal = async (root, { input }, { req }) => {
           : "",
       dosage:
         createdAnimalObject.dosage !== null ? createdAnimalObject.dosage : 0,
+      frequency:
+        createdAnimalObject.frequency !== null
+          ? createdAnimalObject.frequency
+          : 0,
+      timeUnit:
+        createdAnimalObject.timeUnit !== null
+          ? createdAnimalObject.timeUnit
+          : "",
     };
   } catch (error) {
     throw error;
@@ -99,10 +108,14 @@ export const updateAnimal = async (root, { _id, input }, { req }) => {
     const animalToUpdateObject = animalToUpdate.toObject();
     const medicineType = input.medicineType ? input.medicineType : null;
     const dosage = input.dosage ? input.dosage : null;
+    const frequency = input.frequency ? input.frequency : null;
+    const timeUnit = input.timeUnit ? input.timeUnit : null;
     const inputWithCreator = {
       ...input,
       medicineType,
       dosage,
+      frequency,
+      timeUnit,
       creator: animalToUpdateObject.creator,
     };
 
@@ -119,6 +132,12 @@ export const updateAnimal = async (root, { _id, input }, { req }) => {
         : null,
       dosage: updatedAnimal.toObject().dosage
         ? updatedAnimal.toObject().dosage
+        : null,
+      frequency: updatedAnimal.toObject().frequency
+        ? updatedAnimal.toObject().frequency
+        : null,
+      timeUnit: updatedAnimal.toObject().timeUnit
+        ? updatedAnimal.toObject().timeUnit
         : null,
     };
   } catch (error) {

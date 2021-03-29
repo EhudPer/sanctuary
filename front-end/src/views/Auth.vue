@@ -267,7 +267,7 @@ export default defineComponent({
           });
         }
 
-        moveToAnimalsList();
+        moveToStart();
 
         if (result.showToast) {
           setTimeout(() => {
@@ -389,7 +389,7 @@ export default defineComponent({
           });
         }, 2000);
 
-        moveToAnimalsList();
+        moveToStart();
       } catch (error) {
         if (error.message.toString().includes("Wrong credentials!")) {
           root.$swal.fire({
@@ -445,7 +445,7 @@ export default defineComponent({
           });
         }
 
-        moveToAnimalsList();
+        moveToStart();
       } catch (error) {
         root.$swal.fire({
           title: "Error: register failed!",
@@ -462,9 +462,9 @@ export default defineComponent({
     };
 
     //use it from a global function later cause it's in more than one component.
-    const moveToAnimalsList = () => {
+    const moveToStart = () => {
       root.$router.push({
-        name: "AnimalsList",
+        name: "Start",
       });
     };
 
@@ -491,7 +491,7 @@ export default defineComponent({
       switchHandler,
       demoHandler,
       // updateLoginState,
-      moveToAnimalsList,
+      moveToStart,
     };
   },
 });

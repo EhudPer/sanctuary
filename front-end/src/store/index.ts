@@ -245,6 +245,8 @@ const actions = {
               type
               medicineType
               dosage
+              frequency
+              timeUnit
               image_url
             }
           }
@@ -277,6 +279,8 @@ const actions = {
               type
               medicineType
               dosage
+              frequency
+              timeUnit
               image_url
             }
           }
@@ -287,6 +291,8 @@ const actions = {
             type: animalToCreateFields.type,
             medicineType: animalToCreateFields.medicineType,
             dosage: animalToCreateFields.dosage,
+            frequency: animalToCreateFields.frequency,
+            timeUnit: animalToCreateFields.timeUnit,
             image_url: animalToCreateFields.image_url,
           },
         },
@@ -307,11 +313,20 @@ const actions = {
         ...response.data.createAnimal,
         dosage,
       };
-      // commit("createAnimalInStore", response.data.createAnimal);
-      commit("createAnimalInStore", createdAnimalWithCorrectDosage);
+
+      const frequency =
+        response.data.createAnimal.frequency !== 0
+          ? response.data.createAnimal.frequency
+          : "";
+      const createdAnimalWithCorrectFrequency = {
+        ...createdAnimalWithCorrectDosage,
+        frequency,
+      };
+
+      commit("createAnimalInStore", createdAnimalWithCorrectFrequency);
 
       // return {response.data.createAnimal, dosage};
-      return createdAnimalWithCorrectDosage;
+      return createdAnimalWithCorrectFrequency;
     } catch (error) {
       throw new Error(error);
     }
@@ -334,6 +349,8 @@ const actions = {
               type
               medicineType
               dosage
+              frequency
+              timeUnit
               image_url
             }
           }
@@ -345,6 +362,8 @@ const actions = {
             type: updatedAnimalFields.type,
             medicineType: updatedAnimalFields.medicineType,
             dosage: updatedAnimalFields.dosage,
+            frequency: updatedAnimalFields.frequency,
+            timeUnit: updatedAnimalFields.timeUnit,
             image_url: updatedAnimalFields.image_url,
           },
         },
@@ -368,11 +387,18 @@ const actions = {
         ...response.data.updateAnimal,
         dosage,
       };
-      // commit("createAnimalInStore", response.data.createAnimal);
-      commit("updateAnimalInStore", updatedAnimalWithCorrectDosage);
 
-      // return {response.data.createAnimal, dosage};
-      return updatedAnimalWithCorrectDosage;
+      const frequency =
+        response.data.updateAnimal.frequency !== 0
+          ? response.data.updateAnimal.frequency
+          : "";
+      const updatedAnimalWithCorrectFrequency = {
+        ...updatedAnimalWithCorrectDosage,
+        frequency,
+      };
+
+      commit("updateAnimalInStore", updatedAnimalWithCorrectFrequency);
+      return updatedAnimalWithCorrectFrequency;
     } catch (error) {
       throw new Error(error);
     }

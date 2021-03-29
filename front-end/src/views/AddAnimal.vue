@@ -5,11 +5,6 @@
       <v-list-item>
         <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
       </v-list-item>
-      <!--      <v-img-->
-      <!--        src="../assets/add-animal.jpg"-->
-      <!--        alt="Avatar"-->
-      <!--        max-height="500"-->
-      <!--      ></v-img>-->
 
       <v-img
         v-if="animalType"
@@ -53,6 +48,25 @@
           type="number"
         ></v-text-field>
 
+        <v-text-field
+          v-model="animalFrequency"
+          :rules="[
+            (v) =>
+              (v >= 1 && !isNaN(v) && Number.isInteger(+v)) ||
+              v === '' ||
+              // (v !== '' && Number.isInteger(+v)) ||
+              'Frequency must be an integer NUMBER that is 1 or greater',
+          ]"
+          label="Frequency"
+          type="number"
+        ></v-text-field>
+
+        <v-select
+          v-model="animalTimeUnit"
+          :items="timeUnitItems"
+          label="Time Unit"
+        ></v-select>
+
         <div class="btn-container">
           <v-btn
             v-if="valid && animalName !== '' && animalType !== ''"
@@ -65,25 +79,6 @@
             Add
           </v-btn>
         </div>
-        <!--        <v-btn-->
-        <!--          color="error"-->
-        <!--          class="reset-form-btn"-->
-        <!--          @click="reset"-->
-        <!--          width="100%"-->
-        <!--          max-width="130"-->
-        <!--        >-->
-        <!--          Reset Form-->
-        <!--        </v-btn>-->
-
-        <!--        <v-btn-->
-        <!--          class="reset-validation-btn"-->
-        <!--          color="warning"-->
-        <!--          @click="resetValidation"-->
-        <!--          width="100%"-->
-        <!--          max-width="178"-->
-        <!--        >-->
-        <!--          Reset Validation-->
-        <!--        </v-btn>-->
       </v-form>
     </v-card>
   </div>
@@ -123,6 +118,8 @@ export default defineComponent({
     const animalType = ref("");
     const animalMedicineType = ref("");
     const animalDosage = ref("");
+    const animalFrequency = ref("");
+    const animalTimeUnit = ref("");
 
     const myForm = ref(null);
     const valid = ref(true);
@@ -132,11 +129,6 @@ export default defineComponent({
       (v) => (v && v.length <= 30) || "Name must be less than 30 characters",
     ]);
 
-    // const dosageRules = reactive([
-    //   // (v) => !!v || "Name is required",
-    //   // (v) => (v && v.length <= 30) || "Name must be less than 30 characters",
-    // ]);
-    // const select = ref(null);
     //later move those types of animals to one file and read them from it for all
     //the places needed with the types list like the select box etc.
     const items = reactive([
@@ -159,6 +151,8 @@ export default defineComponent({
       "Other",
     ]);
 
+    const timeUnitItems = reactive(["Day", "Week", "Month", "Year"]);
+
     const validate = () => {
       const valid = myForm.value.validate();
       if (valid) {
@@ -166,15 +160,8 @@ export default defineComponent({
       }
     };
 
-    // const reset = () => {
-    //   myForm.value.reset();
-    // };
-    //
-    // const resetValidation = () => {
-    //   myForm.value.resetValidation();
-    // };
-
     const addAnimal = async () => {
+      console.log("animal frequency", animalFrequency);
       root.$store.dispatch("togLoading", { loadingStatus: true });
       const animalToCreateFields = {
         name: animalName.value,
@@ -187,6 +174,15 @@ export default defineComponent({
             ? +animalDosage.value
             : 0,
 
+        frequency:
+          animalFrequency.value &&
+          animalFrequency.value !== 0 &&
+          animalFrequency.value !== "" &&
+          Number.isInteger(+animalFrequency.value)
+            ? +animalFrequency.value
+            : 0,
+
+        timeUnit: animalTimeUnit.value,
         //For now it's always null and when loading animal it will check and see that it's null so it will load default
         // image by animal type
         //later will add option the upload image - and if so the image cloud url will be stored here, if not - then null.
@@ -234,6 +230,8 @@ export default defineComponent({
       animalType,
       animalMedicineType,
       animalDosage,
+      animalFrequency,
+      animalTimeUnit,
       myForm,
       valid,
       name,
@@ -242,6 +240,7 @@ export default defineComponent({
       // select,
       items,
       medicineTypeItems,
+      timeUnitItems,
       validate,
       // reset,
       // resetValidation,
@@ -301,14 +300,4 @@ form {
     //flex-wrap: wrap;
   }
 }
-
-//@media only screen and (min-width: 480px) {
-//  .reset-form-btn {
-//    margin-right: 3px;
-//  }
-//
-//  .reset-validation-btn {
-//    margin-left: 3px;
-//  }
-//}
 </style>

@@ -4,6 +4,8 @@ type Animal {
     type: String!
     medicineType: String
     dosage: Float
+    frequency: Int
+    timeUnit: String
     image_url: String
     creator: User!
     #    dateOfBirth: String
