@@ -34,6 +34,7 @@
           v-model="animalMedicineType"
           :items="medicineTypeItems"
           label="Medicine Type"
+          clearable
         ></v-select>
 
         <v-text-field
@@ -65,6 +66,7 @@
           v-model="animalTimeUnit"
           :items="timeUnitItems"
           label="Time Unit"
+          clearable
         ></v-select>
 
         <div class="btn-container">
