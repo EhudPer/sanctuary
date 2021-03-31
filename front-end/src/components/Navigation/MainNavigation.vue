@@ -1,85 +1,88 @@
 <template>
   <header class="main-navigation__nav">
     <v-app-bar color="brown" dark fixed app>
-      <v-toolbar-title
-        ><div class="main-navigation__nav__logo">
-          Sanctuary
-        </div></v-toolbar-title
-      >
-      <v-spacer></v-spacer>
-      <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp">
-        <v-btn text to="/">
-          <span class="mr-2">
-            <router-link to="/">About</router-link>
-          </span>
-        </v-btn>
-        <v-btn v-if="token" text to="/animals">
-          <span class="mr-2">
-            <router-link to="/animals">View Animals</router-link>
-          </span>
-        </v-btn>
-        <v-btn v-if="token" text to="/animals/add">
-          <span class="mr-2">
-            <router-link to="/animals/add">Add Animal</router-link>
-          </span>
-        </v-btn>
-        <v-btn v-if="token" @click="logoutHandler" text to="/auth">
-          <span class="mr-2">
-            <router-link to="/auth">Log out</router-link>
-          </span>
-        </v-btn>
-        <v-btn v-if="!token" text to="/auth">
-          <span class="mr-2">
-            <router-link to="/auth">Sign in</router-link>
-          </span>
-        </v-btn>
-      </v-toolbar-items>
+      <v-btn ref="backBtn" class="back-btn hide" @click="backBtnHandler">
+        Back
+      </v-btn>
+      <div class="logo-and-dots-container">
+        <v-toolbar-title
+          ><div class="main-navigation__nav__logo">
+            Sanctuary
+          </div></v-toolbar-title
+        >
+        <v-spacer></v-spacer>
+        <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp">
+          <v-btn text to="/">
+            <span class="mr-2">
+              <router-link to="/">About</router-link>
+            </span>
+          </v-btn>
+          <v-btn v-if="token" text to="/animals">
+            <span class="mr-2">
+              <router-link to="/animals">View Animals</router-link>
+            </span>
+          </v-btn>
+          <v-btn v-if="token" text to="/animals/add">
+            <span class="mr-2">
+              <router-link to="/animals/add">Add Animal</router-link>
+            </span>
+          </v-btn>
+          <v-btn v-if="token" @click="logoutHandler" text to="/auth">
+            <span class="mr-2">
+              <router-link to="/auth">Log out</router-link>
+            </span>
+          </v-btn>
+          <v-btn v-if="!token" text to="/auth">
+            <span class="mr-2">
+              <router-link to="/auth">Sign in</router-link>
+            </span>
+          </v-btn>
+        </v-toolbar-items>
 
-      <v-menu v-if="!$vuetify.breakpoint.mdAndUp">
-        <template v-slot:activator="{ on }">
-          <div class="btns-container">
+        <v-menu v-if="!$vuetify.breakpoint.mdAndUp">
+          <template v-slot:activator="{ on }">
+            <!--          <div class="btns-container">-->
             <v-btn icon v-on="on">
               <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
+            <!--          </div>-->
+          </template>
 
-            <v-btn ref="backBtn" class="hide" @click="backBtnHandler">
-              Back
-            </v-btn>
-          </div>
-        </template>
-
-        <v-list>
-          <v-list-item to="/">
-            <v-list-item-title>
-              <router-link to="/">About</router-link>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item v-if="token" to="/animals">
-            <v-list-item-title
-              ><router-link to="/animals"
-                >View Animals</router-link
-              ></v-list-item-title
-            >
-          </v-list-item>
-          <v-list-item v-if="token" to="/animals/add">
-            <v-list-item-title
-              ><router-link to="/animals/add"
-                >Add Animal</router-link
-              ></v-list-item-title
-            >
-          </v-list-item>
-          <v-list-item v-if="!token" to="/auth">
-            <v-list-item-title
-              ><router-link to="/auth">Sign in</router-link></v-list-item-title
-            >
-          </v-list-item>
-          <v-list-item v-if="token" @click="logoutHandler" to="/auth">
-            <v-list-item-title
-              ><router-link to="/auth">Log out</router-link>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+          <v-list>
+            <v-list-item to="/">
+              <v-list-item-title>
+                <router-link to="/">About</router-link>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item v-if="token" to="/animals">
+              <v-list-item-title
+                ><router-link to="/animals"
+                  >View Animals</router-link
+                ></v-list-item-title
+              >
+            </v-list-item>
+            <v-list-item v-if="token" to="/animals/add">
+              <v-list-item-title
+                ><router-link to="/animals/add"
+                  >Add Animal</router-link
+                ></v-list-item-title
+              >
+            </v-list-item>
+            <v-list-item v-if="!token" to="/auth">
+              <v-list-item-title
+                ><router-link to="/auth"
+                  >Sign in</router-link
+                ></v-list-item-title
+              >
+            </v-list-item>
+            <v-list-item v-if="token" @click="logoutHandler" to="/auth">
+              <v-list-item-title
+                ><router-link to="/auth">Log out</router-link>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
     </v-app-bar>
   </header>
 </template>
@@ -149,7 +152,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 #app {
   .hide {
-    display: none;
+    //display: none;
+    visibility: hidden;
   }
 
   .spacer {
@@ -175,6 +179,7 @@ export default defineComponent({
   font-size: 2rem;
   width: 100%;
   max-width: 250px;
+  margin: auto;
 
   .main-navigation__nav__logo {
     width: 100%;
@@ -192,13 +197,19 @@ export default defineComponent({
   }
 }
 
-.btns-container {
-  width: 100%;
+.logo-and-dots-container {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  flex-direction: row-reverse;
 }
+//.btns-container {
+//  width: 100%;
+//  display: flex;
+//  align-items: center;
+//  justify-content: space-between;
+//  flex-direction: row-reverse;
+//}
 
 @media only screen and (min-width: 360px) {
   #app {
@@ -223,8 +234,16 @@ export default defineComponent({
 
 @media only screen and (min-width: 960px) {
   #app {
+    .v-toolbar__title {
+      margin: initial;
+    }
+
     .spacer {
       display: initial;
+    }
+
+    .back-btn {
+      display: none;
     }
   }
 }

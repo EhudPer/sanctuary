@@ -6,7 +6,7 @@
     </p>
     <p>Managing the caring for rescued animals (work in progress)</p>
     <p>Frameworks: nodejs, express, apollo-graphql, mongoose, vue + vuex</p>
-    <br />
+
     <p>By <b>Ehud Perlman</b>, fullstack webapps developer</p>
     <!--    <v-img src="../assets/ehud-and-kfitz.jpg" class="profile"></v-img>-->
     <v-img src="../assets/ehud-and-kfitz-cropped2.jpg" class="profile"></v-img>
@@ -23,7 +23,7 @@
 
     <p><i>Have an interesting project - I’d love to hear from you! </i></p>
 
-    <img class="main-img" src="../assets/home.jpeg" alt="Home" />
+    <!--    <img class="main-img" src="../assets/home.jpeg" alt="Home" />-->
   </div>
 </template>
 
@@ -63,10 +63,10 @@ img {
   margin: 15px 0;
 }
 
-.main-img {
-  object-fit: cover;
-  max-height: 230px;
-}
+//.main-img {
+//  object-fit: cover;
+//  max-height: 230px;
+//}
 
 .profile {
   //max-width: 1000px;
