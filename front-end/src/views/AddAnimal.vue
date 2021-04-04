@@ -72,14 +72,12 @@
         <div class="btn-container">
           <v-btn
             v-if="valid && animalName !== '' && animalType !== ''"
-            color="success"
             class="validate-btn"
             @click="validate"
-            width="100%"
-            max-width="130"
           >
             Add
           </v-btn>
+          <v-btn class="cancel-btn" @click="cancelHandler"> Cancel </v-btn>
         </div>
       </v-form>
     </v-card>
@@ -160,6 +158,10 @@ export default defineComponent({
       if (valid) {
         addAnimal();
       }
+    };
+
+    const cancelHandler = () => {
+      moveToAnimalsList();
     };
 
     const addAnimal = async () => {
@@ -244,6 +246,7 @@ export default defineComponent({
       medicineTypeItems,
       timeUnitItems,
       validate,
+      cancelHandler,
       // reset,
       // resetValidation,
       moveToAnimalsList,
@@ -265,7 +268,8 @@ export default defineComponent({
 
 .btn-container {
   display: flex;
-  justify-content: flex-start;
+  //justify-content: flex-start;
+  align-items: center;
 }
 
 //.v-btn--disabled {
@@ -281,25 +285,37 @@ form {
 
   //.reset-form-btn,
   //.reset-validation-btn
-  .validate-btn {
+  .validate-btn,
+  .cancel-btn {
     margin-top: 10px;
   }
 }
 
-@media only screen and (min-width: 296px) {
-  .validate-btn {
-    margin-right: 3px;
-  }
-
-  //.reset-form-btn {
-  //  margin-left: 3px;
-  //}
+.v-btn {
+  //width: 100%;
+  //max-width: 160px;
+  background: var(--v-white-base) !important;
+  color: var(--v-grey-base) !important;
+  flex-grow: 1;
+  margin-bottom: 20px;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
-@media only screen and (min-width: 395px) {
-  .v-card__actions {
-    flex-direction: row;
-    //flex-wrap: wrap;
-  }
-}
+//@media only screen and (min-width: 296px) {
+//  .validate-btn {
+//    margin-right: 3px;
+//  }
+
+//.reset-form-btn {
+//  margin-left: 3px;
+//}
+//}
+
+//@media only screen and (min-width: 395px) {
+//  .v-card__actions {
+//    flex-direction: row;
+//    //flex-wrap: wrap;
+//  }
+//}
 </style>
