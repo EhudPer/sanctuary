@@ -162,9 +162,9 @@ export default defineComponent({
 
   .v-toolbar__items {
     a {
-      color: white;
+      color: var(--v-white-base) !important;
       &.v-btn--active {
-        color: darkgrey;
+        color: var(--v-darkgrey-base) !important;
       }
     }
   }

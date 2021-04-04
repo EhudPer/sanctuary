@@ -129,7 +129,7 @@ export const createToken = async (userId, email) => {
         email,
       },
       process.env.JWT_PRIVATE_KEY,
-      { expiresIn: "1h" }
+      { expiresIn: "2160h" }
     );
   } catch (error) {
     throw error;

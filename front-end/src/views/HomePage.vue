@@ -12,8 +12,8 @@
     <v-img src="../assets/ehud-and-kfitz-cropped2.jpg" class="profile"></v-img>
     <p>
       <b>github: </b>
-      <a href="https://github.com/EhudPer" target="_blank"
-        >https://github.com/EhudPer</a
+      <a href="https://github.com/EhudPer/sanctuary" target="_blank"
+        >Sanctuary project</a
       >
     </p>
     <p>
@@ -82,7 +82,7 @@ p {
 }
 
 a {
-  color: blue !important;
+  color: var(--v-info-base) !important;
 }
 
 @media only screen and (min-width: 386px) {

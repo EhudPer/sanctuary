@@ -47,11 +47,16 @@ export default defineComponent({
           root.$swal.fire({
             title: "Error: animals not fetched!",
             text: error.message.toString(),
-            confirmButtonColor: "#D62E1F",
+            // confirmButtonColor: "#D62E1F",
             icon: "error",
             width: 600,
             padding: "3em",
-            background: "#fff",
+            // background: "#fff",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton:
+                "swal-btn v-btn v-btn--contained theme--light v-size--default",
+            },
           });
         }
       }
@@ -90,32 +95,37 @@ export default defineComponent({
 .btns-container {
   display: flex;
   flex-direction: column;
+  height: calc(100vh - 70px);
   //width: 100%;
   //max-width: 300px;
   //justify-content: center;
   //margin: 0 auto;
+  justify-content: center;
   align-items: center;
   button {
+    width: 100%;
     //margin: 0 auto;
-    //max-width: 300px;
+    max-width: 250px;
+    background: var(--v-white-base) !important;
+    color: var(--v-grey-base) !important;
   }
 }
 
-@media only screen and (min-width: 960px) {
-  .btns-container {
-    flex-direction: row;
-    //width: 100%;
-    justify-content: center;
-
-    .btn-add {
-      margin-right: 15px;
-    }
-
-    .btn-list {
-      margin-left: 15px;
-    }
-  }
-}
+//@media only screen and (min-width: 960px) {
+//  .btns-container {
+//    flex-direction: row;
+//    //width: 100%;
+//    justify-content: center;
+//
+//    .btn-add {
+//      margin-right: 15px;
+//    }
+//
+//    .btn-list {
+//      margin-left: 15px;
+//    }
+//  }
+//}
 //.animals-list {
 //  ul {
 //    display: flex;

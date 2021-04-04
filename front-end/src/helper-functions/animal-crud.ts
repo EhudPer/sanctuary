@@ -12,9 +12,16 @@ export const deleteAnimal = async (
       text: "You won't be able to revert this animal deletion!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#0457E7",
-      cancelButtonColor: "#D62E1F",
-      confirmButtonText: "Yes, delete it!",
+      // confirmButtonColor: "#0457E7",
+      // cancelButtonColor: "#D62E1F",
+      confirmButtonText: "Delete",
+      buttonsStyling: false,
+      customClass: {
+        confirmButton:
+          "swal-btn v-btn v-btn--contained theme--light v-size--default",
+        cancelButton:
+          "swal-btn v-btn v-btn--contained theme--light v-size--default",
+      },
     });
     if (!confirmation.isConfirmed) {
       root.$store.dispatch("togLoading", { loadingStatus: false });
@@ -44,11 +51,16 @@ export const deleteAnimal = async (
     root.$swal.fire({
       title: "Error: animal not deleted!",
       text: "Please try again at a later time.",
-      confirmButtonColor: "#D62E1F",
+      // confirmButtonColor: "#D62E1F",
       icon: "error",
       width: 600,
       padding: "3em",
-      background: "#fff",
+      buttonsStyling: false,
+      customClass: {
+        confirmButton:
+          "swal-btn v-btn v-btn--contained theme--light v-size--default",
+      },
+      // background: "#fff",
     });
   }
   root.$store.dispatch("togLoading", { loadingStatus: false });

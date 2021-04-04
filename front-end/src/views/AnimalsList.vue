@@ -47,11 +47,16 @@ export default defineComponent({
           root.$swal.fire({
             title: "Error: animals not fetched!",
             text: error.message.toString(),
-            confirmButtonColor: "#D62E1F",
+            // confirmButtonColor: "#D62E1F",
             icon: "error",
             width: 600,
             padding: "3em",
-            background: "#fff",
+            // background: "#fff",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton:
+                "swal-btn v-btn v-btn--contained theme--light v-size--default",
+            },
           });
         }
       }

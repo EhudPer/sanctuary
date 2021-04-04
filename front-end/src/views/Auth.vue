@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="main-container">
     <!--    <h1 class="page-title">{{ isLogin ? "Login" : "Register" }}</h1>-->
-    <v-card max-width="1032" class="mx-auto">
+    <v-card max-width="343">
       <!--      <v-list-item>-->
       <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
       <!--      </v-list-item>-->
@@ -21,44 +21,62 @@
       <!--      ></v-img>-->
 
       <v-form ref="myForm" v-model="valid" class="mb-4" lazy-validation>
-        <v-text-field
-          v-model="userEmail"
-          :counter="isLogin ? null : '30'"
-          :rules="emailRules"
-          type="email"
-          label="Email"
-          required
-        ></v-text-field>
+        <div class="form-sub-container">
+          <!--          <p v-if="!isLogin" class="or-title">link password:</p>-->
+          <p :class="!isLogin ? '' : 'hide'" class="or-title">link password:</p>
 
-        <v-text-field
-          @keyup.enter="submitHandler"
-          v-model="userPassword"
-          :counter="isLogin ? null : '30'"
-          :rules="passwordRules"
-          type="password"
-          label="Password"
-          required
-        ></v-text-field>
+          <div class="google-btn-and-fixer-container">
+            <div class="google-text-fixer">Sign in with Google</div>
+            <GoogleLogin
+              class="google-signin-btn-wrapper"
+              :params="params"
+              :renderParams="renderParams"
+              :onSuccess="onSuccess"
+              :onFailure="onFailure"
+            ></GoogleLogin>
+          </div>
 
-        <v-text-field
-          v-if="!isLogin"
-          v-model="reUserPassword"
-          :counter="isLogin ? null : '30'"
-          :rules="rePasswordRules"
-          type="password"
-          label="Confirm password"
-          required
-        ></v-text-field>
+          <div v-if="isLogin">
+            <!--          <p class="page-sub-title">Try our demo account</p>-->
+            <!--          <p class="page-sub-title">-->
+            <!--            <span>Email: demo@demo.com</span>,-->
+            <!--            <span>Password: demouser</span>-->
+            <!--          </p>-->
+            <v-btn class="demo-account-btn" @click="demoHandler">
+              Try our demo account
+            </v-btn>
+          </div>
 
-        <div class="btns-container">
-          <v-btn
-            :disabled="!valid"
-            color="success"
-            class="auth-btn"
-            @click="submitHandler"
-            width="100%"
-            max-width="130"
-          >
+          <v-text-field
+            v-model="userEmail"
+            :counter="isLogin ? null : '30'"
+            :rules="emailRules"
+            type="email"
+            label="Email"
+            required
+          ></v-text-field>
+
+          <v-text-field
+            @keyup.enter="submitHandler"
+            v-model="userPassword"
+            :counter="isLogin ? null : '30'"
+            :rules="passwordRules"
+            type="password"
+            label="Password"
+            required
+          ></v-text-field>
+
+          <v-text-field
+            v-if="!isLogin"
+            v-model="reUserPassword"
+            :counter="isLogin ? null : '30'"
+            :rules="rePasswordRules"
+            type="password"
+            label="Confirm password"
+            required
+          ></v-text-field>
+
+          <v-btn :disabled="!valid" class="auth-btn" @click="submitHandler">
             {{ isLogin ? "Sign in" : "Sign up" }}
           </v-btn>
 
@@ -83,47 +101,13 @@
           <!--        </v-btn>-->
 
           <!--        <p v-if="isLogin" class="or-title">Or:</p>-->
-          <p v-if="!isLogin" class="or-title">link password:</p>
 
-          <div class="google-btn-and-fixer-container">
-            <div class="google-text-fixer">Sign in with Google</div>
-            <GoogleLogin
-              class="google-signin-btn-wrapper"
-              :params="params"
-              :renderParams="renderParams"
-              :onSuccess="onSuccess"
-              :onFailure="onFailure"
-            ></GoogleLogin>
-          </div>
           <!--        <p class="or-title">Or:</p>-->
-          <v-btn
-            class="switch-to-register-btn"
-            color="info"
-            @click="switchHandler"
-            width="100%"
-            max-width="130"
-          >
+          <v-btn class="switch-to-register-btn" @click="switchHandler">
             <!--          Switch to Register-->
             <!--          Switch to {{ isLogin ? "register" : "login" }}-->
             {{ isLogin ? "sign up" : "sign in" }}
           </v-btn>
-
-          <div v-if="isLogin">
-            <!--          <p class="page-sub-title">Try our demo account</p>-->
-            <!--          <p class="page-sub-title">-->
-            <!--            <span>Email: demo@demo.com</span>,-->
-            <!--            <span>Password: demouser</span>-->
-            <!--          </p>-->
-            <v-btn
-              class="demo-account-btn"
-              color="brown"
-              @click="demoHandler"
-              width="100%"
-              max-width="224"
-            >
-              Try our demo account
-            </v-btn>
-          </div>
         </div>
       </v-form>
     </v-card>
@@ -228,6 +212,13 @@ export default defineComponent({
     });
 
     const onSuccess = async (googleUser) => {
+      if (!isLogin.value) {
+        const valid = myForm.value.validate();
+        if (!valid) {
+          return;
+        }
+      }
+
       const token = googleUser.uc
         ? googleUser.uc.id_token
         : googleUser.tc.id_token;
@@ -259,11 +250,16 @@ export default defineComponent({
 
           return root.$swal.fire({
             title: "Wrong credentials!",
-            confirmButtonColor: "red",
+            // confirmButtonColor: "red",
             icon: "warning",
             width: 600,
             padding: "3em",
-            background: "#fff",
+            // background: "#fff",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton:
+                "swal-btn v-btn v-btn--contained theme--light v-size--default",
+            },
           });
         }
 
@@ -278,7 +274,7 @@ export default defineComponent({
               position: "bottom",
               width: 600,
               padding: "3em",
-              background: "#fff",
+              // background: "#fff",
             });
           }, 2000);
         }
@@ -289,11 +285,16 @@ export default defineComponent({
           title: "Error:",
           text: error.message.toString(),
           // text: "Error is here!",
-          confirmButtonColor: "red",
+          // confirmButtonColor: "red",
           icon: "warning",
           width: 600,
           padding: "3em",
-          background: "#fff",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton:
+              "swal-btn v-btn v-btn--contained theme--light v-size--default",
+          },
+          // background: "#fff",
         });
       }
       root.$store.dispatch("togLoading", { loadingStatus: false });
@@ -343,7 +344,7 @@ export default defineComponent({
     const switchHandler = () => {
       isLogin.value = !isLogin.value;
       if (!isLogin.value) {
-        if (userEmail.value.indexOf("demo") !== -1) {
+        if (userEmail.value && userEmail.value.indexOf("demo") !== -1) {
           userEmail.value = "";
           userPassword.value = "";
           myForm.value.reset();
@@ -369,11 +370,16 @@ export default defineComponent({
 
           return root.$swal.fire({
             title: "Wrong credentials!",
-            confirmButtonColor: "red",
+            // confirmButtonColor: "red",
             icon: "warning",
             width: 600,
             padding: "3em",
-            background: "#fff",
+            // background: "#fff",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton:
+                "swal-btn v-btn v-btn--contained theme--light v-size--default",
+            },
           });
         }
 
@@ -385,7 +391,7 @@ export default defineComponent({
             position: "bottom",
             width: 600,
             padding: "3em",
-            background: "#fff",
+            // background: "#fff",
           });
         }, 2000);
 
@@ -394,11 +400,16 @@ export default defineComponent({
         if (error.message.toString().includes("Wrong credentials!")) {
           root.$swal.fire({
             title: "Wrong credentials!",
-            confirmButtonColor: "red",
+            // confirmButtonColor: "red",
             icon: "warning",
             width: 600,
             padding: "3em",
-            background: "#fff",
+            // background: "#fff",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton:
+                "swal-btn v-btn v-btn--contained theme--light v-size--default",
+            },
           });
         } else {
           root.$swal.fire({
@@ -411,11 +422,16 @@ export default defineComponent({
               error.toString() +
               " " +
               error.graphQLErrors.toString(),
-            confirmButtonColor: "#D62E1F",
+            // confirmButtonColor: "#D62E1F",
             icon: "error",
             width: 600,
             padding: "3em",
-            background: "#fff",
+            // background: "#fff",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton:
+                "swal-btn v-btn v-btn--contained theme--light v-size--default",
+            },
           });
         }
       }
@@ -437,11 +453,16 @@ export default defineComponent({
             title: "Error: login for new registered user failed!",
             text: "Please try again at a later time.",
             // text: error.message.toString(),
-            confirmButtonColor: "red",
+            // confirmButtonColor: "red",
             icon: "warning",
             width: 600,
             padding: "3em",
-            background: "#fff",
+            // background: "#fff",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton:
+                "swal-btn v-btn v-btn--contained theme--light v-size--default",
+            },
           });
         }
 
@@ -451,11 +472,16 @@ export default defineComponent({
           title: "Error: register failed!",
           // text: "Please try again at a later time.",
           text: error.message.toString(),
-          confirmButtonColor: "#D62E1F",
+          // confirmButtonColor: "#D62E1F",
           icon: "error",
           width: 600,
           padding: "3em",
-          background: "#fff",
+          // background: "#fff",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton:
+              "swal-btn v-btn v-btn--contained theme--light v-size--default",
+          },
         });
       }
       root.$store.dispatch("togLoading", { loadingStatus: false });
@@ -498,10 +524,21 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.hide {
+  visibility: hidden;
+}
+
+.main-container {
+  height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+}
+
 .google-btn-and-fixer-container {
-  //background: darkgrey;
-  color: gray;
+  color: var(--v-grey-base) !important;
+  //color: gray;
   width: 100%;
+  //max-width: 254px;
   max-width: 254px;
   margin-top: -20px;
   margin-bottom: 0;
@@ -513,6 +550,12 @@ export default defineComponent({
   //height: 0px;
 }
 
+//.abcRioButtonLightBlue,
+//.abcRioButtonContentWrapper,
+//.google-signin-btn-wrapper {
+//  background-color: var(--v-white-base) !important;
+//}
+
 .google-text-fixer {
   pointer-events: none;
   position: relative;
@@ -522,21 +565,22 @@ export default defineComponent({
   z-index: 100;
   width: 100%;
   max-width: 200px;
-  background: white;
+  //background: white;
+  background: var(--v-cleanwhite-base) !important;
 }
 
 .page-sub-title {
   //font-size: 1.2rem;
   font-weight: normal;
 
-  span {
-    color: #0457e7;
-  }
+  //span {
+  //  color: var(--v-info-base) !important;
+  //}
 }
 
 .v-card {
   width: 100%;
-  margin: 15px auto;
+  margin: auto;
   overflow: scroll;
 }
 
@@ -546,12 +590,28 @@ export default defineComponent({
 
 form {
   padding: 0 8px;
+  //height: 438px;
+  height: 500px;
 
-  .btns-container {
+  .form-sub-container {
     button,
     .google-signin-btn-wrapper {
       margin-bottom: 20px;
     }
+
+    button {
+      width: 100%;
+      max-width: 250px;
+      height: 50px !important;
+      background: var(--v-white-base) !important;
+      color: var(--v-grey-base);
+      font-size: 1rem;
+      overflow: hidden;
+    }
+
+    //.abcRioButton {
+    //  background: var(--v-white-base) !important;
+    //}
   }
 
   .auth-btn,
@@ -567,21 +627,57 @@ form {
   }
 }
 
-.demo-account-btn {
-  color: white;
+//.google-signin-btn-wrapper .abcRioButton .abcRioButtonContentWrapper {
+//  background-color: blue !important;
+//}
+
+.v-text-field {
+  font-size: 1.2rem;
 }
+
+.v-input {
+  font-size: 1rem;
+  margin: 0 auto;
+  //width: 100%;
+  max-width: 250px !important;
+}
+
+//.demo-account-btn {
+//  color: var(--v-white-base) !important;
+//}
 
 .google-signin-btn-wrapper {
   display: flex;
   justify-content: center;
+  //background-color: red;
+
+  //.abcRioButton.abcRioButtonLightBlue {
+  //  background-color: red !important;
+  //}
+
+  //.abcRioButtonLightBlue {
+  //  background-color: red !important;
+  //}
 
   //#connected3yap2b3ti7qi {
   //  display: inline-block;
   //}
+
+  //.abcRioButton {
+  //  background-color: red !important;
+  //}
 }
 
-//.or-title {
-//  margin-top: 10px;
+.or-title {
+  color: var(--v-grey-base);
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+//#google-signin-btn-1 {
+//  .abcRioButtonContentWrapper {
+//    background-color: blue !important;
+//  }
 //}
 
 @media only screen and (min-width: 296px) {
@@ -606,35 +702,35 @@ form {
   }
 }
 
-@media only screen and (min-width: 960px) {
-  .google-btn-and-fixer-container {
-    margin-right: 0px;
-    margin-left: 0px;
-  }
+//@media only screen and (min-width: 960px) {
+//  .google-btn-and-fixer-container {
+//    margin-right: 0px;
+//    margin-left: 0px;
+//  }
+//
+//  .btns-container {
+//    display: flex;
+//    justify-content: space-between;
+//    align-items: center;
+//    margin-top: 20px;
+//    padding: 0;
+//
+//    .auth-btn,
+//    .switch-to-register-btn,
+//    google-signin-btn-wrapper,
+//    demo-account-btn {
+//      margin-top: 0px;
+//      margin-right: 0px;
+//      margin-left: 0;
+//    }
+//  }
+//}
 
-  .btns-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding: 0;
-
-    .auth-btn,
-    .switch-to-register-btn,
-    google-signin-btn-wrapper,
-    demo-account-btn {
-      margin-top: 0px;
-      margin-right: 0px;
-      margin-left: 0;
-    }
-  }
-}
-
-@media only screen and (min-width: 1025px) {
-  .btns-container {
-    padding: 20px;
-  }
-}
+//@media only screen and (min-width: 1025px) {
+//  .btns-container {
+//    padding: 20px;
+//  }
+//}
 
 //@media only screen and (min-width: 480px) {
 //  .reset-form-btn {
