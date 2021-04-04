@@ -29,10 +29,8 @@
       <!--      <v-btn @click="moveToAnimalDetails" text color="success accent-4">-->
       <!--        Details-->
       <!--      </v-btn>-->
-      <v-btn @click="moveToAnimalEdit" color="yellow accent-4"> Edit </v-btn>
-      <v-btn @click="deleteAnimalClicked" color="error accent-4">
-        Delete
-      </v-btn>
+      <v-btn @click="moveToAnimalEdit"> Edit </v-btn>
+      <v-btn @click="deleteAnimalClicked"> Delete </v-btn>
       <!--      <v-spacer></v-spacer>-->
       <!--      <v-btn icon>-->
       <!--        <v-icon>mdi-heart</v-icon>-->
@@ -106,12 +104,17 @@ export default defineComponent({
 }
 
 .v-btn {
-  color: white;
+  //width: 100%;
+  //max-width: 160px;
+  background: var(--v-white-base) !important;
+  color: var(--v-grey-base) !important;
+  flex-grow: 1;
+  margin-bottom: 10px;
 }
 
-.v-card__actions {
-  flex-direction: column;
-}
+//.v-card__actions {
+//  flex-direction: column;
+//}
 
 @media only screen and (min-width: 345px) {
   .v-card__actions {

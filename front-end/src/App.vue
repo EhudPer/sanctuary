@@ -43,9 +43,6 @@ export default defineComponent({
 component. //order and make more organized all the scss code here. //scss use
 vuetify color map to and then reuse colors in the app.
 <style lang="scss">
-//$bg-color: #eff2f5;
-$color: #050505;
-
 // convert all px units to rem or em.
 
 #app {
@@ -63,11 +60,11 @@ $color: #050505;
     padding: 0;
   }
   .router-link-exact-active {
-    color: brown;
+    color: var(--v-brown-base) !important;
   }
 
   a {
-    color: black;
+    color: var(--v-black-base) !important;
     text-decoration: none;
   }
 }
@@ -93,9 +90,23 @@ $color: #050505;
   margin-bottom: 20px;
 }
 
+.swal-btn {
+  background: var(--v-white-base) !important;
+  color: var(--v-grey-base) !important;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 160px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 15px;
+}
+
 @media only screen and (min-width: 386px) {
   #app {
     font-size: 1.25em;
+
+    //display: flex;
+    //align-items: center;
   }
 
   .view {

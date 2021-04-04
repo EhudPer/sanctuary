@@ -4,11 +4,11 @@
     <v-card v-if="animal" max-width="1032" class="mx-auto">
       <v-list-item>
         <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
-        <v-list-item-content>
-          <v-list-item-title class="headline">
-            {{ animal.name }}
-          </v-list-item-title>
-        </v-list-item-content>
+        <!--        <v-list-item-content>-->
+        <!--          <v-list-item-title class="headline">-->
+        <!--            {{ animal.name }}-->
+        <!--          </v-list-item-title>-->
+        <!--        </v-list-item-content>-->
       </v-list-item>
 
       <v-img
@@ -75,29 +75,26 @@
         ></v-select>
 
         <div class="btns-container">
-          <v-card-actions>
-            <v-btn
-              v-if="valid && newAnimalName !== '' && newAnimalType !== ''"
-              color="success"
-              class="validate-btn"
-              @click="validate"
-              width="100%"
-              max-width="130"
-            >
-              Save
-            </v-btn>
-
-            <v-btn @click="deleteAnimalClicked" color="error accent-4">
-              Delete
-            </v-btn>
-            <!--        <v-spacer></v-spacer>-->
-            <!--        <v-btn icon>-->
-            <!--          <v-icon>mdi-heart</v-icon>-->
-            <!--        </v-btn>-->
-            <!--        <v-btn icon>-->
-            <!--          <v-icon>mdi-share-variant</v-icon>-->
-            <!--        </v-btn>-->
-          </v-card-actions>
+          <!--          <v-card-actions>-->
+          <v-btn
+            v-if="valid && newAnimalName !== '' && newAnimalType !== ''"
+            class="validate-btn"
+            @click="validate"
+          >
+            Save
+          </v-btn>
+          <v-btn @click="deleteAnimalClicked"> Delete </v-btn>
+          <!--        <v-spacer></v-spacer>-->
+          <!--        <v-btn icon>-->
+          <!--          <v-icon>mdi-heart</v-icon>-->
+          <!--        </v-btn>-->
+          <!--        <v-btn icon>-->
+          <!--          <v-icon>mdi-share-variant</v-icon>-->
+          <!--        </v-btn>-->
+          <!--          </v-card-actions>-->
+        </div>
+        <div class="cancel-btn-container">
+          <v-btn @click="cancelHandler"> Cancel </v-btn>
         </div>
         <!--        <v-btn-->
         <!--          color="error"-->
@@ -154,11 +151,16 @@ export default defineComponent({
           root.$swal.fire({
             title: "Error: animal not fetched!",
             text: error.message.toString(),
-            confirmButtonColor: "#D62E1F",
+            // confirmButtonColor: "#D62E1F",
             icon: "error",
             width: 600,
             padding: "3em",
-            background: "#fff",
+            // background: "#fff",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton:
+                "swal-btn v-btn v-btn--contained theme--light v-size--default",
+            },
           });
         }
       }
@@ -245,6 +247,10 @@ export default defineComponent({
       }
     };
 
+    const cancelHandler = () => {
+      moveToAnimalsList();
+    };
+
     // const reset = () => {
     //   myForm.value.reset();
     // };
@@ -289,11 +295,16 @@ export default defineComponent({
         root.$swal.fire({
           title: "Error: animal not updated!",
           text: error.message.toString(),
-          confirmButtonColor: "#D62E1F",
+          // confirmButtonColor: "#D62E1F",
           icon: "error",
           width: 600,
           padding: "3em",
-          background: "#fff",
+          // background: "#fff",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton:
+              "swal-btn v-btn v-btn--contained theme--light v-size--default",
+          },
         });
       }
 
@@ -310,6 +321,12 @@ export default defineComponent({
       root.$router.push({
         name: "AnimalDetails",
         params: { animalId },
+      });
+    };
+
+    const moveToAnimalsList = () => {
+      root.$router.push({
+        name: "AnimalsList",
       });
     };
 
@@ -334,8 +351,10 @@ export default defineComponent({
       medicineTypeItems,
       timeUnitItems,
       validate,
+      cancelHandler,
       pushToAddAnimalPage,
       moveToAnimalDetails,
+      moveToAnimalsList,
       deleteAnimalClicked,
     };
   },
@@ -393,4 +412,23 @@ form {
 //    margin-left: 3px;
 //  }
 //}
+
+.cancel-btn-container {
+  display: flex;
+
+  .v-btn {
+    flex-grow: 1;
+  }
+}
+
+.v-btn {
+  //width: 100%;
+  //max-width: 160px;
+  background: var(--v-white-base) !important;
+  color: var(--v-grey-base) !important;
+  flex-grow: 1;
+  margin-bottom: 20px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
 </style>
