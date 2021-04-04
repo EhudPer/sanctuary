@@ -108,7 +108,7 @@ exports.createToken = (userId, email) => tslib_1.__awaiter(void 0, void 0, void 
         return yield jwt.sign({
             userId,
             email,
-        }, process.env.JWT_PRIVATE_KEY, { expiresIn: "1h" });
+        }, process.env.JWT_PRIVATE_KEY, { expiresIn: "2160h" });
     }
     catch (error) {
         throw error;
