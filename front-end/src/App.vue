@@ -64,7 +64,7 @@ vuetify color map to and then reuse colors in the app.
   }
 
   a {
-    color: var(--v-black-base) !important;
+    color: var(--v-black-base);
     text-decoration: none;
   }
 }

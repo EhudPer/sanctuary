@@ -81,8 +81,10 @@ p {
   margin-bottom: 10px;
 }
 
-a {
-  color: var(--v-info-base) !important;
+.home-page {
+  a {
+    color: var(--v-info-base) !important;
+  }
 }
 
 @media only screen and (min-width: 386px) {
