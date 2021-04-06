@@ -1,10 +1,7 @@
 <template>
   <div>
-    <!--    <h1 class="page-title">Add Animal</h1>-->
     <v-card max-width="1032" class="mx-auto">
-      <v-list-item>
-        <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
-      </v-list-item>
+      <v-list-item> </v-list-item>
 
       <v-img
         v-if="animalType"
@@ -165,7 +162,6 @@ export default defineComponent({
     };
 
     const addAnimal = async () => {
-      console.log("animal frequency", animalFrequency);
       root.$store.dispatch("togLoading", { loadingStatus: true });
       const animalToCreateFields = {
         name: animalName.value,
@@ -200,7 +196,6 @@ export default defineComponent({
           animalToCreateFields,
         });
 
-        // moveToAnimalDetails(result._id.toString());
         moveToAnimalsList();
       } catch (error) {
         root.$swal.fire({
@@ -217,12 +212,7 @@ export default defineComponent({
     };
 
     //use it from a global function later cause it's in more than one component.
-    // const moveToAnimalDetails = (animalId) => {
-    //   root.$router.push({
-    //     name: "AnimalDetails",
-    //     params: { animalId },
-    //   });
-    // };
+
     const moveToAnimalsList = () => {
       root.$router.push({
         name: "AnimalsList",
@@ -240,15 +230,13 @@ export default defineComponent({
       valid,
       name,
       nameRules,
-      // dosageRules,
-      // select,
+
       items,
       medicineTypeItems,
       timeUnitItems,
       validate,
       cancelHandler,
-      // reset,
-      // resetValidation,
+
       moveToAnimalsList,
     };
   },
@@ -264,17 +252,20 @@ export default defineComponent({
   width: 100%;
   margin: 15px auto;
   overflow: scroll;
+  background-color: var(--v-fourth-base) !important;
+  color: var(--v-third-base) !important;
 }
 
 .btn-container {
   display: flex;
-  //justify-content: flex-start;
+
   align-items: center;
 }
 
-//.v-btn--disabled {
-//  display: none !important;
-//}
+.v-card__text,
+.v-list-item__title {
+  color: var(--v-tenth-base) !important;
+}
 
 .v-card__actions {
   flex-direction: column;
@@ -283,8 +274,6 @@ export default defineComponent({
 form {
   padding: 0 8px;
 
-  //.reset-form-btn,
-  //.reset-validation-btn
   .validate-btn,
   .cancel-btn {
     margin-top: 10px;
@@ -292,30 +281,11 @@ form {
 }
 
 .v-btn {
-  //width: 100%;
-  //max-width: 160px;
-  background: var(--v-white-base) !important;
-  color: var(--v-grey-base) !important;
+  background: var(--v-ninth-base) !important;
+  color: var(--v-tenth-base) !important;
   flex-grow: 1;
   margin-bottom: 20px;
   margin-right: 5px;
   margin-left: 5px;
 }
-
-//@media only screen and (min-width: 296px) {
-//  .validate-btn {
-//    margin-right: 3px;
-//  }
-
-//.reset-form-btn {
-//  margin-left: 3px;
-//}
-//}
-
-//@media only screen and (min-width: 395px) {
-//  .v-card__actions {
-//    flex-direction: row;
-//    //flex-wrap: wrap;
-//  }
-//}
 </style>

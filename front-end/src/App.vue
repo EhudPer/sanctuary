@@ -1,9 +1,5 @@
 <template>
-  <v-app
-    id="app"
-    :style="{ background: $vuetify.theme.themes.light.background }"
-    data-app
-  >
+  <v-app id="app" data-app>
     <MainNavigation />
     <div class="view">
       <router-view />
@@ -34,7 +30,6 @@ export default defineComponent({
         console.log(error);
       }
     });
-    // return onBeforeMount;
   },
 });
 </script>
@@ -49,22 +44,20 @@ vuetify color map to and then reuse colors in the app.
   text-align: center;
   font-family: Verdana, Avenir, Helvetica, Arial, sans-serif;
   font-size: 1.2em;
+  background-color: var(--v-eighth-base);
+  color: var(--v-tenth-base);
   //margin-top: 60px;
 
-  body {
-    //background-color: $bg-color;
-    //color: $color;
-  }
   ul {
     list-style-type: none;
     padding: 0;
   }
   .router-link-exact-active {
-    color: var(--v-brown-base) !important;
+    color: var(--v-third-base) !important;
   }
 
   a {
-    color: var(--v-black-base);
+    color: var(--v-fourth-base) !important;
     text-decoration: none;
   }
 }
@@ -91,8 +84,8 @@ vuetify color map to and then reuse colors in the app.
 }
 
 .swal-btn {
-  background: var(--v-white-base) !important;
-  color: var(--v-grey-base) !important;
+  background: var(--v-ninth-base) !important;
+  color: var(--v-tenth-base) !important;
   flex-grow: 1;
   width: 100%;
   max-width: 160px;
@@ -101,12 +94,19 @@ vuetify color map to and then reuse colors in the app.
   margin-bottom: 15px;
 }
 
+.swal-toast {
+  background: var(--v-ninth-base) !important;
+  color: var(--v-tenth-base) !important;
+}
+
+.swal2-content,
+.swal2-title {
+  color: var(--v-tenth-base) !important;
+}
+
 @media only screen and (min-width: 386px) {
   #app {
     font-size: 1.25em;
-
-    //display: flex;
-    //align-items: center;
   }
 
   .view {
@@ -126,10 +126,6 @@ vuetify color map to and then reuse colors in the app.
   .view {
     margin: 0 50px;
   }
-
-  //#app {
-  //  font-size: 1.25em;
-  //}
 
   .page-title {
     font-size: 1.45em;

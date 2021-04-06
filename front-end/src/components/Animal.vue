@@ -1,7 +1,6 @@
 <template>
   <v-card max-width="344" class="mx-auto">
     <v-list-item>
-      <!--      <v-list-item-avatar color="grey"></v-list-item-avatar>-->
       <v-list-item-content>
         <v-list-item-title class="headline">
           {{ props.animal.name }}
@@ -26,18 +25,8 @@
     </v-card-text>
 
     <v-card-actions>
-      <!--      <v-btn @click="moveToAnimalDetails" text color="success accent-4">-->
-      <!--        Details-->
-      <!--      </v-btn>-->
       <v-btn @click="moveToAnimalEdit"> Edit </v-btn>
       <v-btn @click="deleteAnimalClicked"> Delete </v-btn>
-      <!--      <v-spacer></v-spacer>-->
-      <!--      <v-btn icon>-->
-      <!--        <v-icon>mdi-heart</v-icon>-->
-      <!--      </v-btn>-->
-      <!--      <v-btn icon>-->
-      <!--        <v-icon>mdi-share-variant</v-icon>-->
-      <!--      </v-btn>-->
     </v-card-actions>
   </v-card>
 </template>
@@ -86,6 +75,8 @@ export default defineComponent({
   width: 100%;
   margin: 15px auto;
   overflow: scroll;
+  background-color: var(--v-fourth-base) !important;
+  color: var(--v-third-base) !important;
   //problem to fix that need wrap to ocure before and not after only that there is no space and they are about to collid..
 }
 
@@ -93,28 +84,23 @@ export default defineComponent({
   width: 100%;
 }
 
-//.v-image__image {
-//  &:hover {
-//    cursor: pointer;
-//  }
-//}
-
 .v-card__text {
   font-size: 1.2rem;
+}
+
+.v-card__text,
+.v-list-item__title {
+  color: var(--v-tenth-base) !important;
 }
 
 .v-btn {
   //width: 100%;
   //max-width: 160px;
-  background: var(--v-white-base) !important;
-  color: var(--v-grey-base) !important;
+  background: var(--v-ninth-base) !important;
+  color: var(--v-tenth-base) !important;
   flex-grow: 1;
   margin-bottom: 10px;
 }
-
-//.v-card__actions {
-//  flex-direction: column;
-//}
 
 @media only screen and (min-width: 345px) {
   .v-card__actions {

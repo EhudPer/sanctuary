@@ -1,12 +1,6 @@
 <template>
   <div class="btns-container">
-    <!--    <h1 class="page-title">Animals</h1>-->
-    <v-btn
-      @click="pushToAddAnimalPage"
-      class="btn-add mt-3"
-      x-large
-      color="info accent-4"
-    >
+    <v-btn @click="pushToAddAnimalPage" class="btn-add mt-3" x-large>
       Add Animal
     </v-btn>
     <v-btn
@@ -14,7 +8,6 @@
       @click="pushToAnimalsList"
       class="btn-list mt-3"
       x-large
-      color="info accent-4"
     >
       View Animals
     </v-btn>
@@ -96,50 +89,15 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   height: calc(100vh - 70px);
-  //width: 100%;
-  //max-width: 300px;
-  //justify-content: center;
-  //margin: 0 auto;
+
   justify-content: center;
   align-items: center;
   button {
     width: 100%;
-    //margin: 0 auto;
+
     max-width: 250px;
-    background: var(--v-white-base) !important;
-    color: var(--v-grey-base) !important;
+    background: var(--v-ninth-base) !important;
+    color: var(--v-twelvth-base) !important;
   }
 }
-
-//@media only screen and (min-width: 960px) {
-//  .btns-container {
-//    flex-direction: row;
-//    //width: 100%;
-//    justify-content: center;
-//
-//    .btn-add {
-//      margin-right: 15px;
-//    }
-//
-//    .btn-list {
-//      margin-left: 15px;
-//    }
-//  }
-//}
-//.animals-list {
-//  ul {
-//    display: flex;
-//    flex-wrap: wrap;
-//
-//    li {
-//      margin: 15px auto;
-//    }
-//  }
-//}
-//
-//@media only screen and (max-width: 385px) {
-//  li {
-//    width: 100%;
-//  }
-//}
 </style>

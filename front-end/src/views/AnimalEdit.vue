@@ -1,15 +1,7 @@
 <template>
   <div>
-    <!--    <h1 class="page-title">Animal Edit</h1>-->
     <v-card v-if="animal" max-width="1032" class="mx-auto">
-      <v-list-item>
-        <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
-        <!--        <v-list-item-content>-->
-        <!--          <v-list-item-title class="headline">-->
-        <!--            {{ animal.name }}-->
-        <!--          </v-list-item-title>-->
-        <!--        </v-list-item-content>-->
-      </v-list-item>
+      <v-list-item> </v-list-item>
 
       <v-img
         v-if="newAnimalType"
@@ -75,7 +67,6 @@
         ></v-select>
 
         <div class="btns-container">
-          <!--          <v-card-actions>-->
           <v-btn
             v-if="valid && newAnimalName !== '' && newAnimalType !== ''"
             class="validate-btn"
@@ -84,36 +75,10 @@
             Save
           </v-btn>
           <v-btn @click="deleteAnimalClicked"> Delete </v-btn>
-          <!--        <v-spacer></v-spacer>-->
-          <!--        <v-btn icon>-->
-          <!--          <v-icon>mdi-heart</v-icon>-->
-          <!--        </v-btn>-->
-          <!--        <v-btn icon>-->
-          <!--          <v-icon>mdi-share-variant</v-icon>-->
-          <!--        </v-btn>-->
-          <!--          </v-card-actions>-->
         </div>
         <div class="cancel-btn-container">
           <v-btn @click="cancelHandler"> Cancel </v-btn>
         </div>
-        <!--        <v-btn-->
-        <!--          color="error"-->
-        <!--          class="reset-form-btn"-->
-        <!--          @click="reset"-->
-        <!--          width="100%"-->
-        <!--          max-width="130"-->
-        <!--        >-->
-        <!--          Reset Form-->
-        <!--        </v-btn>-->
-        <!--        <v-btn-->
-        <!--          class="reset-validation-btn"-->
-        <!--          color="warning"-->
-        <!--          @click="resetValidation"-->
-        <!--          width="100%"-->
-        <!--          max-width="178"-->
-        <!--        >-->
-        <!--          Reset Validation-->
-        <!--        </v-btn>-->
       </v-form>
     </v-card>
   </div>
@@ -251,14 +216,6 @@ export default defineComponent({
       moveToAnimalsList();
     };
 
-    // const reset = () => {
-    //   myForm.value.reset();
-    // };
-    //
-    // const resetValidation = () => {
-    //   myForm.value.resetValidation();
-    // };
-
     const updateAnimal = async () => {
       root.$store.dispatch("togLoading", { loadingStatus: true });
       const updatedAnimalFields = {
@@ -366,52 +323,17 @@ export default defineComponent({
   width: 100%;
   margin: 15px auto;
   overflow: scroll;
+  background-color: var(--v-fourth-base) !important;
+  color: var(--v-third-base) !important;
 }
-
-//.v-card__actions {
-//  flex-direction: column;
-//}
 
 form {
   padding: 0 8px;
 
-  //.reset-form-btn,
-  //.reset-validation-btn
   .btns-container {
     display: flex;
   }
-
-  //.validate-btn {
-  //  margin-top: 10px;
-  //}
 }
-
-//@media only screen and (min-width: 296px) {
-//  .validate-btn {
-//    margin-right: 3px;
-//  }
-//
-//  //.reset-form-btn {
-//  //  margin-left: 3px;
-//  //}
-//}
-
-//@media only screen and (min-width: 395px) {
-//  .v-card__actions {
-//    flex-direction: row;
-//    //flex-wrap: wrap;
-//  }
-//}
-
-//@media only screen and (min-width: 480px) {
-//  .reset-form-btn {
-//    margin-right: 3px;
-//  }
-//
-//  .reset-validation-btn {
-//    margin-left: 3px;
-//  }
-//}
 
 .cancel-btn-container {
   display: flex;
@@ -421,11 +343,14 @@ form {
   }
 }
 
+.v-card__text,
+.v-list-item__title {
+  color: var(--v-tenth-base) !important;
+}
+
 .v-btn {
-  //width: 100%;
-  //max-width: 160px;
-  background: var(--v-white-base) !important;
-  color: var(--v-grey-base) !important;
+  background: var(--v-ninth-base) !important;
+  color: var(--v-tenth-base) !important;
   flex-grow: 1;
   margin-bottom: 20px;
   margin-right: 5px;
