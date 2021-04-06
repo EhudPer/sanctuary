@@ -1,9 +1,7 @@
 <template>
   <div>
-    <!--    <h1 class="page-title">Animal Details</h1>-->
     <v-card v-if="animal" max-width="1032" class="mx-auto">
       <v-list-item>
-        <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
         <v-list-item-content>
           <v-list-item-title class="headline">
             {{ animal.name }}
@@ -32,35 +30,9 @@
         >
       </v-card-text>
 
-      <!--      <v-card-text v-if="animal.medicineType">-->
-      <!--        Medicine Type: {{ animal.medicineType }}-->
-      <!--      </v-card-text>-->
-
-      <!--      <v-card-text v-if="animal.dosage">-->
-      <!--        Dosage: {{ animal.dosage }}-->
-      <!--      </v-card-text>-->
-
-      <!--      <v-card-text v-if="animal.frequency">-->
-      <!--        Frequency: {{ animal.frequency }}-->
-      <!--      </v-card-text>-->
-
-      <!--      <v-card-text v-if="animal.timeUnit">-->
-      <!--        Time Unit: {{ animal.timeUnit }}-->
-      <!--      </v-card-text>-->
-
       <v-card-actions>
-        <!--        <v-btn @click="pushToAddAnimalPage" text color="info accent-4">-->
-        <!--          Add Animal-->
-        <!--        </v-btn>-->
         <v-btn @click="moveToAnimalEdit"> Edit </v-btn>
         <v-btn @click="deleteAnimalClicked"> Delete </v-btn>
-        <!--        <v-spacer></v-spacer>-->
-        <!--        <v-btn icon>-->
-        <!--          <v-icon>mdi-heart</v-icon>-->
-        <!--        </v-btn>-->
-        <!--        <v-btn icon>-->
-        <!--          <v-icon>mdi-share-variant</v-icon>-->
-        <!--        </v-btn>-->
       </v-card-actions>
     </v-card>
   </div>
@@ -147,29 +119,23 @@ export default defineComponent({
   width: 100%;
   margin: 15px auto;
   overflow: scroll;
+  background-color: var(--v-fourth-base) !important;
+  color: var(--v-third-base) !important;
 }
 
 .v-card__text {
   font-size: 1.2rem;
 }
 
+.v-card__text,
+.v-list-item__title {
+  color: var(--v-tenth-base) !important;
+}
+
 .v-btn {
-  //width: 100%;
-  //max-width: 160px;
-  background: var(--v-white-base) !important;
-  color: var(--v-grey-base) !important;
+  background: var(--v-ninth-base) !important;
+  color: var(--v-tenth-base) !important;
   flex-grow: 1;
   margin-bottom: 10px;
 }
-
-//.v-card__actions {
-//flex-direction: column;
-//}
-
-//@media only screen and (min-width: 375px) {
-//  .v-card__actions {
-//    flex-direction: row;
-//    //flex-wrap: wrap;
-//  }
-//}
 </style>
