@@ -12,11 +12,10 @@ export const deleteAnimal = async (
       text: "You won't be able to revert this animal deletion!",
       icon: "warning",
       showCancelButton: true,
-      // confirmButtonColor: "#0457E7",
-      // cancelButtonColor: "#D62E1F",
       confirmButtonText: "Delete",
       buttonsStyling: false,
       customClass: {
+        // body: "swal-body",
         confirmButton:
           "swal-btn v-btn v-btn--contained theme--light v-size--default",
         cancelButton:

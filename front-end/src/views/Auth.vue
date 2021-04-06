@@ -1,28 +1,8 @@
 <template>
   <div class="main-container">
-    <!--    <h1 class="page-title">{{ isLogin ? "Login" : "Register" }}</h1>-->
     <v-card max-width="343">
-      <!--      <v-list-item>-->
-      <!--        <v-list-item-avatar color="grey"></v-list-item-avatar>-->
-      <!--      </v-list-item>-->
-
-      <!--      <v-img-->
-      <!--        v-if="isLogin"-->
-      <!--        src="@/assets/login.jpg"-->
-      <!--        alt="Avatar"-->
-      <!--        max-height="150"-->
-      <!--      ></v-img>-->
-
-      <!--      <v-img-->
-      <!--        v-else-->
-      <!--        src="@/assets/register.jpg"-->
-      <!--        alt="Avatar"-->
-      <!--        max-height="150"-->
-      <!--      ></v-img>-->
-
       <v-form ref="myForm" v-model="valid" class="mb-4" lazy-validation>
         <div class="form-sub-container">
-          <!--          <p v-if="!isLogin" class="or-title">link password:</p>-->
           <p :class="!isLogin ? '' : 'hide'" class="or-title">link password:</p>
 
           <div class="google-btn-and-fixer-container">
@@ -37,11 +17,6 @@
           </div>
 
           <div v-if="isLogin">
-            <!--          <p class="page-sub-title">Try our demo account</p>-->
-            <!--          <p class="page-sub-title">-->
-            <!--            <span>Email: demo@demo.com</span>,-->
-            <!--            <span>Password: demouser</span>-->
-            <!--          </p>-->
             <v-btn class="demo-account-btn" @click="demoHandler">
               Try our demo account
             </v-btn>
@@ -80,32 +55,8 @@
             {{ isLogin ? "Sign in" : "Sign up" }}
           </v-btn>
 
-          <!--        <v-btn-->
-          <!--          color="error"-->
-          <!--          class="reset-form-btn"-->
-          <!--          @click="reset"-->
-          <!--          width="100%"-->
-          <!--          max-width="130"-->
-          <!--        >-->
-          <!--          Reset Form-->
-          <!--        </v-btn>-->
-
-          <!--        <v-btn-->
-          <!--          class="reset-validation-btn"-->
-          <!--          color="warning"-->
-          <!--          @click="resetValidation"-->
-          <!--          width="100%"-->
-          <!--          max-width="178"-->
-          <!--        >-->
-          <!--          Reset Validation-->
-          <!--        </v-btn>-->
-
-          <!--        <p v-if="isLogin" class="or-title">Or:</p>-->
-
-          <!--        <p class="or-title">Or:</p>-->
           <v-btn class="switch-to-register-btn" @click="switchHandler">
             <!--          Switch to Register-->
-            <!--          Switch to {{ isLogin ? "register" : "login" }}-->
             {{ isLogin ? "sign up" : "sign in" }}
           </v-btn>
         </div>
@@ -140,32 +91,7 @@ export default defineComponent({
     });
 
     onMounted(() => {
-      // document.getElementById("connected3yap2b3ti7qi").textContent =
-      //   "Sign in with Google";
-      // ("inline-block");
-
-      // // let result = document.evaluate(
-      // //   // '//div[@class="abcRioButtonContentWrapper"]/span[@class="abcRioButtonContents"]/following-sibling::text()[1]',
-      // //   '//span[text()="Signed in with Google"]',
-      // //   document,
-      // //   null,
-      // //   XPathResult.STRING_TYPE
-      // // ).stringValue;
-      //
-      // console.log(result.trim());
-
-      // console.log(root.$el.querySelector("span"));
-      // console.log(document.querySelector(".abcRioButtonContents span"));
-      // console.log(root.$el.querySelector(".abcRioButtonContents span"));
-      // document.querySelector(".abcRioButtonContents span");
-
-      // console.log(root.$el.querySelector("span"));
-      // console.log(root.$el.querySelector('[id^="connected"]'));
-      // const spansEls = document.querySelectorAll("span");
-
       window.onload = function () {
-        // console.log(this.$el.querySelector(".abcRioButtonContents span"));
-
         root.$store.dispatch("togLoading", { loadingStatus: false });
       };
     });
@@ -175,7 +101,7 @@ export default defineComponent({
     const userEmail = ref("");
     const userPassword = ref("");
     const reUserPassword = ref("");
-    // const newAnimalImageUrl = ref("");
+
     const isLogin = ref(true);
     const myForm = ref(null);
     const valid = ref(true);
@@ -274,6 +200,10 @@ export default defineComponent({
               position: "bottom",
               width: 600,
               padding: "3em",
+              // buttonsStyling: false,
+              customClass: {
+                confirmButton: "swal-toast",
+              },
               // background: "#fff",
             });
           }, 2000);
@@ -284,8 +214,7 @@ export default defineComponent({
         root.$swal.fire({
           title: "Error:",
           text: error.message.toString(),
-          // text: "Error is here!",
-          // confirmButtonColor: "red",
+
           icon: "warning",
           width: 600,
           padding: "3em",
@@ -294,7 +223,6 @@ export default defineComponent({
             confirmButton:
               "swal-btn v-btn v-btn--contained theme--light v-size--default",
           },
-          // background: "#fff",
         });
       }
       root.$store.dispatch("togLoading", { loadingStatus: false });
@@ -332,14 +260,6 @@ export default defineComponent({
         }
       }
     };
-
-    // const reset = () => {
-    //   myForm.value.reset();
-    // };
-
-    // const resetValidation = () => {
-    //   myForm.value.resetValidation();
-    // };
 
     const switchHandler = () => {
       isLogin.value = !isLogin.value;
@@ -391,6 +311,9 @@ export default defineComponent({
             position: "bottom",
             width: 600,
             padding: "3em",
+            customClass: {
+              confirmButton: "swal-toast",
+            },
             // background: "#fff",
           });
         }, 2000);
@@ -413,9 +336,6 @@ export default defineComponent({
           });
         } else {
           root.$swal.fire({
-            // title: "Error: login failed!f",
-            // text: "Please try again at a later time.",
-            // text: error.message.toString(),
             text:
               error.message.toString() +
               " " +
@@ -452,8 +372,7 @@ export default defineComponent({
           return root.$swal.fire({
             title: "Error: login for new registered user failed!",
             text: "Please try again at a later time.",
-            // text: error.message.toString(),
-            // confirmButtonColor: "red",
+
             icon: "warning",
             width: 600,
             padding: "3em",
@@ -535,26 +454,15 @@ export default defineComponent({
 }
 
 .google-btn-and-fixer-container {
-  color: var(--v-grey-base) !important;
-  //color: gray;
   width: 100%;
-  //max-width: 254px;
+
   max-width: 254px;
   margin-top: -20px;
   margin-bottom: 0;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
-  //display: flex;
-  //align-items: center;
-  //height: 0px;
 }
-
-//.abcRioButtonLightBlue,
-//.abcRioButtonContentWrapper,
-//.google-signin-btn-wrapper {
-//  background-color: var(--v-white-base) !important;
-//}
 
 .google-text-fixer {
   pointer-events: none;
@@ -566,22 +474,21 @@ export default defineComponent({
   width: 100%;
   max-width: 200px;
   //background: white;
-  background: var(--v-cleanwhite-base) !important;
+  background: var(--v-thirteenth-base) !important;
+  color: var(--v-tenth-base) !important;
 }
 
 .page-sub-title {
   //font-size: 1.2rem;
   font-weight: normal;
-
-  //span {
-  //  color: var(--v-info-base) !important;
-  //}
 }
 
 .v-card {
   width: 100%;
   margin: auto;
   overflow: scroll;
+
+  background-color: var(--v-fifth-base) !important;
 }
 
 .v-card__actions {
@@ -603,20 +510,14 @@ form {
       width: 100%;
       max-width: 250px;
       height: 50px !important;
-      background: var(--v-white-base) !important;
-      color: var(--v-grey-base);
+      background: var(--v-secondary-base) !important;
+      color: var(--v-tenth-base);
       font-size: 1rem;
       overflow: hidden;
     }
-
-    //.abcRioButton {
-    //  background: var(--v-white-base) !important;
-    //}
   }
 
   .auth-btn,
-  //.reset-form-btn,
-  //.reset-validation-btn,
   .switch-to-register-btn {
     margin-top: 10px;
   }
@@ -627,10 +528,6 @@ form {
   }
 }
 
-//.google-signin-btn-wrapper .abcRioButton .abcRioButtonContentWrapper {
-//  background-color: blue !important;
-//}
-
 .v-text-field {
   font-size: 1.2rem;
 }
@@ -638,56 +535,25 @@ form {
 .v-input {
   font-size: 1rem;
   margin: 0 auto;
-  //width: 100%;
+
   max-width: 250px !important;
 }
-
-//.demo-account-btn {
-//  color: var(--v-white-base) !important;
-//}
 
 .google-signin-btn-wrapper {
   display: flex;
   justify-content: center;
-  //background-color: red;
-
-  //.abcRioButton.abcRioButtonLightBlue {
-  //  background-color: red !important;
-  //}
-
-  //.abcRioButtonLightBlue {
-  //  background-color: red !important;
-  //}
-
-  //#connected3yap2b3ti7qi {
-  //  display: inline-block;
-  //}
-
-  //.abcRioButton {
-  //  background-color: red !important;
-  //}
 }
 
 .or-title {
-  color: var(--v-grey-base);
+  color: var(--v-tenth-base) !important;
   margin-top: 16px;
   margin-bottom: 0;
 }
-
-//#google-signin-btn-1 {
-//  .abcRioButtonContentWrapper {
-//    background-color: blue !important;
-//  }
-//}
 
 @media only screen and (min-width: 296px) {
   .auth-btn {
     margin-right: 3px;
   }
-
-  //.reset-form-btn {
-  //  margin-left: 3px;
-  //}
 }
 
 @media only screen and (max-width: 290px) {
@@ -701,44 +567,4 @@ form {
     flex-direction: row;
   }
 }
-
-//@media only screen and (min-width: 960px) {
-//  .google-btn-and-fixer-container {
-//    margin-right: 0px;
-//    margin-left: 0px;
-//  }
-//
-//  .btns-container {
-//    display: flex;
-//    justify-content: space-between;
-//    align-items: center;
-//    margin-top: 20px;
-//    padding: 0;
-//
-//    .auth-btn,
-//    .switch-to-register-btn,
-//    google-signin-btn-wrapper,
-//    demo-account-btn {
-//      margin-top: 0px;
-//      margin-right: 0px;
-//      margin-left: 0;
-//    }
-//  }
-//}
-
-//@media only screen and (min-width: 1025px) {
-//  .btns-container {
-//    padding: 20px;
-//  }
-//}
-
-//@media only screen and (min-width: 480px) {
-//  .reset-form-btn {
-//    margin-right: 3px;
-//  }
-//
-//  .reset-validation-btn {
-//    margin-left: 3px;
-//  }
-//}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <header class="main-navigation__nav">
-    <v-app-bar color="brown" dark fixed app>
-      <v-btn ref="backBtn" class="back-btn hide" @click="backBtnHandler">
+    <v-app-bar color="sixth" dark fixed app>
+      <v-btn ref="backBtn" class="back-btn hide tenth" @click="backBtnHandler">
         Back
       </v-btn>
       <div class="logo-and-dots-container">
@@ -17,7 +17,7 @@
               <router-link to="/">About</router-link>
             </span>
           </v-btn>
-          <v-btn v-if="token" text to="/animals">
+          <v-btn v-if="token && hasAnimals" text to="/animals">
             <span class="mr-2">
               <router-link to="/animals">View Animals</router-link>
             </span>
@@ -54,7 +54,7 @@
                 <router-link to="/">About</router-link>
               </v-list-item-title>
             </v-list-item>
-            <v-list-item v-if="token" to="/animals">
+            <v-list-item v-if="token && hasAnimals" to="/animals">
               <v-list-item-title
                 ><router-link to="/animals"
                   >View Animals</router-link
@@ -95,8 +95,9 @@ export default defineComponent({
   name: "MainNavigation",
   setup(props, { root }) {
     const backBtn = ref();
-    // let backCounter = ref(0);
+
     const token = computed(() => root.$store.getters.getToken);
+    const hasAnimals = computed(() => root.$store.getters.getAnimals.length);
 
     watch(
       () => root.$route,
@@ -142,6 +143,7 @@ export default defineComponent({
       root,
       backBtn,
       token,
+      hasAnimals,
       logoutHandler,
       backBtnHandler,
     };
@@ -152,7 +154,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 #app {
   .hide {
-    //display: none;
     visibility: hidden;
   }
 
@@ -162,9 +163,9 @@ export default defineComponent({
 
   .v-toolbar__items {
     a {
-      color: var(--v-white-base) !important;
+      color: var(--v-thirteenth-base) !important;
       &.v-btn--active {
-        color: var(--v-darkgrey-base) !important;
+        color: var(--v-secondary-base) !important;
       }
     }
   }
