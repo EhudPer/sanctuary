@@ -252,7 +252,8 @@ export default defineComponent({
   width: 100%;
   margin: 15px auto;
   overflow: scroll;
-  background-color: var(--v-fourth-base) !important;
+
+  background-color: var(--v-thirteenth-base) !important;
   color: var(--v-third-base) !important;
 }
 
