@@ -87,7 +87,6 @@ export default defineComponent({
 
     const animalId = root.$route.params.animalId;
     const animal = computed(() => root.$store.getters.getAnimalById(animalId));
-    console.log("animal", animal);
 
     function pushToAddAnimalPage() {
       root.$router.push({
@@ -129,7 +128,7 @@ export default defineComponent({
 
 .v-card__text,
 .v-list-item__title {
-  color: var(--v-tenth-base) !important;
+  color: var(--v-thirteenth-base) !important;
 }
 
 .v-btn {

@@ -12,17 +12,26 @@
         >
         <v-spacer></v-spacer>
         <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp">
-          <v-btn text to="/">
+          <v-btn v-if="$route.name !== 'Home'" text to="/">
             <span class="mr-2">
               <router-link to="/">About</router-link>
             </span>
           </v-btn>
-          <v-btn v-if="token && hasAnimals" text to="/animals">
+          <v-btn
+            class="animals-list-btn"
+            v-if="token && hasAnimals && $route.name !== 'AnimalsList'"
+            text
+            to="/animals"
+          >
             <span class="mr-2">
               <router-link to="/animals">View Animals</router-link>
             </span>
           </v-btn>
-          <v-btn v-if="token" text to="/animals/add">
+          <v-btn
+            v-if="token && $route.name !== 'AddAnimal'"
+            text
+            to="/animals/add"
+          >
             <span class="mr-2">
               <router-link to="/animals/add">Add Animal</router-link>
             </span>
@@ -32,7 +41,7 @@
               <router-link to="/auth">Log out</router-link>
             </span>
           </v-btn>
-          <v-btn v-if="!token" text to="/auth">
+          <v-btn v-if="!token && $route.name !== 'Auth'" text to="/auth">
             <span class="mr-2">
               <router-link to="/auth">Sign in</router-link>
             </span>
@@ -49,26 +58,32 @@
           </template>
 
           <v-list>
-            <v-list-item to="/">
+            <v-list-item v-if="$route.name !== 'Home'" to="/">
               <v-list-item-title>
                 <router-link to="/">About</router-link>
               </v-list-item-title>
             </v-list-item>
-            <v-list-item v-if="token && hasAnimals" to="/animals">
+            <v-list-item
+              v-if="token && hasAnimals && $route.name !== 'AnimalsList'"
+              to="/animals"
+            >
               <v-list-item-title
                 ><router-link to="/animals"
                   >View Animals</router-link
                 ></v-list-item-title
               >
             </v-list-item>
-            <v-list-item v-if="token" to="/animals/add">
+            <v-list-item
+              v-if="token && $route.name !== 'AddAnimal'"
+              to="/animals/add"
+            >
               <v-list-item-title
                 ><router-link to="/animals/add"
                   >Add Animal</router-link
                 ></v-list-item-title
               >
             </v-list-item>
-            <v-list-item v-if="!token" to="/auth">
+            <v-list-item v-if="!token && $route.name !== 'Auth'" to="/auth">
               <v-list-item-title
                 ><router-link to="/auth"
                   >Sign in</router-link
@@ -164,9 +179,10 @@ export default defineComponent({
   .v-toolbar__items {
     a {
       color: var(--v-thirteenth-base) !important;
-      &.v-btn--active {
-        color: var(--v-secondary-base) !important;
-      }
+      //background-color: transparent;
+      //&.v-btn--active {
+      //  color: var(--v-secondary-base) !important;
+      //}
     }
   }
 
@@ -207,10 +223,6 @@ export default defineComponent({
 //.btns-container {
 //  width: 100%;
 //  display: flex;
-//  align-items: center;
-//  justify-content: space-between;
-//  flex-direction: row-reverse;
-//}
 
 @media only screen and (min-width: 360px) {
   #app {

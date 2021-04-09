@@ -4,21 +4,30 @@
     <p>
       <b>Animal Sanctuary App</b>
     </p>
-    <p>Managing the caring for rescued animals (work in progress)</p>
-    <p>Frameworks: nodejs, express, apollo-graphql, mongoose, vue + vuex</p>
+    <p>Managing the caring for rescued animals (under development)</p>
+    <p>
+      <b
+        >Frameworks: nodejs, express, apollo-graphql, mongoose, vue, vuex +
+        <a href="https://github.com/EhudPer/sanctuary" target="_blank"
+          >github</a
+        ></b
+      >
+    </p>
 
     <p>By <b>Ehud Perlman</b>, fullstack webapps developer</p>
     <!--    <v-img src="../assets/ehud-and-kfitz.jpg" class="profile"></v-img>-->
-    <v-img src="../assets/ehud-and-kfitz-cropped2.jpg" class="profile"></v-img>
+    <v-img src="../assets/ehud.jpg" class="profile"></v-img>
+    <!--    <p>-->
+    <!--      <b>github: </b>-->
+    <!--      <a href="https://github.com/EhudPer/sanctuary" target="_blank"-->
+    <!--        >Sanctuary project</a-->
+    <!--      >-->
+    <!--    </p>-->
     <p>
-      <b>github: </b>
-      <a href="https://github.com/EhudPer/sanctuary" target="_blank"
-        >Sanctuary project</a
-      >
-    </p>
-    <p>
-      <b> Email: </b>
-      <a href="mailto:ehudperlman83@gmail.com">ehudperlman83@gmail.com</a>
+      <b>
+        Email:
+        <a href="mailto:ehudperlman83@gmail.com">ehudperlman83@gmail.com</a>
+      </b>
     </p>
 
     <p><i>Have an interesting project - I’d love to hear from you! </i></p>
@@ -70,7 +79,7 @@ img {
 
 .profile {
   //max-width: 1000px;
-  max-height: 230px;
+  max-height: 360px;
   //max-width: 400px;
   margin: 15px auto;
   //object-fit: contain;
@@ -88,10 +97,6 @@ p {
 }
 
 @media only screen and (min-width: 386px) {
-  main-img {
-    max-height: 280px;
-  }
-
   .profile {
     max-height: none;
     max-width: 600px;
