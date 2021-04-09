@@ -11,9 +11,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount } from "@vue/composition-api";
+import {
+  defineComponent,
+  onBeforeMount,
+  onMounted,
+} from "@vue/composition-api";
 import Loader from "./components/Loader.vue";
 import MainNavigation from "@/components/Navigation/MainNavigation.vue";
+import { isAuthToken } from "@/helper-functions/auth";
 
 export default defineComponent({
   name: "App",
@@ -25,10 +30,32 @@ export default defineComponent({
   setup(props, { root }) {
     onBeforeMount(async () => {
       try {
+        if (document.readyState !== "complete") {
+          root.$store.dispatch("togLoading", { loadingStatus: true });
+        }
+
         await root.$store.dispatch("initTokenStateAction");
+
+        const token = root.$store.getters.getToken;
+
+        let isTokenValid;
+
+        if (token) {
+          isTokenValid = isAuthToken(token);
+        }
+
+        if (root.$store.state.animals.length === 0 && isTokenValid) {
+          await root.$store.dispatch("fetchAnimals");
+        }
       } catch (error) {
         console.log(error);
       }
+    });
+
+    onMounted(() => {
+      window.onload = function () {
+        root.$store.dispatch("togLoading", { loadingStatus: false });
+      };
     });
   },
 });
@@ -51,9 +78,6 @@ vuetify color map to and then reuse colors in the app.
   ul {
     list-style-type: none;
     padding: 0;
-  }
-  .router-link-exact-active {
-    color: var(--v-third-base) !important;
   }
 
   a {

@@ -90,7 +90,7 @@ export default defineComponent({
 
 .v-card__text,
 .v-list-item__title {
-  color: var(--v-tenth-base) !important;
+  color: var(--v-thirteenth-base) !important;
 }
 
 .v-btn {

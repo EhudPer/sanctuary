@@ -18,7 +18,7 @@
 
           <div v-if="isLogin">
             <v-btn class="demo-account-btn" @click="demoHandler">
-              Try our demo account
+              Demo account
             </v-btn>
           </div>
 
@@ -51,7 +51,16 @@
             required
           ></v-text-field>
 
-          <v-btn :disabled="!valid" class="auth-btn" @click="submitHandler">
+          <v-btn
+            :class="
+              userEmail === 'demo@demo.com' && userPassword === 'demouser'
+                ? 'mark-auth-btn'
+                : ''
+            "
+            :disabled="!valid"
+            class="auth-btn"
+            @click="submitHandler"
+          >
             {{ isLogin ? "Sign in" : "Sign up" }}
           </v-btn>
 
@@ -498,7 +507,7 @@ export default defineComponent({
 form {
   padding: 0 8px;
   //height: 438px;
-  height: 500px;
+  height: 550px;
 
   .form-sub-container {
     button,
@@ -535,8 +544,12 @@ form {
 .v-input {
   font-size: 1rem;
   margin: 0 auto;
-
+  //padding-right: 8px;
+  //padding-left: 8px;
+  padding: 18px 8px;
   max-width: 250px !important;
+  //color: white;
+  background-color: var(--v-thirteenth-base) !important;
 }
 
 .google-signin-btn-wrapper {
@@ -548,6 +561,13 @@ form {
   color: var(--v-tenth-base) !important;
   margin-top: 16px;
   margin-bottom: 0;
+}
+
+form {
+  button.mark-auth-btn {
+    color: var(--v-thirteenth-base) !important;
+    background: var(--v-fourth-base) !important;
+  }
 }
 
 @media only screen and (min-width: 296px) {
