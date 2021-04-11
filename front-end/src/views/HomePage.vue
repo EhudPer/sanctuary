@@ -6,12 +6,8 @@
     </p>
     <p>Managing the caring for rescued animals (under development)</p>
     <p>
-      <b
-        >Frameworks: nodejs, express, apollo-graphql, mongoose, vue, vuex +
-        <a href="https://github.com/EhudPer/sanctuary" target="_blank"
-          >github</a
-        ></b
-      >
+      <b>Frameworks:</b> nodejs, express, apollo-graphql, mongoose, vue, vuex +
+      <a href="https://github.com/EhudPer/sanctuary" target="_blank">github</a>
     </p>
 
     <p>By <b>Ehud Perlman</b>, fullstack webapps developer</p>
