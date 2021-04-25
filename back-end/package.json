@@ -27,9 +27,11 @@
         "graphql-error-tracking-extension": "^0.1.0",
         "graphql-extensions": "^0.5.7",
         "graphql-import-node": "^0.0.4",
+        "graphql-passport": "^0.6.3",
         "jsonwebtoken": "^8.5.1",
         "mongodb": "^3.6.1",
         "mongoose": "^5.10.2",
+        "passport": "^0.4.1",
         "ts-node": "^9.0.0"
     },
     "devDependencies": {

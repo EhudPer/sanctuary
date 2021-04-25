@@ -133,6 +133,12 @@ if (process.env.NODE_ENV !== "production") {
 
 const MONGO_URL = process.env.MONGO_URL;
 
+import passport = require("passport");
+import { GraphQLLocalStrategy, buildContext } from "graphql-passport";
+
+import { UserModel } from "../src/models/user";
+import { testIfUserPasswordIsValid } from "./helper-functions";
+
 const start = async () => {
   // const configurations = {
   //   // Note: You may need sudo to run on port 443
@@ -147,8 +153,30 @@ const start = async () => {
   // const environment = process.env.NODE_ENV || "production";
   // const config = configurations[environment];
 
+  passport.use(
+    new GraphQLLocalStrategy(async (email, password, done) => {
+      console.log("login 2");
+
+      const user = await UserModel.findOne({ email });
+      let isUserPasswordValid;
+      if (user) {
+        isUserPasswordValid = await testIfUserPasswordIsValid(
+          user.toObject().password,
+          password
+        );
+      }
+      console.log("user: ", user);
+
+      const error = isUserPasswordValid
+        ? null
+        : new Error("Wrong credentials!.");
+      done(error, user);
+    })
+  );
+
   const app = express();
 
+  app.use(passport.initialize());
   // app.use(cors());
   app.use(isAuth);
 
@@ -203,7 +231,10 @@ const start = async () => {
     //       },
     //     }),
     // ],
-    context: ({ req, res }) => ({ req, res }),
+    // context: ({ req, res }) => ({ req, res }),
+    context: ({ req, res }) => {
+      return buildContext({ req, res });
+    },
   });
 
   apollo.applyMiddleware({ app, path: "/graphql" });
