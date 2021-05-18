@@ -153,10 +153,12 @@ export default defineComponent({
           return;
         }
       }
-
+      console.log("googleUser", googleUser);
       const token = googleUser.uc
         ? googleUser.uc.id_token
-        : googleUser.tc.id_token;
+        : googleUser.tc
+        ? googleUser.tc.id_token
+        : googleUser.qc.id_token;
 
       //try moving the flow all the way to db just with using the ggogle token and the clip
       // so i can crEATE the user or get it from the db and return a token anyhow to local storage a
