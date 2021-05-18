@@ -8,8 +8,8 @@ import {
   createToken,
   encryptPassword,
   // testIfUserPasswordIsValid,
-  googleSigninOrSignup,
-  googleLinkPassword,
+  // googleSigninOrSignup,
+  // googleLinkPassword,
 } from "../../helper-functions/index";
 
 export const getUsers = async () => {
@@ -123,16 +123,12 @@ export const updateUser = async (root, { _id, input }) => {
 
 export const login = async (root, { input }, context) => {
   // try {
-  console.log("login 1");
   const { email, password } = input;
-
-  console.log("context", context);
 
   const { error, user } = await context.authenticate("graphql-local", {
     email,
     password,
   });
-  console.log("user", user);
 
   if (user) {
     const token = createToken(
@@ -190,31 +186,42 @@ export const validateToken = async (root, { token }) => {
   }
 };
 
-export const signGoogle = async (root, { token }) => {
-  try {
-    const validatedAppToken = await googleSigninOrSignup(token);
+// export const signGoogle = async (root, { token }) => {
+//   const validatedAppToken = await googleSigninOrSignup(token);
+//   return {
+//     token: validatedAppToken.token,
+//     showToast: validatedAppToken.showToast,
+//   };
+// };
+
+export const signGoogle = async (root, { token }, context) => {
+  console.log("In users signin google resolver");
+  const { error, validatedAppToken } = await context.authenticate("google", {
+    scope: ["profile", "email"],
+    token,
+  });
+
+  console.log("validatedAppToken", validatedAppToken);
+
+  if (validatedAppToken) {
     return {
       token: validatedAppToken.token,
       showToast: validatedAppToken.showToast,
     };
-  } catch (error) {
+  } else {
     throw error;
   }
 };
 
 export const linkPassword = async (root, { tokenAndPassword }) => {
-  try {
-    const validatedAppToken = await googleLinkPassword(
-      tokenAndPassword.token,
-      tokenAndPassword.password
-    );
-
-    return {
-      token: validatedAppToken.token,
-    };
-  } catch (error) {
-    throw error;
-  }
+  // const validatedAppToken = await googleLinkPassword(
+  //   tokenAndPassword.token,
+  //   tokenAndPassword.password
+  // );
+  //
+  // return {
+  //   token: validatedAppToken.token,
+  // };
 };
 
 export const deleteUser = async (root, { _id }) => {
