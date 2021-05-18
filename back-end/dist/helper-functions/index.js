@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createToken = exports.linkPasswordToUser = exports.createNewUserByGoogle = exports.checkIfGoogleUserExist = exports.googleLinkPassword = exports.googleSigninOrSignup = exports.testIfGoogleTokenIsValid = exports.testIfUserPasswordIsValid = exports.encryptPassword = void 0;
+exports.createToken = exports.linkPasswordToUser = exports.createNewUserByGoogle = exports.checkIfGoogleUserExist = exports.googleLinkPassword = exports.googleSigninOrSignup = exports.testIfUserPasswordIsValid = exports.encryptPassword = void 0;
 const tslib_1 = require("tslib");
 const bcrypt = tslib_1.__importStar(require("bcryptjs"));
 const jwt = tslib_1.__importStar(require("jsonwebtoken"));
-const google_auth_library_1 = require("google-auth-library");
+// import { OAuth2Client } from "google-auth-library";
 const user_1 = require("../models/user");
 const typegoose_1 = require("@typegoose/typegoose");
-const client = new google_auth_library_1.OAuth2Client(process.env.OAUTH_CLIENT_ID);
+// const client = new OAuth2Client(process.env.OAUTH_CLIENT_ID);
 exports.encryptPassword = (unencryptedPassword) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
         const encryptedPassword = yield bcrypt.hash(unencryptedPassword, 12);
@@ -25,51 +25,98 @@ exports.testIfUserPasswordIsValid = (userDbPassword, recievedLoginUserPassword) 
         throw error;
     }
 });
-exports.testIfGoogleTokenIsValid = (token) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const ticket = yield client.verifyIdToken({
-            idToken: token,
-            audience: process.env.OAUTH_CLIENT_ID,
-        });
-        return ticket.getPayload();
-    }
-    catch (error) {
-        throw error;
-    }
-});
+// export const testIfGoogleTokenIsValid = async (token) => {
+//   try {
+//     const ticket = await client.verifyIdToken({
+//       idToken: token,
+//       audience: process.env.OAUTH_CLIENT_ID,
+//     });
+//     return ticket.getPayload();
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+// export const googleSigninOrSignup = async (token) => {
+//   try {
+//     const googleUserFromToken = await testIfGoogleTokenIsValid(token);
+//
+//     let googleUser = await checkIfGoogleUserExist(googleUserFromToken.email);
+//
+//     if (!googleUser) {
+//       googleUser = await createNewUserByGoogle(googleUserFromToken);
+//     }
+//
+//     const appToken = await createToken(
+//       googleUser.toObject()._id.toString(),
+//       googleUser.toObject().email
+//     );
+//
+//     return {
+//       token: appToken,
+//       showToast: googleUser.toObject().password !== "null" ? true : false,
+//     };
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 exports.googleSigninOrSignup = (token) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const googleUserFromToken = yield exports.testIfGoogleTokenIsValid(token);
-        let googleUser = yield exports.checkIfGoogleUserExist(googleUserFromToken.email);
-        if (!googleUser) {
-            googleUser = yield exports.createNewUserByGoogle(googleUserFromToken);
-        }
-        const appToken = yield exports.createToken(googleUser.toObject()._id.toString(), googleUser.toObject().email);
-        return {
-            token: appToken,
-            showToast: googleUser.toObject().password !== "null" ? true : false,
-        };
-    }
-    catch (error) {
-        throw error;
-    }
+    // const googleUserFromToken = await testIfGoogleTokenIsValid(token);
+    //
+    // let googleUser = await checkIfGoogleUserExist(googleUserFromToken.email);
+    //
+    // if (!googleUser) {
+    //   googleUser = await createNewUserByGoogle(googleUserFromToken);
+    // }
+    //
+    // const appToken = await createToken(
+    //     googleUser.toObject()._id.toString(),
+    //     googleUser.toObject().email
+    // );
+    //
+    // return {
+    //   token: appToken,
+    //   showToast: googleUser.toObject().password !== "null" ? true : false,
+    // };
 });
+// export const googleLinkPassword = async (token, password) => {
+//   try {
+//     const googleUserFromToken = await testIfGoogleTokenIsValid(token);
+//     let googleUser = await checkIfGoogleUserExist(googleUserFromToken.email);
+//
+//     if (!googleUser) {
+//       googleUser = await createNewUserByGoogle(googleUserFromToken);
+//     }
+//
+//     await linkPasswordToUser(googleUser, password);
+//
+//     const appToken = await createToken(
+//       googleUser.toObject()._id.toString(),
+//       googleUser.toObject().email
+//     );
+//     return {
+//       token: appToken,
+//     };
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 exports.googleLinkPassword = (token, password) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const googleUserFromToken = yield exports.testIfGoogleTokenIsValid(token);
-        let googleUser = yield exports.checkIfGoogleUserExist(googleUserFromToken.email);
-        if (!googleUser) {
-            googleUser = yield exports.createNewUserByGoogle(googleUserFromToken);
-        }
-        yield exports.linkPasswordToUser(googleUser, password);
-        const appToken = yield exports.createToken(googleUser.toObject()._id.toString(), googleUser.toObject().email);
-        return {
-            token: appToken,
-        };
-    }
-    catch (error) {
-        throw error;
-    }
+    // const googleUserFromToken = await testIfGoogleTokenIsValid(token);
+    // let googleUser = await checkIfGoogleUserExist(googleUserFromToken.email);
+    //
+    // if (!googleUser) {
+    //   googleUser = await createNewUserByGoogle(googleUserFromToken);
+    // }
+    //
+    // await linkPasswordToUser(googleUser, password);
+    //
+    // const appToken = await createToken(
+    //     googleUser.toObject()._id.toString(),
+    //     googleUser.toObject().email
+    // );
+    // return {
+    //   token: appToken,
+    // };
 });
 exports.checkIfGoogleUserExist = (email) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
