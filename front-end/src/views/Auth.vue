@@ -154,7 +154,7 @@ export default defineComponent({
         }
       }
       console.log("googleUser", googleUser);
-      console.log("new test log");
+      console.log("new test log 2");
       const token = googleUser.uc
         ? googleUser.uc.id_token
         : googleUser.tc
