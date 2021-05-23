@@ -348,12 +348,7 @@ export default defineComponent({
           });
         } else {
           root.$swal.fire({
-            text:
-              error.message.toString() +
-              " " +
-              error.toString() +
-              " " +
-              error.graphQLErrors.toString(),
+            text: error.message.toString() + " " + error.toString(),
             // confirmButtonColor: "#D62E1F",
             icon: "error",
             width: 600,
