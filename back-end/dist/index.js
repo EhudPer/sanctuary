@@ -266,12 +266,12 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         path: "/graphql",
     });
     // Create the HTTPS or HTTP server, per configuration
-    const sslPrivateKey = fs.readFileSync(path.resolve("server/src/ssl/server.key"));
-    const sslCertificate = fs.readFileSync("server/src/ssl/server.cert");
     let server;
     if (process.env.NODE_ENV === "development") {
         // Assumes certificates are in a .ssl-localhost folder off of the package root. Make sure
         // these files are secured.
+        const sslPrivateKey = fs.readFileSync(path.resolve("server/src/ssl/server.key"));
+        const sslCertificate = fs.readFileSync("server/src/ssl/server.cert");
         server = https.createServer({
             key: sslPrivateKey,
             cert: sslCertificate,
