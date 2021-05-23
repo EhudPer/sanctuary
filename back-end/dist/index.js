@@ -111,7 +111,8 @@ const graphql_passport_1 = require("graphql-passport");
 const GoogleStrategy = require("passport-google-oauth20");
 // import passportGoogle = require("passport-google-oauth20");
 // const { GoogleStrategy } = passportGoogle.Strategy;
-const user_1 = require("../src/models/user");
+// import { UserModel } from "../src/models/user";
+const user_1 = require("./models/user");
 const helper_functions_1 = require("./helper-functions");
 const fs = tslib_1.__importStar(require("fs"));
 const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {

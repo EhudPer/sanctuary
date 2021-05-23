@@ -145,7 +145,8 @@ import GoogleStrategy = require("passport-google-oauth20");
 // import passportGoogle = require("passport-google-oauth20");
 // const { GoogleStrategy } = passportGoogle.Strategy;
 
-import { UserModel } from "../src/models/user";
+// import { UserModel } from "../src/models/user";
+import { UserModel } from "./models/user";
 import {
   googleSigninOrSignup,
   testIfUserPasswordIsValid,
