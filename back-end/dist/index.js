@@ -145,7 +145,8 @@ const start = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         clientSecret: process.env.OAUTH_CLIENT_SECRET,
         // callbackURL: "http://localhost:8080/animals",
         // callbackURL: "http://localhost:8080/auth/google/redirect",
-        callbackURL: "https://localhost:8080/auth/google/callback",
+        // callbackURL: "https://localhost:8080/auth/google/callback",
+        callbackURL: "https://sanctuary-app.herokuapp.com/auth/google/callback",
     };
     passport.use(
     // new googleOauth.Strategy(async (token, done) => {
