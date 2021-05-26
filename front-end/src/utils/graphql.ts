@@ -9,9 +9,10 @@ export default new ApolloClient({
   //   // uri: "https://localhost:8000/graphql",
   //   uri: "/graphql",
   link: new HttpLink({
+    uri: process.env.VUE_APP_SERVER_URI,
     // uri: "http://localhost:8000/graphql",
     // uri: "https://localhost:8000/graphql",
-    uri: "https://sanctuary-app.herokuapp.com/graphql",
+    // uri: "https://sanctuary-app.herokuapp.com/graphql",
   }),
   // Using a cache for blazingly
   // fast subsequent queries.
